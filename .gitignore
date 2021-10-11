@@ -9,3 +9,7 @@ analysis/*png
 analysis/*html
 analysis/*_cache
 analysis/site_libs
+data/*.RDS
+data/*.csv
+data/raw_tiffs/*.tiff
+

@@ -1,0 +1,523 @@
+---
+title: "Exploratory Data Analysis MiBi"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+---
+
+# Set up
+
+Messages will be hidden and the output collapsed to make the Rmd more clear.
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+set.seed(42)
+```
+
+Loaded Packages.
+
+```{r}
+library(mistyR)
+library(future)
+plan("multisession", workers=14)
+library(tidyverse)
+```
+
+# Loading and Processing Data
+
+```{r}
+input <- read_csv("data/cellData.csv")
+
+# See description in Readme
+group.trans <- c("1" = "Unidentified", "2" = "Immune", "3" = "Endothelial", 
+                 "4" = "Mesenchymal-like", "5" = "Tumor", 
+                 "6" = "Keratin-positive tumor")
+
+immune.group.trans <- c("0" = "Non-Immune?", "1" = "Tregs", "2" = "CD4 T", "3" = "CD8 T", 
+                        "4" = "CD3 T", "5" = "NK", "6" = "B",
+                        "7" = "Neutrophils", "8" = "Macrophages", 
+                        "9" = "DC", "10" = "DC/Mono", "11" = "Mono/Neu", 
+                        "12" = "Other immune")
+
+raw_data <- input %>%
+  mutate(Group = group.trans[as.character(Group)]) %>%
+  mutate(immuneGroup = immune.group.trans[as.character(immuneGroup)])
+  
+raw_data %>% slice_head(n=6)
+```
+
+Add coordinates of the cells.
+
+There are different ways to get the center of mass. One of the is implemented by
+scipy, see here: https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.center_of_mass.html#scipy.ndimage.center_of_mass.
+
+```{r}
+# Coordinates extracted using scipy ndimage.measurements.center_of_mass
+coordinates_raw <- read_csv("data/coordinates.csv")
+coordinates <- coordinates_raw %>%
+  # changed row and col here, according to graphics later
+  mutate(row = as.numeric(str_extract(coordinate, "[.\\d]+(?=,)")),
+         col = as.numeric(str_extract(coordinate, "[.\\d]+(?=\\))"))
+         ) %>%
+  select(-coordinate) %>%
+  rename(cell_id = ...1, sample_id = id) %>%
+  mutate(cell_id = cell_id + 1) # control for python vs. R, first index
+coordinates %>% slice_head(n=6)
+```
+
+Add coordinates to the meta_data
+
+```{r}
+data <- raw_data %>%
+  inner_join(coordinates, by = c("cellLabelInImage" = "cell_id", 
+                                "SampleID" = "sample_id"))
+
+# Check for NAs
+stopifnot(sum(map_int(colnames(data), ~ sum(is.na(data[[.x]])))) == 0)
+
+meta <- data %>%
+  select(c(1:3, 53:59))
+meta %>% slice_head(n=6)
+
+expr <- data %>%
+  select(4:52)
+expr %>% slice_head(n=6)
+```
+
+Alternatively we can do it in R as shown below. However, this takes
+much longer than simply running the code in Python (about 100X difference?).
+
+```{r}
+if ("alternative_coordinates.RDS" %in% list.files("data")) {
+  alternative.coord <- readRDS("data/alternative_coordinates.RDS")
+} else {
+  # maybe make the matrix sparse to speed things up?
+  library(tiff)
+  lbs <- c(1:29, 31:41)
+  alternative.coord <- furrr::future_map_dfr(lbs, function(id) {
+    print(id)
+    # Read in raw matrix (in tiff format)
+    tiff <- readTIFF(paste0("/home/philipp/data/saez/p", id, "_labeledcellData.tiff"),
+                     as.is = TRUE)
+    seq.rows <- seq_len(nrow(tiff))
+    seq.cols <- seq_len(ncol(tiff))
+    ncells <- cells.sample.dict[id]
+    map_dfr(seq_len(ncells), function(i) {
+      if (i %% 100 == 0) print(i)
+      # Convert to binary matrix with TRUE and FALSE
+      binary <- (tiff == i)
+      s <- sum(binary)
+      # Calculate center of mass
+      c(id = id, 
+        i = i,
+        x.center = sum(seq.rows * rowSums(binary)) / s,
+        y.center = sum(seq.cols * colSums(binary)) / s
+      )
+    })
+  })
+  saveRDS(alternative.coord, file = "data/alternative_coordinates.RDS")
+}
+```
+
+# Metadata
+
+Number of cells per sample.
+
+```{r}
+meta %>%
+  count(SampleID) %>%
+  ggplot() +
+  geom_bar(aes(x=SampleID, y=n), stat = "identity")
+
+cells.sample <- input %>% count(SampleID)
+cells.sample.dict <- cells.sample$n
+names(cells.sample.dict) <- cells.sample$SampleID
+cells.sample.dict
+```
+
+Number of "cell types" over all samples.
+
+```{r}
+meta %>%
+  count(Group) %>%
+  arrange(desc(n))
+```
+
+Number of "immune cell types" over all samples.
+
+```{r}
+meta %>%
+  count(immuneGroup) %>%
+  arrange(desc(n))
+```
+
+# Distribution of the markers
+
+Histograms per marker over all samples.
+
+```{r fig.height=12, fig.width=18}
+expr %>%
+  pivot_longer(cols = everything(), names_to = "marker", values_to = "expression") %>%
+  ggplot() +
+  geom_histogram(aes(x=expression), bins = 100) +
+  facet_wrap(~ marker, scales = "free")
+```
+
+```{r fig.height=12, fig.width=18}
+expr %>%
+  pivot_longer(cols = everything(), names_to = "marker", values_to = "expression") %>%
+  ggplot() +
+  geom_histogram(aes(x=expression), bins = 100) +
+  facet_wrap(~ marker) +
+  scale_x_log10()
+```
+
+Looking at the boxplot fo the expression per marker over all samples, ignoring
+outliers which are defined as points which includes all points outside of 
+median ± 1.5 * IQR (interquantile range)
+
+```{r}
+expr %>%
+  pivot_longer(cols = everything(), names_to = "marker", values_to = "expression") %>%
+  ggplot() +
+  geom_boxplot(aes(y=expression, x=marker), outlier.shape = NA) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  coord_cartesian(ylim = c(-5, 5))
+```
+
+# Visualizing the cell types in the coordinates
+
+```{r fig.height=12, fig.width=18}
+meta %>%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size=.1) +
+  facet_wrap(~ SampleID)
+```
+
+Let's visualize sample 40 for example in one slide.
+
+```{r fig.height=6, fig.width=8}
+meta %>%
+  filter(SampleID == 40) %>%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size=.4)
+```
+
+And also visualize the tiff for that slide (or sample).
+
+```{r fig.height=6, fig.width=8}
+library(tiff)
+id = 40
+tiff <- readTIFF(paste0("data/raw_tiffs/p", 
+                        id, "_labeledcellData.tiff"), as.is = TRUE)
+binary <- apply(tiff, c(1,2), function(n) !(n %in% c(0,1)))
+binary.df <- as.data.frame(binary)
+rownames(binary.df) <- seq_len(nrow(binary))
+colnames(binary.df) <- seq_len(ncol(binary))
+
+df <- binary.df %>% 
+  rownames_to_column(var = "row") %>%
+  pivot_longer(cols = !(row), names_to = "col") %>%
+  mutate(row = as.numeric(row), col = as.numeric(col))
+
+df %>%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=value), size=.1) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank())
+```
+
+Visualize cells and tiff together.
+
+```{r fig.height=8, fig.width=10}
+s.40 <- meta %>%
+  filter(SampleID == 40)
+
+tiff.40 <- df %>%
+  filter(value) %>%
+  slice_sample(., n = nrow(.)/10)
+
+ggplot() +
+  geom_point(data = tiff.40, aes(x=row, y=col), col="black", 
+             size = 0.1, stroke = 0, shape = 16) +
+  geom_point(data = s.40, aes(x=row, y=col, col=Group), size = 1) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank())
+```
+
+As Jovan suggested I will look at a subset of the data. And we can see
+that the center of mass (colored point) mostly matches the cell boundaries,
+but not always!
+
+```{r fig.height=8, fig.width=10}
+c.max <- dim(binary)[1]
+top_left <- list(row = 0, col = c.max)
+bottom_right <- list(row = 600, col = c.max-600)
+
+s.40 <- meta %>%
+  filter(SampleID == 40) %>%
+  filter(row >= top_left$row, row <= bottom_right$row,
+         col >= bottom_right$col, col <= top_left$col)
+
+tiff.40 <- df %>%
+  filter(value) %>%
+  filter(row >= top_left$row, row <= bottom_right$row,
+         col >= bottom_right$col, col <= top_left$col)
+
+ggplot() +
+  geom_point(data = tiff.40, aes(x=row, y=col), col="black", 
+             size = 0.1, stroke = 0, shape = 16) +
+  geom_point(data = s.40, aes(x=row, y=col, col=Group), size = 3) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank())
+```
+
+# Run MISTy on all samples
+
+Preparation
+
+```{r}
+expr.smp <- unique(meta$SampleID) %>%
+  set_names(paste0("s", .)) %>%
+  map(function(id) {
+    ret.expr <- expr %>%
+      filter(meta$SampleID == id) %>%
+      # Select only proteins
+      select(11:47)
+      
+    colnames(ret.expr) <- make.names(colnames(ret.expr))
+    ret.expr
+  })
+
+sum(map_int(names(expr.smp$s40), ~ sum(is.na(expr.smp$s40[.x]))))
+
+coord.smp <- unique(meta$SampleID) %>%
+  set_names(paste0("s", .)) %>%
+  map(function(id) {
+    meta %>%
+      filter(meta$SampleID == id) %>% 
+      select(row, col)
+  })
+
+sum(map_int(names(coord.smp$s40), ~ sum(is.na(coord.smp$s40[.x]))))
+
+nrow(expr.smp$s40) == nrow(coord.smp$s40)
+```
+
+Generating the misty.views
+
+```{r}
+if ("misty_views_smp.RDS" %in% list.files("data")) {
+  misty.views.smp <- readRDS("data/misty_views_smp.RDS")
+} else {
+  cv.folds = 10
+  misty.views.smp <- map2(expr.smp, coord.smp, function(expr, coord) {
+    
+    # Check for zero variance (otherwise MISTy throws an error)
+    target.var <- apply(expr, 2, stats::sd, na.rm = TRUE)
+    expr <- expr %>% select(-names(which(target.var == 0)))
+    
+    # Check for how many uniqzue values
+    target.unique <- colnames(expr) %>%
+      purrr::set_names() %>%
+      purrr::map_int(~ length(unique(expr %>% pull(.x))))
+    expr <- expr %>% select(names(target.unique[target.unique > cv.folds]))
+    
+    # Create views and run MISTy
+    create_initial_view(expr) %>%
+      add_juxtaview(positions = coord) %>%
+      add_paraview(positions = coord, l = 150, zoi = 15)
+  })
+  names(misty.views.smp) <- names(expr.smp)
+  saveRDS(misty.views.smp, "data/misty_views_smp.RDS")
+}
+```
+
+
+```{r}
+if ("misty_results_smp.RDS" %in% list.files("data")) {
+  results.smp <- readRDS("data/misty_results_smp.RDS")
+} else {
+  cv.folds = 10
+  results.smp <- misty.views.smp %>%
+    set_names() %>%
+    map(function(smp) {
+      smp %>%
+        run_misty(cv.folds = cv.folds) %>%
+        collect_results()
+    })
+  names(results.smp) <- names(expr.smp)
+  saveRDS(results.smp, "data/misty_results_smp.RDS")
+}
+```
+
+```{r}
+source("code/custom_plotting.R")
+```
+
+```{r fig.height=14, fig.width=20}
+walk2(results.smp, names(results.smp), function(res, name) {
+  plot_diagnostics(res, name, low=.5)
+})
+```
+
+```{r}
+plot_improvement_stats(results.smp$s24)
+print(plot_interaction_heatmap(results.smp$s24, "para.150"))
+```
+
+```{r}
+if ("misty_results_earth_smp.RDS" %in% list.files("data")) {
+  earth.results.smp <- readRDS("data/misty_results_earth_smp.RDS")
+} else {
+  cv.folds = 10
+  earth.results.smp <- misty.views.smp %>%
+    set_names() %>%
+    map(function(smp) {
+      smp %>%
+        run_misty(cv.folds = cv.folds, 
+                  method = "bag", 
+                  learner = "earth",
+                  n.learners = 100) %>%
+        collect_results()
+    })
+  names(earth.results.smp) <- names(expr.smp)
+  saveRDS(earth.results.smp, "data/misty_results_earth_smp.RDS")
+}
+```
+
+```{r fig.height=14, fig.width=20}
+plot_diagnostics(earth.results.smp$s1, name="s1")
+```
+
+
+```{r fig.height=14, fig.width=20}
+walk2(earth.results.smp, names(earth.results.smp), function(res, name) {
+  plot_diagnostics(res, name, low=.5)
+})
+```
+
+# Aggregating results
+
+```{r}
+targets <- unique(results.smp$s1$improvements$target)
+
+ranger.measures <- map_dfr(targets, function(tar) {
+  map2_dfr(results.smp, names(results.smp), function(smp, n) {
+    smp$improvements %>%
+      filter(target == tar) %>%
+      filter(measure %in% c("intra.R2", "multi.R2", "gain.R2")) %>%
+      mutate(sample = n)
+  })
+})
+```
+
+```{r}
+ranger.measures %>%
+  filter(measure == "gain.R2") %>%
+  group_by(target) %>%
+  summarise(mean.gain = mean(value)) %>%
+  ggplot() +
+  geom_bar(aes(x = target, y = mean.gain), stat="identity") +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+
+ranger.measures %>%
+  filter(measure == "gain.R2") %>%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+```
+
+```{r}
+earth.measures <- map_dfr(targets, function(tar) {
+  map2_dfr(earth.results.smp, names(earth.results.smp), function(smp, n) {
+    smp$improvements %>%
+      filter(target == tar) %>%
+      filter(measure %in% c("intra.R2", "multi.R2", "gain.R2")) %>%
+      mutate(sample = n)
+  })
+})
+```
+
+```{r}
+earth.measures %>%
+  filter(measure == "gain.R2") %>%
+  group_by(target) %>%
+  summarise(mean.gain = mean(value)) %>%
+  ggplot() +
+  geom_bar(aes(x = target, y = mean.gain), stat="identity") +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+
+earth.measures %>%
+  filter(measure == "gain.R2") %>%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+```
+
+Comparison on ranger and earth results.
+
+```{r fig.width=8, fig.height=8}
+tmp1 <- ranger.measures %>% mutate(method = "ranger")
+tmp2 <- earth.measures %>% mutate(method = "earth")
+all <- rbind(tmp1, tmp2)
+all %>%
+  filter(measure == "multi.R2") %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value)) +
+  facet_wrap(~ method, nrow=2) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+```
+
+```{r fig.width=10, fig.height=6}
+m <- "gain.R2"
+all %>%
+  mutate(new_target = paste0(target, "_", method)) %>%
+  filter(measure == m) %>%
+  ggplot() +
+  geom_boxplot(aes(x=new_target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5))
+
+all %>%
+  mutate(new_target = paste0(target, "_", method)) %>%
+  filter(measure == m) %>%
+  ggplot() +
+  geom_boxplot(aes(x=new_target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5)) +
+  lims(y = c(-2.5,2.5))
+
+m <- "multi.R2"
+all %>%
+  mutate(new_target = paste0(target, "_", method)) %>%
+  filter(measure == m) %>%
+  ggplot() +
+  geom_boxplot(aes(x=new_target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5))
+
+m <- "intra.R2"
+all %>%
+  mutate(new_target = paste0(target, "_", method)) %>%
+  filter(measure == m) %>%
+  ggplot() +
+  geom_boxplot(aes(x=new_target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5))
+```
+
+
+
