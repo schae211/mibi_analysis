@@ -8,4 +8,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+Analysis of spatial proteomics dataset from "A Structured Tumor-Immune 
+Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion 
+Beam Imaging" by L. Keren et al. (https://dx.doi.org/10.1016/j.cell.2018.08.039)
