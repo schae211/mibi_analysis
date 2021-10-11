@@ -13,7 +13,6 @@ Messages will be hidden and the output collapsed to make the Rmd more clear.
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
-set.seed(42)
 ```
 
 Loaded Packages.
@@ -72,7 +71,8 @@ Add coordinates to the meta_data
 ```{r}
 data <- raw_data %>%
   inner_join(coordinates, by = c("cellLabelInImage" = "cell_id", 
-                                "SampleID" = "sample_id"))
+                                "SampleID" = "sample_id")) %>%
+  drop_na() # put drop NA here (so it works at least)
 
 # Check for NAs
 stopifnot(sum(map_int(colnames(data), ~ sum(is.na(data[[.x]])))) == 0)
@@ -363,6 +363,9 @@ if ("misty_results_smp.RDS" %in% list.files("data")) {
 source("code/custom_plotting.R")
 ```
 
+<details>
+<summary>Click to view all diagnostic plots</summary>
+
 ```{r fig.height=14, fig.width=20}
 walk2(results.smp, names(results.smp), function(res, name) {
   plot_diagnostics(res, name, low=.5)
@@ -373,6 +376,8 @@ walk2(results.smp, names(results.smp), function(res, name) {
 plot_improvement_stats(results.smp$s24)
 print(plot_interaction_heatmap(results.smp$s24, "para.150"))
 ```
+
+</details>
 
 ```{r}
 if ("misty_results_earth_smp.RDS" %in% list.files("data")) {
@@ -398,12 +403,16 @@ if ("misty_results_earth_smp.RDS" %in% list.files("data")) {
 plot_diagnostics(earth.results.smp$s1, name="s1")
 ```
 
+<details>
+<summary>Click to view all diagnostic plots</summary>
 
 ```{r fig.height=14, fig.width=20}
 walk2(earth.results.smp, names(earth.results.smp), function(res, name) {
   plot_diagnostics(res, name, low=.5)
 })
 ```
+
+</details>
 
 # Aggregating results
 
