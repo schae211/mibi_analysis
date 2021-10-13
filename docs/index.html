@@ -260,6 +260,9 @@ $(document).ready(function () {
   <a href="about.html">About</a>
 </li>
 <li>
+  <a href="MIBI_Analysis.Rmd">Analysis</a>
+</li>
+<li>
   <a href="license.html">License</a>
 </li>
       </ul>
@@ -305,7 +308,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-11
+<strong>Last updated:</strong> 2021-10-13
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -336,16 +339,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree9827aa6a30713ef73d8528436c7bd9cca7d63a59targetblank9827aa6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/9827aa6a30713ef73d8528436c7bd9cca7d63a59" target="_blank">9827aa6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeeea2c597d36c85d1da230a7f4c33caa7d6ce0c23targetblankeea2c59a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23" target="_blank">eea2c59</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree9827aa6a30713ef73d8528436c7bd9cca7d63a59targetblank9827aa6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeeea2c597d36c85d1da230a7f4c33caa7d6ce0c23targetblankeea2c59a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/9827aa6a30713ef73d8528436c7bd9cca7d63a59" target="_blank">9827aa6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23" target="_blank">eea2c59</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -360,14 +363,12 @@ Ignored files:
     Ignored:    data/misty_views_smp.RDS
     Ignored:    data/patient_class.csv
     Ignored:    data/raw_tiffs/
-
-Untracked files:
-    Untracked:  code/.ipynb_checkpoints/
+    Ignored:    old_files/
+    Ignored:    results/
 
 Unstaged changes:
-    Modified:   analysis/EDA_MIBI.Rmd
+    Modified:   analysis/_site.yml
     Modified:   analysis/index.Rmd
-    Modified:   code/get_positions.ipynb
 
 </code></pre>
 <p>
@@ -406,6 +407,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/analysis/index.Rmd" target="_blank">197fa02</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+<td>
+knitted analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/index.html" target="_blank">197fa02</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+<td>
+knitted analysis
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -465,7 +500,8 @@ Start workflowr project.
 </div>
 </div>
 <p>Analysis of spatial proteomics dataset from “A Structured Tumor-Immune Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion Beam Imaging” by L. Keren et al. (<a href="https://dx.doi.org/10.1016/j.cell.2018.08.039" class="uri">https://dx.doi.org/10.1016/j.cell.2018.08.039</a>)</p>
-<p>Click on this <a href="EDA_MIBI.html">link</a> to see my results of running MISTy on this dataset.</p>
+<p>Click below to see the analysis results:</p>
+<p><a href="MIBI_Analysis.html">Results</a></p>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using

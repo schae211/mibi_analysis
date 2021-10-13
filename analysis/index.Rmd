@@ -12,5 +12,6 @@ Analysis of spatial proteomics dataset from "A Structured Tumor-Immune
 Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion 
 Beam Imaging" by L. Keren et al. (https://dx.doi.org/10.1016/j.cell.2018.08.039)
 
-Click on this [link](EDA_MIBI.html) to see my results of running MISTy on 
-this dataset.
+Click below to see the analysis results:
+
+[Results](MIBI_Analysis.html)
