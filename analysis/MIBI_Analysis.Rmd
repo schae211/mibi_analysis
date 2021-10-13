@@ -13,6 +13,7 @@ Messages will be hidden and the output collapsed to make the Rmd more clear.
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
 ```
 
 Loaded Packages.
@@ -49,51 +50,13 @@ raw_data %>% slice_head(n=6)
 
 Add coordinates of the cells.
 
-There are different ways to get the center of mass. One of the is implemented by
-scipy, see here: https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.center_of_mass.html#scipy.ndimage.center_of_mass.
-
-```{r}
-# Coordinates extracted using scipy ndimage.measurements.center_of_mass
-coordinates_raw <- read_csv("data/coordinates.csv")
-coordinates <- coordinates_raw %>%
-  # changed row and col here, according to graphics later
-  mutate(row = as.numeric(str_extract(coordinate, "[.\\d]+(?=,)")),
-         col = as.numeric(str_extract(coordinate, "[.\\d]+(?=\\))"))
-         ) %>%
-  select(-coordinate) %>%
-  rename(cell_id = ...1, sample_id = id) %>%
-  mutate(cell_id = cell_id + 1) # control for python vs. R, first index
-coordinates %>% slice_head(n=6)
-```
-
-Add coordinates to the meta_data
-
-```{r}
-data <- raw_data %>%
-  inner_join(coordinates, by = c("cellLabelInImage" = "cell_id", 
-                                "SampleID" = "sample_id")) %>%
-  drop_na() # put drop NA here (so it works at least)
-
-# Check for NAs
-stopifnot(sum(map_int(colnames(data), ~ sum(is.na(data[[.x]])))) == 0)
-
-meta <- data %>%
-  select(c(1:3, 53:59))
-meta %>% slice_head(n=6)
-
-expr <- data %>%
-  select(4:52)
-expr %>% slice_head(n=6)
-```
-
-Alternatively we can do it in R as shown below. However, this takes
-much longer than simply running the code in Python (about 100X difference?).
+Doing it in R takes quite some time but offers more control that the 
+center of mass function in scipy (python).
 
 ```{r}
 if ("alternative_coordinates.RDS" %in% list.files("data")) {
   alternative.coord <- readRDS("data/alternative_coordinates.RDS")
 } else {
-  # maybe make the matrix sparse to speed things up?
   library(tiff)
   lbs <- c(1:29, 31:41)
   alternative.coord <- furrr::future_map_dfr(lbs, function(id) {
@@ -103,8 +66,9 @@ if ("alternative_coordinates.RDS" %in% list.files("data")) {
                      as.is = TRUE)
     seq.rows <- seq_len(nrow(tiff))
     seq.cols <- seq_len(ncol(tiff))
-    ncells <- cells.sample.dict[id]
-    map_dfr(seq_len(ncells), function(i) {
+    # important: map over all unique values here! (but I removed 1 and 2)
+    cell.ids <- unique(as.vector(tiff))[-which(unique(as.vector(tiff)) %in% c(0,1))]
+    map_dfr(cell.ids, function(i) {
       if (i %% 100 == 0) print(i)
       # Convert to binary matrix with TRUE and FALSE
       binary <- (tiff == i)
@@ -121,6 +85,46 @@ if ("alternative_coordinates.RDS" %in% list.files("data")) {
 }
 ```
 
+Join the coordinates with the meta data.
+
+```{r}
+data <- raw_data %>%
+  inner_join(alternative.coord, by = c("SampleID" = "id", 
+                                       "cellLabelInImage" = "i")) %>%
+  rename(row = x.center, col = y.center)
+
+# IDs only in image for sample 40
+# I guess these were not real cells, so I can ignore them?
+```
+
+Diving into sample 40. Let's check which cell IDs where in the tiff 
+but not in the meta data. Maybe those spots turned out not be cells 
+in the end (segmentation errors?).
+
+```{r}
+dplyr::setdiff(alternative.coord %>% filter(id == 40) %>% pull(i),
+               data %>% filter(SampleID == 40) %>% pull(cellLabelInImage))
+```
+
+Before proceeding with the analysis, check whether we have any NAs.
+
+```{r}
+stopifnot(sum(map_int(colnames(data), ~ sum(is.na(data[[.x]])))) == 0)
+```
+
+
+Split the data into expression matrix and meta data.
+
+```{r}
+meta <- data %>%
+  select(c(1:3, 53:59))
+meta %>% slice_head(n=6)
+
+expr <- data %>%
+  select(4:52)
+expr %>% slice_head(n=6)
+```
+
 # Metadata
 
 Number of cells per sample.
@@ -130,11 +134,6 @@ meta %>%
   count(SampleID) %>%
   ggplot() +
   geom_bar(aes(x=SampleID, y=n), stat = "identity")
-
-cells.sample <- input %>% count(SampleID)
-cells.sample.dict <- cells.sample$n
-names(cells.sample.dict) <- cells.sample$SampleID
-cells.sample.dict
 ```
 
 Number of "cell types" over all samples.
@@ -155,7 +154,10 @@ meta %>%
 
 # Distribution of the markers
 
-Histograms per marker over all samples.
+Histograms per marker over all samples. We can see that that there is a huge
+variability in the expression of different markers. The measured entities 
+other than proteins (Au, Background, Beta catentin, C, Ca, Fe, Si, Ta) were
+later excluded from the analysis with MISTy.
 
 ```{r fig.height=12, fig.width=18}
 expr %>%
@@ -164,6 +166,9 @@ expr %>%
   geom_histogram(aes(x=expression), bins = 100) +
   facet_wrap(~ marker, scales = "free")
 ```
+
+The same plot with a log10 x-axis (thus all 0 value were removed) 
+and no free scales.
 
 ```{r fig.height=12, fig.width=18}
 expr %>%
@@ -174,9 +179,9 @@ expr %>%
   scale_x_log10()
 ```
 
-Looking at the boxplot fo the expression per marker over all samples, ignoring
+Looking at the boxplot for the expression per marker over all samples, ignoring
 outliers which are defined as points which includes all points outside of 
-median ± 1.5 * IQR (interquantile range)
+median ± 1.5 * IQR (interquantile range), we can again the broad variablity.
 
 ```{r}
 expr %>%
@@ -187,16 +192,107 @@ expr %>%
   coord_cartesian(ylim = c(-5, 5))
 ```
 
-# Visualizing the cell types in the coordinates
+# Spatial Data
+
+We will first look at the spatial data from all samples in one plot. The
+cell types are annotated according to the information the authors of the 
+original study provided.
+
+As pointed out in their publication, one can see that there is a continuum 
+between mixing of immune cells (yellow) and cancer tissue (green and blue).
+Either we can see a clear interface between both populations or they are
+totally mixed. This is actually associated with the clinical outcome.
+
+In principle I could stratify the samples based on this phenotype (using
+the same mixing score which was used in the paper, namely dividing the number
+of immune-tumor interactions (direct neighbors?) by the number of immune-immune
+interactions.
 
 ```{r fig.height=12, fig.width=18}
 meta %>%
   ggplot() +
-  geom_point(aes(x = row, y = col, col = Group), size=.1) +
-  facet_wrap(~ SampleID)
+  geom_point(aes(x = row, y = col, col = Group), size = .1) +
+  facet_wrap(~ SampleID) + 
+  guides(colour = guide_legend(override.aes = list(size = 4)))
 ```
 
-Let's visualize sample 40 for example in one slide.
+## Mixing Score
+
+Calculating the mixing score.
+
+```{r}
+coord.type.smp <- unique(meta$SampleID) %>%
+  set_names(paste0("s", .)) %>%
+  map(function(id) {
+    meta %>%
+      filter(meta$SampleID == id) %>% 
+      select(row, col, Group) %>%
+      mutate(Group = ifelse(Group == "Keratin-positive tumor", 
+                            "Tumor", Group)) %>%
+      filter(Group %in% c("Tumor", "Immune")) %>%
+      mutate(id = seq_len(nrow(.)))
+  })
+
+# helper function for getting direct neighbors
+get_neighbors <- function(ddobj, id) {
+  dplyr::union(
+    ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
+    ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
+  )
+}
+
+neighbor.thr <- 40
+
+contacts.smp <- coord.type.smp %>%
+  set_names() %>%
+  map_dfr(function(smp) {
+    
+    delaunay <- deldir::deldir(as.data.frame(smp %>% select(row, col)))
+    dists <- distances::distances(as.data.frame(smp %>% select(row, col)))
+    ids.to.map <- smp %>% filter(Group == "Immune") %>% pull(id)
+    
+    map(ids.to.map, function(i) {
+      alln <- get_neighbors(delaunay, i)
+      actualn <- alln[which(dists[alln, i] <= neighbor.thr)]
+      
+      smp %>%
+        filter(id %in% actualn) %>%
+        pull(Group)
+      
+    }) %>% 
+      unlist %>%
+      table
+  })
+
+contacts.smp %>%
+  mutate(sample = factor(names(coord.type.smp), 
+                         levels = names(coord.type.smp))) %>%
+  mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
+  ggplot() +
+  geom_bar(aes(x=sample, y=ratio.tumor.immune), stat="identity") +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+
+contacts.smp %>%
+  mutate(sample = names(coord.type.smp)) %>%
+  mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
+  arrange(desc(ratio.tumor.immune)) %>%
+  slice_max(ratio.tumor.immune, n=6)
+
+contacts.smp %>%
+  mutate(sample = names(coord.type.smp)) %>%
+  mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
+  arrange(desc(ratio.tumor.immune)) %>%
+  slice_min(ratio.tumor.immune, n=6)
+```
+
+And we can see that those mixing scores resemble exactly what we see
+in the visualization.
+
+## Close up sample 40
+
+Looking more closely at sample 40 to make sure that the preprocessing
+went right. First, we will look at the cells only using their
+calculated center of mass.
 
 ```{r fig.height=6, fig.width=8}
 meta %>%
@@ -205,13 +301,20 @@ meta %>%
   geom_point(aes(x = row, y = col, col = Group), size=.4)
 ```
 
-And also visualize the tiff for that slide (or sample).
+And furthermore, we will look at the tiff to.
 
 ```{r fig.height=6, fig.width=8}
 library(tiff)
 id = 40
 tiff <- readTIFF(paste0("data/raw_tiffs/p", 
                         id, "_labeledcellData.tiff"), as.is = TRUE)
+```
+
+First, the binary tiff, meaning all values that there not 0 or 1 (i.e. a
+cell was detected).
+
+```{r}
+# get coordinates for where there was a cell detected (=: binary)
 binary <- apply(tiff, c(1,2), function(n) !(n %in% c(0,1)))
 binary.df <- as.data.frame(binary)
 rownames(binary.df) <- seq_len(nrow(binary))
@@ -231,7 +334,8 @@ df %>%
     axis.ticks = element_blank())
 ```
 
-Visualize cells and tiff together.
+Second, we will visualize the tiff and the labeled center of mass together.
+And on this scale the result actually looks quite nice.
 
 ```{r fig.height=8, fig.width=10}
 s.40 <- meta %>%
@@ -251,14 +355,31 @@ ggplot() +
     axis.ticks = element_blank())
 ```
 
-As Jovan suggested I will look at a subset of the data. And we can see
+To qualitatively assess the performance of the segmentation we will furthermore
+look at a close up of sample 40, more specifically the region from row 0 to
+row 600 and from col 1448 to col 2048. And we can see
 that the center of mass (colored point) mostly matches the cell boundaries,
-but not always!
+but not always! Moreover, in a second plot the cell ids were plotted.
 
 ```{r fig.height=8, fig.width=10}
 c.max <- dim(binary)[1]
 top_left <- list(row = 0, col = c.max)
 bottom_right <- list(row = 600, col = c.max-600)
+
+# get the unique coordinates for each cell
+tiff.df <- as.data.frame(tiff)
+rownames(tiff.df) <- seq_len(nrow(tiff))
+colnames(tiff.df) <- seq_len(ncol(tiff))
+
+tiff.df.plot <- tiff.df %>%
+  rownames_to_column(var = "row") %>%
+  pivot_longer(cols = !(row), names_to = "col") %>%
+  mutate(row = as.numeric(row), col = as.numeric(col)) %>%
+  filter(!(value %in% c(0, 1))) %>%
+  # how to get only entry for each unique value
+  group_by(value) %>%
+  filter(row_number()==1) %>%
+  ungroup()
 
 s.40 <- meta %>%
   filter(SampleID == 40) %>%
@@ -270,6 +391,10 @@ tiff.40 <- df %>%
   filter(row >= top_left$row, row <= bottom_right$row,
          col >= bottom_right$col, col <= top_left$col)
 
+labels.40 <- tiff.df.plot %>%
+  filter(row >= top_left$row, row <= bottom_right$row,
+         col >= bottom_right$col, col <= top_left$col)
+
 ggplot() +
   geom_point(data = tiff.40, aes(x=row, y=col), col="black", 
              size = 0.1, stroke = 0, shape = 16) +
@@ -278,11 +403,18 @@ ggplot() +
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank())
+
+ggplot(labels.40) +
+  geom_label(aes(x = row, y = col, label = value), size = 2.5)
 ```
+
+
 
 # Run MISTy on all samples
 
-Preparation
+## Preparation
+
+Select only proteins from the expression matrix and check for NAs.
 
 ```{r}
 expr.smp <- unique(meta$SampleID) %>%
@@ -312,7 +444,72 @@ sum(map_int(names(coord.smp$s40), ~ sum(is.na(coord.smp$s40[.x]))))
 nrow(expr.smp$s40) == nrow(coord.smp$s40)
 ```
 
-Generating the misty.views
+Looking at the pairwise distances to get a feeling for which numbers to 
+plug in for generating the juxtaview and paraview.
+
+```{r}
+# helper function for nearest neighbors
+dist_k_nn <- function(sample, k) {
+  nn <- RANN::nn2(sample, eps=0.0, k = k)
+  map_dbl(seq_len(nrow(sample)), function(n) {
+    mean(nn$nn.dists[n, ])
+  })
+}
+
+# helper function for getting direct neighbors
+get_neighbors <- function(ddobj, id) {
+  dplyr::union(
+    ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
+    ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
+  )
+}
+
+# mean distance to the direct neighbors for each cell
+mean.dists.direct.neighbors <- map(coord.smp, function(smp) {
+  delaunay <- deldir::deldir(as.data.frame(smp))
+  dists <- distances::distances(as.data.frame(smp))
+  map_dbl(seq_len(nrow(smp)), function(id) {
+    nn <- get_neighbors(delaunay, id)
+    mean(dists[nn, id])
+  })
+}) %>% unlist
+
+# histogram
+ggplot(data.frame(dist = mean.dists.direct.neighbors)) +
+  geom_histogram(aes(dist), bins = 100) +
+  lims(x = c(0,100))
+
+# summary
+summary(mean.dists.direct.neighbors)
+
+# mean distances to the 5, 10, 15, 20 nearest neighbors
+neighbor.dists <- map_dfr(coord.smp, function(smp) {
+  c(10, 20, 40, 80) %>%
+    set_names() %>%
+    map_dfc(function(k) {
+  dist_k_nn(smp, k)
+    }) %>%
+  set_names(paste0("dist_to_", c("10", "20", "40", "80")))
+})
+
+# summary
+summary(neighbor.dists)
+
+# visualize distribution
+neighbor.dists %>%
+  pivot_longer(cols = everything()) %>%
+  mutate(name = factor(name, levels = paste0("dist_to_", c("10", "20", "40", "80")))) %>%
+  ggplot() +
+  geom_histogram(aes(value), bins = 100) +
+  facet_wrap(~ name) +
+  lims(x = c(0, 200))
+```
+
+## Generating the MISTy views
+
+Based on the data above, I am ging to use a neighbor threshold of 40 for
+the juxtaview and a cutoff of 120 for the paraview (plus the zone of
+indifference which will conclusively be 40).
 
 ```{r}
 if ("misty_views_smp.RDS" %in% list.files("data")) {
@@ -325,7 +522,7 @@ if ("misty_views_smp.RDS" %in% list.files("data")) {
     target.var <- apply(expr, 2, stats::sd, na.rm = TRUE)
     expr <- expr %>% select(-names(which(target.var == 0)))
     
-    # Check for how many uniqzue values
+    # Check for how many unique values
     target.unique <- colnames(expr) %>%
       purrr::set_names() %>%
       purrr::map_int(~ length(unique(expr %>% pull(.x))))
@@ -333,14 +530,13 @@ if ("misty_views_smp.RDS" %in% list.files("data")) {
     
     # Create views and run MISTy
     create_initial_view(expr) %>%
-      add_juxtaview(positions = coord) %>%
-      add_paraview(positions = coord, l = 150, zoi = 15)
+      add_juxtaview(positions = coord, neighbor.thr = 40) %>%
+      add_paraview(positions = coord, l = 120, zoi = 40)
   })
   names(misty.views.smp) <- names(expr.smp)
   saveRDS(misty.views.smp, "data/misty_views_smp.RDS")
 }
 ```
-
 
 ```{r}
 if ("misty_results_smp.RDS" %in% list.files("data")) {
@@ -363,21 +559,11 @@ if ("misty_results_smp.RDS" %in% list.files("data")) {
 source("code/custom_plotting.R")
 ```
 
-<details>
-<summary>Click to view all diagnostic plots</summary>
+Checking whether things worked (for sample 1).
 
 ```{r fig.height=14, fig.width=20}
-walk2(results.smp, names(results.smp), function(res, name) {
-  plot_diagnostics(res, name, low=.5)
-})
+plot_diagnostics(results.smp$s1, name="s1", low = 0.5)
 ```
-
-```{r}
-plot_improvement_stats(results.smp$s24)
-print(plot_interaction_heatmap(results.smp$s24, "para.150"))
-```
-
-</details>
 
 ```{r}
 if ("misty_results_earth_smp.RDS" %in% list.files("data")) {
@@ -399,22 +585,15 @@ if ("misty_results_earth_smp.RDS" %in% list.files("data")) {
 }
 ```
 
+Checking whether things worked (for sample 1).
+
 ```{r fig.height=14, fig.width=20}
 plot_diagnostics(earth.results.smp$s1, name="s1")
 ```
 
-<details>
-<summary>Click to view all diagnostic plots</summary>
-
-```{r fig.height=14, fig.width=20}
-walk2(earth.results.smp, names(earth.results.smp), function(res, name) {
-  plot_diagnostics(res, name, low=.5)
-})
-```
-
-</details>
-
 # Aggregating results
+
+## Ranger Gain R2
 
 ```{r}
 targets <- unique(results.smp$s1$improvements$target)
@@ -445,6 +624,8 @@ ranger.measures %>%
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
 ```
 
+## Earth R2 gain
+
 ```{r}
 earth.measures <- map_dfr(targets, function(tar) {
   map2_dfr(earth.results.smp, names(earth.results.smp), function(smp, n) {
@@ -472,7 +653,9 @@ earth.measures %>%
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
 ```
 
-Comparison on ranger and earth results.
+## Comparison of Ranger and Earth results
+
+### Multi R2
 
 ```{r fig.width=8, fig.height=8}
 tmp1 <- ranger.measures %>% mutate(method = "ranger")
@@ -486,6 +669,8 @@ all %>%
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
 ```
 
+### Gain R2
+
 ```{r fig.width=10, fig.height=6}
 m <- "gain.R2"
 all %>%
@@ -496,17 +681,11 @@ all %>%
   labs(title = m) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         plot.title = element_text(hjust = 0.5))
+```
 
-all %>%
-  mutate(new_target = paste0(target, "_", method)) %>%
-  filter(measure == m) %>%
-  ggplot() +
-  geom_boxplot(aes(x=new_target, y=value, col=method)) +
-  labs(title = m) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5)) +
-  lims(y = c(-2.5,2.5))
+### Multi R2
 
+```{r fig.width=10, fig.height=6}
 m <- "multi.R2"
 all %>%
   mutate(new_target = paste0(target, "_", method)) %>%
@@ -516,7 +695,11 @@ all %>%
   labs(title = m) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         plot.title = element_text(hjust = 0.5))
+```
 
+### Intra R2
+
+```{r fig.width=10, fig.height=6}
 m <- "intra.R2"
 all %>%
   mutate(new_target = paste0(target, "_", method)) %>%

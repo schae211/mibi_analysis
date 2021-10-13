@@ -13,3 +13,5 @@ data/*.RDS
 data/*.csv
 data/raw_tiffs/*.tiff
 
+results/
+old_files/

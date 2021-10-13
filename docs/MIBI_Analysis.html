@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Data Analysis MiBi</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">mibi_analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/schae211/mibi_analysis">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis MiBi</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-10-13
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20211011code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20211011)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20211011code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20211011)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+~/Saez/workflowr_projects/mibi_analysis/
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree543c74c2f4f8ba130c75f65423b35b019b6b2e15targetblank543c74ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/543c74c2f4f8ba130c75f65423b35b019b6b2e15" target="_blank">543c74c</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree543c74c2f4f8ba130c75f65423b35b019b6b2e15targetblank543c74ca" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/543c74c2f4f8ba130c75f65423b35b019b6b2e15" target="_blank">543c74c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    data/alternative_coordinates.RDS
+    Ignored:    data/cellData.csv
+    Ignored:    data/coordinates.csv
+    Ignored:    data/misty_results_earth_smp.RDS
+    Ignored:    data/misty_results_smp.RDS
+    Ignored:    data/misty_views_smp.RDS
+    Ignored:    data/patient_class.csv
+    Ignored:    data/raw_tiffs/
+    Ignored:    old_files/
+    Ignored:    results/
+
+Untracked files:
+    Untracked:  analysis/MIBI_Analysis.Rmd
+
+Unstaged changes:
+    Modified:   .gitignore
+    Deleted:    analysis/EDA_MIBI.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+<p>
+There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div id="set-up" class="section level1">
+<h1>Set up</h1>
+<p>Messages will be hidden and the output collapsed to make the Rmd more clear.</p>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_knit$set(root.dir = &quot;~/Saez/workflowr_projects/mibi_analysis/&quot;)</code></pre>
+<p>Loaded Packages.</p>
+<pre class="r"><code>library(mistyR)
+library(future)
+plan(&quot;multisession&quot;, workers=14)
+library(tidyverse)</code></pre>
+</div>
+<div id="loading-and-processing-data" class="section level1">
+<h1>Loading and Processing Data</h1>
+<pre class="r"><code>input &lt;- read_csv(&quot;data/cellData.csv&quot;)
+
+# See description in Readme
+group.trans &lt;- c(&quot;1&quot; = &quot;Unidentified&quot;, &quot;2&quot; = &quot;Immune&quot;, &quot;3&quot; = &quot;Endothelial&quot;, 
+                 &quot;4&quot; = &quot;Mesenchymal-like&quot;, &quot;5&quot; = &quot;Tumor&quot;, 
+                 &quot;6&quot; = &quot;Keratin-positive tumor&quot;)
+
+immune.group.trans &lt;- c(&quot;0&quot; = &quot;Non-Immune?&quot;, &quot;1&quot; = &quot;Tregs&quot;, &quot;2&quot; = &quot;CD4 T&quot;, &quot;3&quot; = &quot;CD8 T&quot;, 
+                        &quot;4&quot; = &quot;CD3 T&quot;, &quot;5&quot; = &quot;NK&quot;, &quot;6&quot; = &quot;B&quot;,
+                        &quot;7&quot; = &quot;Neutrophils&quot;, &quot;8&quot; = &quot;Macrophages&quot;, 
+                        &quot;9&quot; = &quot;DC&quot;, &quot;10&quot; = &quot;DC/Mono&quot;, &quot;11&quot; = &quot;Mono/Neu&quot;, 
+                        &quot;12&quot; = &quot;Other immune&quot;)
+
+raw_data &lt;- input %&gt;%
+  mutate(Group = group.trans[as.character(Group)]) %&gt;%
+  mutate(immuneGroup = immune.group.trans[as.character(immuneGroup)])
+  
+raw_data %&gt;% slice_head(n=6)
+# A tibble: 6 × 57
+  SampleID cellLabelInImage cellSize     C     Na      Si      P      Ca     Fe
+     &lt;dbl&gt;            &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+1        1                2      146     0 -0.591  0.875  -2.58  -0.806  -0.234
+2        1                3      102     0 -0.499  0.0175 -1.22  -0.502  -1.34 
+3        1                4       43     0 -1.49  -0.630  -1.91  -1.23   -1.39 
+4        1                5      211     0 -1.01  -0.532  -1.74  -0.945  -1.10 
+5        1                6      177     0  0.158 -0.710   0.517 -0.0963 -1.05 
+6        1                7      159     0 -0.133 -0.797  -0.191 -0.188  -1.08 
+# … with 48 more variables: dsDNA &lt;dbl&gt;, Vimentin &lt;dbl&gt;, SMA &lt;dbl&gt;,
+#   Background &lt;dbl&gt;, B7H3 &lt;dbl&gt;, FoxP3 &lt;dbl&gt;, Lag3 &lt;dbl&gt;, CD4 &lt;dbl&gt;,
+#   CD16 &lt;dbl&gt;, CD56 &lt;dbl&gt;, OX40 &lt;dbl&gt;, PD1 &lt;dbl&gt;, CD31 &lt;dbl&gt;, PD-L1 &lt;dbl&gt;,
+#   EGFR &lt;dbl&gt;, Ki67 &lt;dbl&gt;, CD209 &lt;dbl&gt;, CD11c &lt;dbl&gt;, CD138 &lt;dbl&gt;, CD163 &lt;dbl&gt;,
+#   CD68 &lt;dbl&gt;, CSF-1R &lt;dbl&gt;, CD8 &lt;dbl&gt;, CD3 &lt;dbl&gt;, IDO &lt;dbl&gt;, Keratin17 &lt;dbl&gt;,
+#   CD63 &lt;dbl&gt;, CD45RO &lt;dbl&gt;, CD20 &lt;dbl&gt;, p53 &lt;dbl&gt;, Beta catenin &lt;dbl&gt;,
+#   HLA-DR &lt;dbl&gt;, CD11b &lt;dbl&gt;, CD45 &lt;dbl&gt;, H3K9ac &lt;dbl&gt;, Pan-Keratin &lt;dbl&gt;, …</code></pre>
+<p>Add coordinates of the cells.</p>
+<p>Doing it in R takes quite some time but offers more control that the center of mass function in scipy (python).</p>
+<pre class="r"><code>if (&quot;alternative_coordinates.RDS&quot; %in% list.files(&quot;data&quot;)) {
+  alternative.coord &lt;- readRDS(&quot;data/alternative_coordinates.RDS&quot;)
+} else {
+  library(tiff)
+  lbs &lt;- c(1:29, 31:41)
+  alternative.coord &lt;- furrr::future_map_dfr(lbs, function(id) {
+    print(id)
+    # Read in raw matrix (in tiff format)
+    tiff &lt;- readTIFF(paste0(&quot;/home/philipp/data/saez/p&quot;, id, &quot;_labeledcellData.tiff&quot;),
+                     as.is = TRUE)
+    seq.rows &lt;- seq_len(nrow(tiff))
+    seq.cols &lt;- seq_len(ncol(tiff))
+    # important: map over all unique values here! (but I removed 1 and 2)
+    cell.ids &lt;- unique(as.vector(tiff))[-which(unique(as.vector(tiff)) %in% c(0,1))]
+    map_dfr(cell.ids, function(i) {
+      if (i %% 100 == 0) print(i)
+      # Convert to binary matrix with TRUE and FALSE
+      binary &lt;- (tiff == i)
+      s &lt;- sum(binary)
+      # Calculate center of mass
+      c(id = id, 
+        i = i,
+        x.center = sum(seq.rows * rowSums(binary)) / s,
+        y.center = sum(seq.cols * colSums(binary)) / s
+      )
+    })
+  })
+  saveRDS(alternative.coord, file = &quot;data/alternative_coordinates.RDS&quot;)
+}</code></pre>
+<p>Join the coordinates with the meta data.</p>
+<pre class="r"><code>data &lt;- raw_data %&gt;%
+  inner_join(alternative.coord, by = c(&quot;SampleID&quot; = &quot;id&quot;, 
+                                       &quot;cellLabelInImage&quot; = &quot;i&quot;)) %&gt;%
+  rename(row = x.center, col = y.center)
+
+# IDs only in image for sample 40
+# I guess these were not real cells, so I can ignore them?</code></pre>
+<p>Diving into sample 40. Let’s check which cell IDs where in the tiff but not in the meta data. Maybe those spots turned out not be cells in the end (segmentation errors?).</p>
+<pre class="r"><code>dplyr::setdiff(alternative.coord %&gt;% filter(id == 40) %&gt;% pull(i),
+               data %&gt;% filter(SampleID == 40) %&gt;% pull(cellLabelInImage))
+  [1]   41   44   46   56   64   70   73   76   77   80   91  102  106  107  116
+ [16]  118  125  129  130  134  138  139  144  147  159  163  173  176  182  191
+ [31]  192  206  209  212  221  235  236  239  241  243  245  247  251  252  276
+ [46]  278  289  290  294  299  301  310  342  347  350  352  353  354  379  384
+ [61]  394  403  405  406  414  421  423  437  438  447  450  473  481  487  488
+ [76]  490  493  495  504  511  523  534  535  546  556  559  561  568  575  581
+ [91]  587  594  597  614  633  639  641  642  648  662  670  672  697  704  705
+[106]  709  710  720  726  730  746  748  757  760  768  772  775  790  791  804
+[121]  807  810  816  821  836  881  889  895  896  912  915  917  921  927  934
+[136]  939  940  942  947  960  975  999 1007 1015 1028 1037 1039 1049 1050 1056
+[151] 1070 1081 1088 1090 1096 1097 1098 1099 1115 1125 1133 1135 1141 1142 1143
+[166] 1144 1146 1151 1166 1176 1178 1181 1206 1224 1228 1229 1239 1243 1246 1249
+[181] 1261 1288 1299 1304 1322 1324 1328 1330 1334 1337 1339 1340 1343 1346 1348
+[196] 1357 1363 1366 1369 1373 1379 1387 1396 1401 1409 1410 1419 1420 1421 1432
+[211] 1476 1480 1481 1527 1532 1560 1563 1569 1593 1610 1649 1674 1708 1719 1720
+[226] 1733 1744 1747 1768 1773 1777 1795 1800 1824 1846 1886 1890 1901 1905 1907
+[241] 1913 1916 1923 1962 1994 1996 1997 1999 2005 2030 2037 2041 2049 2055 2060
+[256] 2084 2087 2120 2126 2139 2153 2155 2164 2175 2185 2190 2204 2214 2225 2228
+[271] 2241 2253 2262 2268 2281 2288 2289 2295 2306 2315 2318 2319 2320 2327 2348
+[286] 2360 2387 2388 2397 2399 2414 2417 2432 2446 2451 2464 2475 2484 2489 2500
+[301] 2501 2502 2508 2514 2524 2535 2536 2539 2545 2567 2569 2581 2596 2599 2600
+[316] 2603 2617 2618 2623 2627 2631 2632 2636 2655 2674 2679 2680 2688 2714 2716
+[331] 2727 2743 2749 2768 2774 2781 2783 2784 2789 2796 2798 2799 2805 2808 2812
+[346] 2822 2824 2843 2844 2847 2853 2862 2864 2865 2878 2880 2896 2899 2901 2905
+[361] 2926 2946 2951 2958 2968 2990 3015 3019 3027 3031 3032 3033 3055 3084 3098
+[376] 3102 3112 3145 3162 3186 3195 3213 3226 3227 3236 3264 3272 3285 3293 3294
+[391] 3301 3344 3346 3347 3361 3375 3392 3394 3397 3398 3400 3414 3451 3438 3443
+[406] 3450 3455 3462 3476 3481 3511 3517 3522 3524 3532 3534 3539 3541 3542 3568
+[421] 3586 3587 3588 3600 3609 3610 3613 3620 3638 3636 3649 3659 3664 3665 3678
+[436] 3680 3688 3696 3703 3704 3709 3711 3716 3722 3737 3742 3765 3772 3789 3794
+[451] 3797 3813 3819 3820 3826 3831 3843 3857 3870 3883 3888 3899 3905 3919 3921
+[466] 3922 3925 3928 3943 3947 3948 3957 3960 3974 3976 3989 3991 4005 4007 4019
+[481] 4021 4036 4039 4042 4053 4067 4068 4075 4076 4094 4110 4112 4117 4124 4149
+[496] 4168 4169 4173 4177 4180 4182 4183 4201 4203 4213 4216 4226 4251 4263 4273
+[511] 4278 4279 4285 4287 4302 4308 4333 4350 4385 4391 4396 4414 4421 4429 4442
+[526] 4447 4454 4473 4494 4499 4501 4518 4527 4534 4542 4562 4570 4578 4575 4579
+[541] 4581 4589 4595 4597 4603 4615 4622 4628 4634 4645 4651 4662 4681 4685 4696
+[556] 4702 4704 4707 4716 4717 4719 4734 4737 4752 4756 4759 4764 4767 4769 4783
+[571] 4800 4835</code></pre>
+<p>Before proceeding with the analysis, check whether we have any NAs.</p>
+<pre class="r"><code>stopifnot(sum(map_int(colnames(data), ~ sum(is.na(data[[.x]])))) == 0)</code></pre>
+<p>Split the data into expression matrix and meta data.</p>
+<pre class="r"><code>meta &lt;- data %&gt;%
+  select(c(1:3, 53:59))
+meta %&gt;% slice_head(n=6)
+# A tibble: 6 × 10
+  SampleID cellLabelInImage cellSize tumorYN tumorCluster Group    immuneCluster
+     &lt;dbl&gt;            &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;
+1        1                2      146       1            0 Keratin…             0
+2        1                3      102       0            0 Immune              46
+3        1                4       43       1            0 Keratin…             0
+4        1                5      211       1            0 Keratin…             0
+5        1                6      177       0            0 Immune              75
+6        1                7      159       0            0 Immune              46
+# … with 3 more variables: immuneGroup &lt;chr&gt;, row &lt;dbl&gt;, col &lt;dbl&gt;
+
+expr &lt;- data %&gt;%
+  select(4:52)
+expr %&gt;% slice_head(n=6)
+# A tibble: 6 × 49
+      C     Na      Si      P      Ca     Fe   dsDNA Vimentin    SMA Background
+  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+1     0 -0.591  0.875  -2.58  -0.806  -0.234 -1.31     -0.822 -0.378    -0.843 
+2     0 -0.499  0.0175 -1.22  -0.502  -1.34   0.523    -0.822 -0.378    -0.377 
+3     0 -1.49  -0.630  -1.91  -1.23   -1.39  -1.78     -0.822 -0.378    -0.0894
+4     0 -1.01  -0.532  -1.74  -0.945  -1.10  -0.0579   -0.822 -0.378    -0.204 
+5     0  0.158 -0.710   0.517 -0.0963 -1.05   0.355    -0.822 -0.378     1.10  
+6     0 -0.133 -0.797  -0.191 -0.188  -1.08   1.01     -0.822 -0.310     1.14  
+# … with 39 more variables: B7H3 &lt;dbl&gt;, FoxP3 &lt;dbl&gt;, Lag3 &lt;dbl&gt;, CD4 &lt;dbl&gt;,
+#   CD16 &lt;dbl&gt;, CD56 &lt;dbl&gt;, OX40 &lt;dbl&gt;, PD1 &lt;dbl&gt;, CD31 &lt;dbl&gt;, PD-L1 &lt;dbl&gt;,
+#   EGFR &lt;dbl&gt;, Ki67 &lt;dbl&gt;, CD209 &lt;dbl&gt;, CD11c &lt;dbl&gt;, CD138 &lt;dbl&gt;, CD163 &lt;dbl&gt;,
+#   CD68 &lt;dbl&gt;, CSF-1R &lt;dbl&gt;, CD8 &lt;dbl&gt;, CD3 &lt;dbl&gt;, IDO &lt;dbl&gt;, Keratin17 &lt;dbl&gt;,
+#   CD63 &lt;dbl&gt;, CD45RO &lt;dbl&gt;, CD20 &lt;dbl&gt;, p53 &lt;dbl&gt;, Beta catenin &lt;dbl&gt;,
+#   HLA-DR &lt;dbl&gt;, CD11b &lt;dbl&gt;, CD45 &lt;dbl&gt;, H3K9ac &lt;dbl&gt;, Pan-Keratin &lt;dbl&gt;,
+#   H3K27me3 &lt;dbl&gt;, phospho-S6 &lt;dbl&gt;, MPO &lt;dbl&gt;, Keratin6 &lt;dbl&gt;, …</code></pre>
+</div>
+<div id="metadata" class="section level1">
+<h1>Metadata</h1>
+<p>Number of cells per sample.</p>
+<pre class="r"><code>meta %&gt;%
+  count(SampleID) %&gt;%
+  ggplot() +
+  geom_bar(aes(x=SampleID, y=n), stat = &quot;identity&quot;)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Number of “cell types” over all samples.</p>
+<pre class="r"><code>meta %&gt;%
+  count(Group) %&gt;%
+  arrange(desc(n))
+# A tibble: 6 × 2
+  Group                      n
+  &lt;chr&gt;                  &lt;int&gt;
+1 Keratin-positive tumor 99487
+2 Immune                 83043
+3 Mesenchymal-like        8170
+4 Tumor                   3167
+5 Endothelial             2086
+6 Unidentified            1725</code></pre>
+<p>Number of “immune cell types” over all samples.</p>
+<pre class="r"><code>meta %&gt;%
+  count(immuneGroup) %&gt;%
+  arrange(desc(n))
+# A tibble: 13 × 2
+   immuneGroup       n
+   &lt;chr&gt;         &lt;int&gt;
+ 1 Non-Immune?  114635
+ 2 Macrophages   20616
+ 3 CD8 T         15698
+ 4 CD4 T         12438
+ 5 B              9115
+ 6 Other immune   6891
+ 7 DC/Mono        5049
+ 8 CD3 T          3848
+ 9 Mono/Neu       3110
+10 Neutrophils    3018
+11 Tregs          1341
+12 DC             1245
+13 NK              674</code></pre>
+</div>
+<div id="distribution-of-the-markers" class="section level1">
+<h1>Distribution of the markers</h1>
+<p>Histograms per marker over all samples. We can see that that there is a huge variability in the expression of different markers. The measured entities other than proteins (Au, Background, Beta catentin, C, Ca, Fe, Si, Ta) were later excluded from the analysis with MISTy.</p>
+<pre class="r"><code>expr %&gt;%
+  pivot_longer(cols = everything(), names_to = &quot;marker&quot;, values_to = &quot;expression&quot;) %&gt;%
+  ggplot() +
+  geom_histogram(aes(x=expression), bins = 100) +
+  facet_wrap(~ marker, scales = &quot;free&quot;)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-11-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>The same plot with a log10 x-axis (thus all 0 value were removed) and no free scales.</p>
+<pre class="r"><code>expr %&gt;%
+  pivot_longer(cols = everything(), names_to = &quot;marker&quot;, values_to = &quot;expression&quot;) %&gt;%
+  ggplot() +
+  geom_histogram(aes(x=expression), bins = 100) +
+  facet_wrap(~ marker) +
+  scale_x_log10()
+Warning in self$trans$transform(x): NaNs produced
+Warning: Transformation introduced infinite values in continuous x-axis
+Warning: Removed 7585634 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-12-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>Looking at the boxplot for the expression per marker over all samples, ignoring outliers which are defined as points which includes all points outside of median ± 1.5 * IQR (interquantile range), we can again the broad variablity.</p>
+<pre class="r"><code>expr %&gt;%
+  pivot_longer(cols = everything(), names_to = &quot;marker&quot;, values_to = &quot;expression&quot;) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(y=expression, x=marker), outlier.shape = NA) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  coord_cartesian(ylim = c(-5, 5))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="spatial-data" class="section level1">
+<h1>Spatial Data</h1>
+<p>We will first look at the spatial data from all samples in one plot. The cell types are annotated according to the information the authors of the original study provided.</p>
+<p>As pointed out in their publication, one can see that there is a continuum between mixing of immune cells (yellow) and cancer tissue (green and blue). Either we can see a clear interface between both populations or they are totally mixed. This is actually associated with the clinical outcome.</p>
+<p>In principle I could stratify the samples based on this phenotype (using the same mixing score which was used in the paper, namely dividing the number of immune-tumor interactions (direct neighbors?) by the number of immune-immune interactions.</p>
+<pre class="r"><code>meta %&gt;%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size = .1) +
+  facet_wrap(~ SampleID) + 
+  guides(colour = guide_legend(override.aes = list(size = 4)))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-14-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<div id="mixing-score" class="section level2">
+<h2>Mixing Score</h2>
+<p>Calculating the mixing score.</p>
+<pre class="r"><code>coord.type.smp &lt;- unique(meta$SampleID) %&gt;%
+  set_names(paste0(&quot;s&quot;, .)) %&gt;%
+  map(function(id) {
+    meta %&gt;%
+      filter(meta$SampleID == id) %&gt;% 
+      select(row, col, Group) %&gt;%
+      mutate(Group = ifelse(Group == &quot;Keratin-positive tumor&quot;, 
+                            &quot;Tumor&quot;, Group)) %&gt;%
+      filter(Group %in% c(&quot;Tumor&quot;, &quot;Immune&quot;)) %&gt;%
+      mutate(id = seq_len(nrow(.)))
+  })
+
+# helper function for getting direct neighbors
+get_neighbors &lt;- function(ddobj, id) {
+  dplyr::union(
+    ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
+    ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
+  )
+}
+
+neighbor.thr &lt;- 40
+
+contacts.smp &lt;- coord.type.smp %&gt;%
+  set_names() %&gt;%
+  map_dfr(function(smp) {
+    
+    delaunay &lt;- deldir::deldir(as.data.frame(smp %&gt;% select(row, col)))
+    dists &lt;- distances::distances(as.data.frame(smp %&gt;% select(row, col)))
+    ids.to.map &lt;- smp %&gt;% filter(Group == &quot;Immune&quot;) %&gt;% pull(id)
+    
+    map(ids.to.map, function(i) {
+      alln &lt;- get_neighbors(delaunay, i)
+      actualn &lt;- alln[which(dists[alln, i] &lt;= neighbor.thr)]
+      
+      smp %&gt;%
+        filter(id %in% actualn) %&gt;%
+        pull(Group)
+      
+    }) %&gt;% 
+      unlist %&gt;%
+      table
+  })
+
+contacts.smp %&gt;%
+  mutate(sample = factor(names(coord.type.smp), 
+                         levels = names(coord.type.smp))) %&gt;%
+  mutate(ratio.tumor.immune = Tumor/Immune * 100) %&gt;%
+  ggplot() +
+  geom_bar(aes(x=sample, y=ratio.tumor.immune), stat=&quot;identity&quot;) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+contacts.smp %&gt;%
+  mutate(sample = names(coord.type.smp)) %&gt;%
+  mutate(ratio.tumor.immune = Tumor/Immune * 100) %&gt;%
+  arrange(desc(ratio.tumor.immune)) %&gt;%
+  slice_max(ratio.tumor.immune, n=6)
+# A tibble: 6 × 4
+  Immune  Tumor   sample ratio.tumor.immune
+  &lt;table&gt; &lt;table&gt; &lt;chr&gt;  &lt;table&gt;           
+1  68      285    s15    419.1176          
+2 602     1963    s18    326.0797          
+3 120      386    s22    321.6667          
+4 106      231    s24    217.9245          
+5 338      600    s31    177.5148          
+6 256      362    s25    141.4062          
+
+contacts.smp %&gt;%
+  mutate(sample = names(coord.type.smp)) %&gt;%
+  mutate(ratio.tumor.immune = Tumor/Immune * 100) %&gt;%
+  arrange(desc(ratio.tumor.immune)) %&gt;%
+  slice_min(ratio.tumor.immune, n=6)
+# A tibble: 6 × 4
+  Immune  Tumor   sample ratio.tumor.immune
+  &lt;table&gt; &lt;table&gt; &lt;chr&gt;  &lt;table&gt;           
+1 38510    312    s35    0.8101792         
+2 25324    447    s28    1.7651240         
+3 36372   1428    s16    3.9260970         
+4 23584   1066    s37    4.5200136         
+5 21166   1018    s4     4.8096003         
+6 10786    653    s40    6.0541443         </code></pre>
+<p>And we can see that those mixing scores resemble exactly what we see in the visualization.</p>
+</div>
+<div id="close-up-sample-40" class="section level2">
+<h2>Close up sample 40</h2>
+<p>Looking more closely at sample 40 to make sure that the preprocessing went right. First, we will look at the cells only using their calculated center of mass.</p>
+<pre class="r"><code>meta %&gt;%
+  filter(SampleID == 40) %&gt;%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size=.4)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>And furthermore, we will look at the tiff to.</p>
+<pre class="r"><code>library(tiff)
+id = 40
+tiff &lt;- readTIFF(paste0(&quot;data/raw_tiffs/p&quot;, 
+                        id, &quot;_labeledcellData.tiff&quot;), as.is = TRUE)</code></pre>
+<p>First, the binary tiff, meaning all values that there not 0 or 1 (i.e. a cell was detected).</p>
+<pre class="r"><code># get coordinates for where there was a cell detected (=: binary)
+binary &lt;- apply(tiff, c(1,2), function(n) !(n %in% c(0,1)))
+binary.df &lt;- as.data.frame(binary)
+rownames(binary.df) &lt;- seq_len(nrow(binary))
+colnames(binary.df) &lt;- seq_len(ncol(binary))
+
+df &lt;- binary.df %&gt;% 
+  rownames_to_column(var = &quot;row&quot;) %&gt;%
+  pivot_longer(cols = !(row), names_to = &quot;col&quot;) %&gt;%
+  mutate(row = as.numeric(row), col = as.numeric(col))
+
+df %&gt;%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=value), size=.1) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank())</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Second, we will visualize the tiff and the labeled center of mass together. And on this scale the result actually looks quite nice.</p>
+<pre class="r"><code>s.40 &lt;- meta %&gt;%
+  filter(SampleID == 40)
+
+tiff.40 &lt;- df %&gt;%
+  filter(value) %&gt;%
+  slice_sample(., n = nrow(.)/10)
+
+ggplot() +
+  geom_point(data = tiff.40, aes(x=row, y=col), col=&quot;black&quot;, 
+             size = 0.1, stroke = 0, shape = 16) +
+  geom_point(data = s.40, aes(x=row, y=col, col=Group), size = 1) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank())</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>To qualitatively assess the performance of the segmentation we will furthermore look at a close up of sample 40, more specifically the region from row 0 to row 600 and from col 1448 to col 2048. And we can see that the center of mass (colored point) mostly matches the cell boundaries, but not always! Moreover, in a second plot the cell ids were plotted.</p>
+<pre class="r"><code>c.max &lt;- dim(binary)[1]
+top_left &lt;- list(row = 0, col = c.max)
+bottom_right &lt;- list(row = 600, col = c.max-600)
+
+# get the unique coordinates for each cell
+tiff.df &lt;- as.data.frame(tiff)
+rownames(tiff.df) &lt;- seq_len(nrow(tiff))
+colnames(tiff.df) &lt;- seq_len(ncol(tiff))
+
+tiff.df.plot &lt;- tiff.df %&gt;%
+  rownames_to_column(var = &quot;row&quot;) %&gt;%
+  pivot_longer(cols = !(row), names_to = &quot;col&quot;) %&gt;%
+  mutate(row = as.numeric(row), col = as.numeric(col)) %&gt;%
+  filter(!(value %in% c(0, 1))) %&gt;%
+  # how to get only entry for each unique value
+  group_by(value) %&gt;%
+  filter(row_number()==1) %&gt;%
+  ungroup()
+
+s.40 &lt;- meta %&gt;%
+  filter(SampleID == 40) %&gt;%
+  filter(row &gt;= top_left$row, row &lt;= bottom_right$row,
+         col &gt;= bottom_right$col, col &lt;= top_left$col)
+
+tiff.40 &lt;- df %&gt;%
+  filter(value) %&gt;%
+  filter(row &gt;= top_left$row, row &lt;= bottom_right$row,
+         col &gt;= bottom_right$col, col &lt;= top_left$col)
+
+labels.40 &lt;- tiff.df.plot %&gt;%
+  filter(row &gt;= top_left$row, row &lt;= bottom_right$row,
+         col &gt;= bottom_right$col, col &lt;= top_left$col)
+
+ggplot() +
+  geom_point(data = tiff.40, aes(x=row, y=col), col=&quot;black&quot;, 
+             size = 0.1, stroke = 0, shape = 16) +
+  geom_point(data = s.40, aes(x=row, y=col, col=Group), size = 3) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank())</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+ggplot(labels.40) +
+  geom_label(aes(x = row, y = col, label = value), size = 2.5)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-20-2.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="run-misty-on-all-samples" class="section level1">
+<h1>Run MISTy on all samples</h1>
+<div id="preparation" class="section level2">
+<h2>Preparation</h2>
+<p>Select only proteins from the expression matrix and check for NAs.</p>
+<pre class="r"><code>expr.smp &lt;- unique(meta$SampleID) %&gt;%
+  set_names(paste0(&quot;s&quot;, .)) %&gt;%
+  map(function(id) {
+    ret.expr &lt;- expr %&gt;%
+      filter(meta$SampleID == id) %&gt;%
+      # Select only proteins
+      select(11:47)
+      
+    colnames(ret.expr) &lt;- make.names(colnames(ret.expr))
+    ret.expr
+  })
+
+sum(map_int(names(expr.smp$s40), ~ sum(is.na(expr.smp$s40[.x]))))
+[1] 0
+
+coord.smp &lt;- unique(meta$SampleID) %&gt;%
+  set_names(paste0(&quot;s&quot;, .)) %&gt;%
+  map(function(id) {
+    meta %&gt;%
+      filter(meta$SampleID == id) %&gt;% 
+      select(row, col)
+  })
+
+sum(map_int(names(coord.smp$s40), ~ sum(is.na(coord.smp$s40[.x]))))
+[1] 0
+
+nrow(expr.smp$s40) == nrow(coord.smp$s40)
+[1] TRUE</code></pre>
+<p>Looking at the pairwise distances to get a feeling for which numbers to plug in for generating the juxtaview and paraview.</p>
+<pre class="r"><code># helper function for nearest neighbors
+dist_k_nn &lt;- function(sample, k) {
+  nn &lt;- RANN::nn2(sample, eps=0.0, k = k)
+  map_dbl(seq_len(nrow(sample)), function(n) {
+    mean(nn$nn.dists[n, ])
+  })
+}
+
+# helper function for getting direct neighbors
+get_neighbors &lt;- function(ddobj, id) {
+  dplyr::union(
+    ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
+    ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
+  )
+}
+
+# mean distance to the direct neighbors for each cell
+mean.dists.direct.neighbors &lt;- map(coord.smp, function(smp) {
+  delaunay &lt;- deldir::deldir(as.data.frame(smp))
+  dists &lt;- distances::distances(as.data.frame(smp))
+  map_dbl(seq_len(nrow(smp)), function(id) {
+    nn &lt;- get_neighbors(delaunay, id)
+    mean(dists[nn, id])
+  })
+}) %&gt;% unlist
+
+# histogram
+ggplot(data.frame(dist = mean.dists.direct.neighbors)) +
+  geom_histogram(aes(dist), bins = 100) +
+  lims(x = c(0,100))
+Warning: Removed 1331 rows containing non-finite values (stat_bin).
+Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+# summary
+summary(mean.dists.direct.neighbors)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  10.14   23.38   28.38   31.33   35.04  586.15 
+
+# mean distances to the 5, 10, 15, 20 nearest neighbors
+neighbor.dists &lt;- map_dfr(coord.smp, function(smp) {
+  c(10, 20, 40, 80) %&gt;%
+    set_names() %&gt;%
+    map_dfc(function(k) {
+  dist_k_nn(smp, k)
+    }) %&gt;%
+  set_names(paste0(&quot;dist_to_&quot;, c(&quot;10&quot;, &quot;20&quot;, &quot;40&quot;, &quot;80&quot;)))
+})
+
+# summary
+summary(neighbor.dists)
+   dist_to_10       dist_to_20       dist_to_40       dist_to_80    
+ Min.   : 14.39   Min.   : 23.57   Min.   : 36.71   Min.   : 54.37  
+ 1st Qu.: 25.16   1st Qu.: 37.63   1st Qu.: 55.22   1st Qu.: 80.19  
+ Median : 29.28   Median : 43.33   Median : 62.97   Median : 90.92  
+ Mean   : 30.51   Mean   : 45.04   Mean   : 65.48   Mean   : 94.68  
+ 3rd Qu.: 34.38   3rd Qu.: 50.52   3rd Qu.: 73.23   3rd Qu.:105.64  
+ Max.   :197.30   Max.   :252.05   Max.   :358.27   Max.   :506.39  
+
+# visualize distribution
+neighbor.dists %&gt;%
+  pivot_longer(cols = everything()) %&gt;%
+  mutate(name = factor(name, levels = paste0(&quot;dist_to_&quot;, c(&quot;10&quot;, &quot;20&quot;, &quot;40&quot;, &quot;80&quot;)))) %&gt;%
+  ggplot() +
+  geom_histogram(aes(value), bins = 100) +
+  facet_wrap(~ name) +
+  lims(x = c(0, 200))
+Warning: Removed 490 rows containing non-finite values (stat_bin).
+Warning: Removed 8 rows containing missing values (geom_bar).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="generating-the-misty-views" class="section level2">
+<h2>Generating the MISTy views</h2>
+<p>Based on the data above, I am ging to use a neighbor threshold of 40 for the juxtaview and a cutoff of 120 for the paraview (plus the zone of indifference which will conclusively be 40).</p>
+<pre class="r"><code>if (&quot;misty_views_smp.RDS&quot; %in% list.files(&quot;data&quot;)) {
+  misty.views.smp &lt;- readRDS(&quot;data/misty_views_smp.RDS&quot;)
+} else {
+  cv.folds = 10
+  misty.views.smp &lt;- map2(expr.smp, coord.smp, function(expr, coord) {
+    
+    # Check for zero variance (otherwise MISTy throws an error)
+    target.var &lt;- apply(expr, 2, stats::sd, na.rm = TRUE)
+    expr &lt;- expr %&gt;% select(-names(which(target.var == 0)))
+    
+    # Check for how many unique values
+    target.unique &lt;- colnames(expr) %&gt;%
+      purrr::set_names() %&gt;%
+      purrr::map_int(~ length(unique(expr %&gt;% pull(.x))))
+    expr &lt;- expr %&gt;% select(names(target.unique[target.unique &gt; cv.folds]))
+    
+    # Create views and run MISTy
+    create_initial_view(expr) %&gt;%
+      add_juxtaview(positions = coord, neighbor.thr = 40) %&gt;%
+      add_paraview(positions = coord, l = 120, zoi = 40)
+  })
+  names(misty.views.smp) &lt;- names(expr.smp)
+  saveRDS(misty.views.smp, &quot;data/misty_views_smp.RDS&quot;)
+}</code></pre>
+<pre class="r"><code>if (&quot;misty_results_smp.RDS&quot; %in% list.files(&quot;data&quot;)) {
+  results.smp &lt;- readRDS(&quot;data/misty_results_smp.RDS&quot;)
+} else {
+  cv.folds = 10
+  results.smp &lt;- misty.views.smp %&gt;%
+    set_names() %&gt;%
+    map(function(smp) {
+      smp %&gt;%
+        run_misty(cv.folds = cv.folds) %&gt;%
+        collect_results()
+    })
+  names(results.smp) &lt;- names(expr.smp)
+  saveRDS(results.smp, &quot;data/misty_results_smp.RDS&quot;)
+}</code></pre>
+<pre class="r"><code>source(&quot;code/custom_plotting.R&quot;)</code></pre>
+<p>Checking whether things worked (for sample 1).</p>
+<pre class="r"><code>plot_diagnostics(results.smp$s1, name=&quot;s1&quot;, low = 0.5)
+Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-26-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>if (&quot;misty_results_earth_smp.RDS&quot; %in% list.files(&quot;data&quot;)) {
+  earth.results.smp &lt;- readRDS(&quot;data/misty_results_earth_smp.RDS&quot;)
+} else {
+  cv.folds = 10
+  earth.results.smp &lt;- misty.views.smp %&gt;%
+    set_names() %&gt;%
+    map(function(smp) {
+      smp %&gt;%
+        run_misty(cv.folds = cv.folds, 
+                  method = &quot;bag&quot;, 
+                  learner = &quot;earth&quot;,
+                  n.learners = 100) %&gt;%
+        collect_results()
+    })
+  names(earth.results.smp) &lt;- names(expr.smp)
+  saveRDS(earth.results.smp, &quot;data/misty_results_earth_smp.RDS&quot;)
+}</code></pre>
+<p>Checking whether things worked (for sample 1).</p>
+<pre class="r"><code>plot_diagnostics(earth.results.smp$s1, name=&quot;s1&quot;)
+Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" width="1920" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="aggregating-results" class="section level1">
+<h1>Aggregating results</h1>
+<div id="ranger-gain-r2" class="section level2">
+<h2>Ranger Gain R2</h2>
+<pre class="r"><code>targets &lt;- unique(results.smp$s1$improvements$target)
+
+ranger.measures &lt;- map_dfr(targets, function(tar) {
+  map2_dfr(results.smp, names(results.smp), function(smp, n) {
+    smp$improvements %&gt;%
+      filter(target == tar) %&gt;%
+      filter(measure %in% c(&quot;intra.R2&quot;, &quot;multi.R2&quot;, &quot;gain.R2&quot;)) %&gt;%
+      mutate(sample = n)
+  })
+})</code></pre>
+<pre class="r"><code>ranger.measures %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  group_by(target) %&gt;%
+  summarise(mean.gain = mean(value)) %&gt;%
+  ggplot() +
+  geom_bar(aes(x = target, y = mean.gain), stat=&quot;identity&quot;) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+ranger.measures %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-30-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="earth-r2-gain" class="section level2">
+<h2>Earth R2 gain</h2>
+<pre class="r"><code>earth.measures &lt;- map_dfr(targets, function(tar) {
+  map2_dfr(earth.results.smp, names(earth.results.smp), function(smp, n) {
+    smp$improvements %&gt;%
+      filter(target == tar) %&gt;%
+      filter(measure %in% c(&quot;intra.R2&quot;, &quot;multi.R2&quot;, &quot;gain.R2&quot;)) %&gt;%
+      mutate(sample = n)
+  })
+})</code></pre>
+<pre class="r"><code>earth.measures %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  group_by(target) %&gt;%
+  summarise(mean.gain = mean(value)) %&gt;%
+  ggplot() +
+  geom_bar(aes(x = target, y = mean.gain), stat=&quot;identity&quot;) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>
+earth.measures %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-32-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="comparison-of-ranger-and-earth-results" class="section level2">
+<h2>Comparison of Ranger and Earth results</h2>
+<div id="multi-r2" class="section level3">
+<h3>Multi R2</h3>
+<pre class="r"><code>tmp1 &lt;- ranger.measures %&gt;% mutate(method = &quot;ranger&quot;)
+tmp2 &lt;- earth.measures %&gt;% mutate(method = &quot;earth&quot;)
+all &lt;- rbind(tmp1, tmp2)
+all %&gt;%
+  filter(measure == &quot;multi.R2&quot;) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value)) +
+  facet_wrap(~ method, nrow=2) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-33-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="gain-r2" class="section level3">
+<h3>Gain R2</h3>
+<pre class="r"><code>m &lt;- &quot;gain.R2&quot;
+all %&gt;%
+  mutate(new_target = paste0(target, &quot;_&quot;, method)) %&gt;%
+  filter(measure == m) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=new_target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="multi-r2-1" class="section level3">
+<h3>Multi R2</h3>
+<pre class="r"><code>m &lt;- &quot;multi.R2&quot;
+all %&gt;%
+  mutate(new_target = paste0(target, &quot;_&quot;, method)) %&gt;%
+  filter(measure == m) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=new_target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="intra-r2" class="section level3">
+<h3>Intra R2</h3>
+<pre class="r"><code>m &lt;- &quot;intra.R2&quot;
+all %&gt;%
+  mutate(new_target = paste0(target, &quot;_&quot;, method)) %&gt;%
+  filter(measure == m) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=new_target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" width="960" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()
+R version 4.1.1 (2021-08-10)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.3 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] tiff_0.1-8      forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7    
+ [5] purrr_0.3.4     readr_2.0.1     tidyr_1.1.3     tibble_3.1.4   
+ [9] ggplot2_3.3.5   tidyverse_1.3.1 future_1.22.1   mistyR_1.1.10  
+
+loaded via a namespace (and not attached):
+ [1] httr_1.4.2         sass_0.4.0         bit64_4.0.5        vroom_1.5.4       
+ [5] jsonlite_1.7.2     modelr_0.1.8       bslib_0.2.5.1      assertthat_0.2.1  
+ [9] highr_0.9          cellranger_1.1.0   yaml_2.2.1         globals_0.14.0    
+[13] pillar_1.6.2       backports_1.2.1    glue_1.4.2         digest_0.6.28     
+[17] RColorBrewer_1.1-2 promises_1.2.0.1   rvest_1.0.1        colorspace_2.0-2  
+[21] htmltools_0.5.2    httpuv_1.6.2       pkgconfig_2.0.3    broom_0.7.9       
+[25] listenv_0.8.0      haven_2.4.3        scales_1.1.1       RANN_2.6.1        
+[29] later_1.3.0        tzdb_0.1.2         git2r_0.28.0       generics_0.1.0    
+[33] farver_2.1.0       ellipsis_0.3.2     withr_2.4.2        cli_3.0.1         
+[37] magrittr_2.0.1     crayon_1.4.1       readxl_1.3.1       deldir_0.2-10     
+[41] evaluate_0.14      fs_1.5.0           fansi_0.5.0        parallelly_1.28.1 
+[45] xml2_1.3.2         distances_0.1.8    tools_4.1.1        hms_1.1.0         
+[49] lifecycle_1.0.0    munsell_0.5.0      reprex_2.0.1       compiler_4.1.1    
+[53] jquerylib_0.1.4    rlang_0.4.11       grid_4.1.1         rstudioapi_0.13   
+[57] labeling_0.4.2     rmarkdown_2.10     gtable_0.3.0       codetools_0.2-18  
+[61] DBI_1.1.1          R6_2.5.1           gridExtra_2.3      lubridate_1.7.10  
+[65] knitr_1.33         fastmap_1.1.0      bit_4.0.4          utf8_1.2.2        
+[69] workflowr_1.6.2    rprojroot_2.0.2    stringi_1.7.4      parallel_4.1.1    
+[73] Rcpp_1.0.7         vctrs_0.3.8        dbplyr_2.1.1       tidyselect_1.1.1  
+[77] xfun_0.25         </code></pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

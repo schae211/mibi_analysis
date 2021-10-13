@@ -363,7 +363,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -372,7 +372,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -381,10 +381,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-11
+<strong>Last updated:</strong> 2021-10-12
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -400,12 +400,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
@@ -460,34 +460,59 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+~/Saez/workflowr_projects/mibi_analysis/
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree197fa020b18b8d0f094641385bb15f3f9c3e44bdtargetblank197fa02a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/197fa020b18b8d0f094641385bb15f3f9c3e44bd" target="_blank">197fa02</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree543c74c2f4f8ba130c75f65423b35b019b6b2e15targetblank543c74ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/543c74c2f4f8ba130c75f65423b35b019b6b2e15" target="_blank">543c74c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree197fa020b18b8d0f094641385bb15f3f9c3e44bdtargetblank197fa02a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree543c74c2f4f8ba130c75f65423b35b019b6b2e15targetblank543c74ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/197fa020b18b8d0f094641385bb15f3f9c3e44bd" target="_blank">197fa02</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/543c74c2f4f8ba130c75f65423b35b019b6b2e15" target="_blank">543c74c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    analysis/figure/
     Ignored:    data/alternative_coordinates.RDS
     Ignored:    data/cellData.csv
     Ignored:    data/coordinates.csv
@@ -496,6 +521,12 @@ Ignored files:
     Ignored:    data/misty_views_smp.RDS
     Ignored:    data/patient_class.csv
     Ignored:    data/raw_tiffs/
+
+Untracked files:
+    Untracked:  results/
+
+Unstaged changes:
+    Modified:   analysis/EDA_MIBI.Rmd
 
 </code></pre>
 <p>
@@ -534,6 +565,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/EDA_MIBI.html" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+<td>
+new analysis
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -612,7 +660,8 @@ added first analysis file
 <div id="set-up" class="section level1">
 <h1>Set up</h1>
 <p>Messages will be hidden and the output collapsed to make the Rmd more clear.</p>
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)</code></pre>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_knit$set(root.dir = &quot;~/Saez/workflowr_projects/mibi_analysis/&quot;)</code></pre>
 <p>Loaded Packages.</p>
 <pre class="r"><code>library(mistyR)
 library(future)
@@ -718,7 +767,18 @@ expr %&gt;% slice_head(n=6)
 #   CD68 &lt;dbl&gt;, CSF-1R &lt;dbl&gt;, CD8 &lt;dbl&gt;, CD3 &lt;dbl&gt;, IDO &lt;dbl&gt;, Keratin17 &lt;dbl&gt;,
 #   CD63 &lt;dbl&gt;, CD45RO &lt;dbl&gt;, CD20 &lt;dbl&gt;, p53 &lt;dbl&gt;, Beta catenin &lt;dbl&gt;,
 #   HLA-DR &lt;dbl&gt;, CD11b &lt;dbl&gt;, CD45 &lt;dbl&gt;, H3K9ac &lt;dbl&gt;, Pan-Keratin &lt;dbl&gt;,
-#   H3K27me3 &lt;dbl&gt;, phospho-S6 &lt;dbl&gt;, MPO &lt;dbl&gt;, Keratin6 &lt;dbl&gt;, …</code></pre>
+#   H3K27me3 &lt;dbl&gt;, phospho-S6 &lt;dbl&gt;, MPO &lt;dbl&gt;, Keratin6 &lt;dbl&gt;, …
+
+cells.sample &lt;- input %&gt;% count(SampleID)
+cells.sample.dict &lt;- cells.sample$n
+names(cells.sample.dict) &lt;- cells.sample$SampleID
+cells.sample.dict
+   1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
+5167 3028 6315 6643 5406 5998 3410 3136 6139 4580 5112 6995 7665 6270 3315 8212 
+  17   18   19   20   21   22   23   24   25   26   27   28   29   31   32   33 
+7071 5539 4400 5103 5423 3072 4490 4613 2658 5119 4332 6061 4819 3415 5158 2046 
+  34   35   36   37   38   39   40   41   42   43   44 
+2856 7716 2939 6280 4330 4030 4285 4532 1380 1381 1217 </code></pre>
 <p>Alternatively we can do it in R as shown below. However, this takes much longer than simply running the code in Python (about 100X difference?).</p>
 <pre class="r"><code>if (&quot;alternative_coordinates.RDS&quot; %in% list.files(&quot;data&quot;)) {
   alternative.coord &lt;- readRDS(&quot;data/alternative_coordinates.RDS&quot;)
@@ -782,6 +842,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-6-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-6-1.png" target="_blank">197fa02</a>
 </td>
 <td>
@@ -806,17 +877,6 @@ schae211
 </table>
 </div>
 </div>
-<pre class="r"><code>
-cells.sample &lt;- input %&gt;% count(SampleID)
-cells.sample.dict &lt;- cells.sample$n
-names(cells.sample.dict) &lt;- cells.sample$SampleID
-cells.sample.dict
-   1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16 
-5167 3028 6315 6643 5406 5998 3410 3136 6139 4580 5112 6995 7665 6270 3315 8212 
-  17   18   19   20   21   22   23   24   25   26   27   28   29   31   32   33 
-7071 5539 4400 5103 5423 3072 4490 4613 2658 5119 4332 6061 4819 3415 5158 2046 
-  34   35   36   37   38   39   40   41   42   43   44 
-2856 7716 2939 6280 4330 4030 4285 4532 1380 1381 1217 </code></pre>
 <p>Number of “cell types” over all samples.</p>
 <pre class="r"><code>meta %&gt;%
   count(Group) %&gt;%
@@ -824,12 +884,12 @@ cells.sample.dict
 # A tibble: 6 × 2
   Group                      n
   &lt;chr&gt;                  &lt;int&gt;
-1 Keratin-positive tumor 77484
-2 Immune                 65080
-3 Mesenchymal-like        6695
-4 Tumor                   2247
-5 Endothelial             1733
-6 Unidentified            1469</code></pre>
+1 Keratin-positive tumor 77454
+2 Immune                 65219
+3 Mesenchymal-like        6727
+4 Tumor                   2221
+5 Endothelial             1743
+6 Unidentified            1476</code></pre>
 <p>Number of “immune cell types” over all samples.</p>
 <pre class="r"><code>meta %&gt;%
   count(immuneGroup) %&gt;%
@@ -837,19 +897,19 @@ cells.sample.dict
 # A tibble: 13 × 2
    immuneGroup      n
    &lt;chr&gt;        &lt;int&gt;
- 1 Non-Immune?  89628
- 2 Macrophages  16370
- 3 CD8 T        12062
- 4 CD4 T         9207
- 5 B             7436
- 6 Other immune  5836
- 7 DC/Mono       3823
- 8 CD3 T         3063
- 9 Mono/Neu      2626
-10 Neutrophils   2179
-11 DC            1003
-12 Tregs          978
-13 NK             497</code></pre>
+ 1 Non-Immune?  89621
+ 2 Macrophages  16326
+ 3 CD8 T        12090
+ 4 CD4 T         9227
+ 5 B             7497
+ 6 Other immune  5842
+ 7 DC/Mono       3818
+ 8 CD3 T         3062
+ 9 Mono/Neu      2644
+10 Neutrophils   2185
+11 DC            1067
+12 Tregs          970
+13 NK             491</code></pre>
 </div>
 <div id="distribution-of-the-markers" class="section level1">
 <h1>Distribution of the markers</h1>
@@ -884,6 +944,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-9-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-9-1.png" target="_blank">197fa02</a>
 </td>
 <td>
@@ -916,7 +987,7 @@ schae211
   scale_x_log10()
 Warning in self$trans$transform(x): NaNs produced
 Warning: Transformation introduced infinite values in continuous x-axis
-Warning: Removed 5978357 rows containing non-finite values (stat_bin).</code></pre>
+Warning: Removed 5978948 rows containing non-finite values (stat_bin).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-10-1.png" width="1728" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
@@ -940,6 +1011,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-10-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-10-1.png" target="_blank">197fa02</a>
@@ -998,6 +1080,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-11-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-11-1.png" target="_blank">197fa02</a>
 </td>
 <td>
@@ -1054,6 +1147,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-12-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-12-1.png" target="_blank">197fa02</a>
 </td>
 <td>
@@ -1106,6 +1210,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-13-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-13-1.png" target="_blank">197fa02</a>
@@ -1233,6 +1348,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-15-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-15-1.png" target="_blank">197fa02</a>
 </td>
 <td>
@@ -1303,6 +1429,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/543c74c2f4f8ba130c75f65423b35b019b6b2e15/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-16-1.png" target="_blank">543c74c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-11
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/197fa020b18b8d0f094641385bb15f3f9c3e44bd/docs/figure/EDA_MIBI.Rmd/unnamed-chunk-16-1.png" target="_blank">197fa02</a>
@@ -1486,7 +1623,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-3.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-3">
@@ -1525,7 +1662,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-4.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-4">
@@ -1564,7 +1701,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-5.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-5">
@@ -1603,7 +1740,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 35 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-6.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-6">
@@ -1642,7 +1779,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 24 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-7.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-7">
@@ -1681,7 +1818,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-8.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-8">
@@ -1720,7 +1857,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-9.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-9">
@@ -1759,7 +1896,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-10.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-10">
@@ -1798,7 +1935,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-11.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-11">
@@ -1837,7 +1974,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-12.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-12">
@@ -1876,7 +2013,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 46 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-13.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-13">
@@ -1915,7 +2052,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-14.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-14">
@@ -1954,7 +2091,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 26 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-15.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-15">
@@ -1993,7 +2130,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-16.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-16">
@@ -2032,7 +2169,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-17.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-17">
@@ -2071,7 +2208,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-18.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-18">
@@ -2110,7 +2247,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-19.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-19">
@@ -2188,7 +2325,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 35 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-21.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-21">
@@ -2227,7 +2364,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-22.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-22">
@@ -2266,7 +2403,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-23.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-23">
@@ -2383,7 +2520,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-26.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-26">
@@ -2422,7 +2559,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-27.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-27">
@@ -2461,7 +2598,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-28.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-28">
@@ -2500,7 +2637,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 8 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-29.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-29">
@@ -2539,7 +2676,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-30.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-30">
@@ -2578,7 +2715,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-31.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-31">
@@ -2617,7 +2754,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-32.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-32">
@@ -2695,7 +2832,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-34.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-34">
@@ -2734,7 +2871,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-35.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-35">
@@ -2773,7 +2910,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-36.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-36">
@@ -2812,7 +2949,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-37.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-37">
@@ -2851,7 +2988,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-38.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-38">
@@ -2929,7 +3066,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-21-40.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-40">
@@ -3190,7 +3327,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 31 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 41 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-3.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-3">
@@ -3229,7 +3366,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 18 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-4.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-4">
@@ -3268,7 +3405,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-5.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-5">
@@ -3307,6 +3444,7 @@ schae211
 </table>
 </div>
 </div>
+<pre><code>Warning: Removed 33 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-6.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-6">
@@ -3345,7 +3483,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 48 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 29 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-7.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-7">
@@ -3384,7 +3522,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 2 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-8.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-8">
@@ -3423,7 +3561,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-9.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-9">
@@ -3462,7 +3600,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-10.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-10">
@@ -3501,7 +3639,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 22 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-11.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-11">
@@ -3540,7 +3678,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 48 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 26 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-12.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-12">
@@ -3579,7 +3717,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-13.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-13">
@@ -3618,7 +3756,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 39 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-14.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-14">
@@ -3735,7 +3873,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-17.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-17">
@@ -3774,7 +3912,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-18.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-18">
@@ -3891,7 +4029,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 33 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 37 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-21.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-21">
@@ -3930,7 +4068,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-22.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-22">
@@ -3969,7 +4107,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 35 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-23.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-23">
@@ -4008,7 +4146,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-24.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-24">
@@ -4086,7 +4224,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-26.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-26">
@@ -4125,7 +4263,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 44 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-27.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-27">
@@ -4164,7 +4302,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-28.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-28">
@@ -4203,7 +4341,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 28 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-29.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-29">
@@ -4242,7 +4380,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-30.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-30">
@@ -4320,7 +4458,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 30 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 31 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-32.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-32">
@@ -4359,7 +4497,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 36 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-33.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-33">
@@ -4437,7 +4575,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 34 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-35.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-35">
@@ -4476,7 +4614,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-36.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-36">
@@ -4515,7 +4653,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 31 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 27 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-37.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-37">
@@ -4632,7 +4770,7 @@ schae211
 </table>
 </div>
 </div>
-<pre><code>Warning: Removed 40 rows containing missing values (geom_point).</code></pre>
+<pre><code>Warning: Removed 38 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-25-40.png" width="1920" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-25-40">
@@ -4976,7 +5114,7 @@ all %&gt;%
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         plot.title = element_text(hjust = 0.5)) +
   lims(y = c(-2.5,2.5))
-Warning: Removed 20 rows containing non-finite values (stat_boxplot).</code></pre>
+Warning: Removed 28 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="figure/EDA_MIBI.Rmd/unnamed-chunk-31-2.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-31-2">
@@ -5142,7 +5280,6 @@ other attached packages:
  [1] tiff_0.1-8      forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7    
  [5] purrr_0.3.4     readr_2.0.1     tidyr_1.1.3     tibble_3.1.4   
  [9] ggplot2_3.3.5   tidyverse_1.3.1 future_1.22.1   mistyR_1.1.10  
-[13] workflowr_1.6.2
 
 loaded via a namespace (and not attached):
  [1] httr_1.4.2         sass_0.4.0         bit64_4.0.5        vroom_1.5.4       
@@ -5161,9 +5298,9 @@ loaded via a namespace (and not attached):
 [53] grid_4.1.1         rstudioapi_0.13    labeling_0.4.2     rmarkdown_2.10    
 [57] gtable_0.3.0       codetools_0.2-18   DBI_1.1.1          R6_2.5.1          
 [61] gridExtra_2.3      lubridate_1.7.10   knitr_1.33         fastmap_1.1.0     
-[65] bit_4.0.4          utf8_1.2.2         rprojroot_2.0.2    stringi_1.7.4     
-[69] parallel_4.1.1     Rcpp_1.0.7         vctrs_0.3.8        dbplyr_2.1.1      
-[73] tidyselect_1.1.1   xfun_0.25         </code></pre>
+[65] bit_4.0.4          utf8_1.2.2         workflowr_1.6.2    rprojroot_2.0.2   
+[69] stringi_1.7.4      parallel_4.1.1     Rcpp_1.0.7         vctrs_0.3.8       
+[73] dbplyr_2.1.1       tidyselect_1.1.1   xfun_0.25         </code></pre>
 </div>
 </div>
 
