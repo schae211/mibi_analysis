@@ -51,7 +51,7 @@ raw_data %>% slice_head(n=6)
 Add coordinates of the cells.
 
 Doing it in R takes quite some time but offers more control that the 
-center of mass function in scipy (python).
+[center of mass function in scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.center_of_mass.html)
 
 ```{r}
 if ("alternative_coordinates.RDS" %in% list.files("data")) {
@@ -92,9 +92,6 @@ data <- raw_data %>%
   inner_join(alternative.coord, by = c("SampleID" = "id", 
                                        "cellLabelInImage" = "i")) %>%
   rename(row = x.center, col = y.center)
-
-# IDs only in image for sample 40
-# I guess these were not real cells, so I can ignore them?
 ```
 
 Diving into sample 40. Let's check which cell IDs where in the tiff 
@@ -102,8 +99,11 @@ but not in the meta data. Maybe those spots turned out not be cells
 in the end (segmentation errors?).
 
 ```{r}
-dplyr::setdiff(alternative.coord %>% filter(id == 40) %>% pull(i),
-               data %>% filter(SampleID == 40) %>% pull(cellLabelInImage))
+dplyr::setdiff(
+  alternative.coord %>% filter(id == 40) %>% pull(i),
+  data %>% filter(SampleID == 40) %>% pull(cellLabelInImage)
+  ) %>%
+  length()
 ```
 
 Before proceeding with the analysis, check whether we have any NAs.
@@ -127,7 +127,7 @@ expr %>% slice_head(n=6)
 
 # Metadata
 
-Number of cells per sample.
+Number of cells per sample. Curiously there is not sample 30.
 
 ```{r}
 meta %>%
@@ -136,7 +136,9 @@ meta %>%
   geom_bar(aes(x=SampleID, y=n), stat = "identity")
 ```
 
-Number of "cell types" over all samples.
+Number of "cell types" over all samples as annotated by the authors or the
+study. We mostly have tumor and immune cells. Keratin serves as a marker
+for cancer cells.
 
 ```{r}
 meta %>%
@@ -144,7 +146,35 @@ meta %>%
   arrange(desc(n))
 ```
 
-Number of "immune cell types" over all samples.
+How were the cells actually classified?
+
+When looking at the first two principal components, we see quite a clear
+distinction though the first plot suffers from overplotting. Plotting only
+2 percent of the points makes things a little bit better.
+
+```{r}
+pca <- stats::prcomp(expr)
+ggplot() +
+  geom_point(aes(x=seq_len(length(pca$sdev)), y = pca$sdev^2))
+ggplot() +
+  geom_point(aes(x=pca$x[,1], pca$x[,2], color = meta$Group), size = 0.1)
+subs <- sample(nrow(pca$x), .02*nrow(pca$x))
+ggplot() +
+  geom_point(aes(x=pca$x[subs,1], pca$x[subs,2], 
+                 color = meta$Group[subs]), size = 0.1)
+```
+
+Cluster the cells using the leiden algorithm? Omitting here, because
+it is computiationally quite expensive.
+
+```{r eval=FALSE}
+nn <- RANN::nn2(expr, k = 50)
+leiden.clusts <- leiden::leiden(nn)
+```
+
+Next we will have a closer look at the immune populations. And according
+to the number of cells present, macrophages and T-cells are the major
+players, followed by B-cells.
 
 ```{r}
 meta %>%
