@@ -336,6 +336,9 @@ div.tocify {
   <a href="about.html">About</a>
 </li>
 <li>
+  <a href="MIBI_Analysis.html">Analysis</a>
+</li>
+<li>
   <a href="license.html">License</a>
 </li>
       </ul>
@@ -381,10 +384,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-13
+<strong>Last updated:</strong> 2021-10-14
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -400,12 +403,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -496,16 +499,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree543c74c2f4f8ba130c75f65423b35b019b6b2e15targetblank543c74ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/543c74c2f4f8ba130c75f65423b35b019b6b2e15" target="_blank">543c74c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreea51b415552c164425a0bf27ea687b8bf88118380targetblanka51b415a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/a51b415552c164425a0bf27ea687b8bf88118380" target="_blank">a51b415</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree543c74c2f4f8ba130c75f65423b35b019b6b2e15targetblank543c74ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreea51b415552c164425a0bf27ea687b8bf88118380targetblanka51b415a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/543c74c2f4f8ba130c75f65423b35b019b6b2e15" target="_blank">543c74c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/a51b415552c164425a0bf27ea687b8bf88118380" target="_blank">a51b415</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -523,13 +526,6 @@ Ignored files:
     Ignored:    old_files/
     Ignored:    results/
 
-Untracked files:
-    Untracked:  analysis/MIBI_Analysis.Rmd
-
-Unstaged changes:
-    Modified:   .gitignore
-    Deleted:    analysis/EDA_MIBI.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -541,9 +537,86 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/MIBI_Analysis.Rmd</code>) and HTML (<code>docs/MIBI_Analysis.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/a51b415552c164425a0bf27ea687b8bf88118380/analysis/MIBI_Analysis.Rmd" target="_blank">a51b415</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-14
+</td>
+<td>
+wflow_publish(all = TRUE)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/analysis/MIBI_Analysis.Rmd" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+<td>
+refactored analysis, focus on aggregating results
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/MIBI_Analysis.html" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+<td>
+refactored analysis, focus on aggregating results
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -596,7 +669,7 @@ raw_data %&gt;% slice_head(n=6)
 #   CD63 &lt;dbl&gt;, CD45RO &lt;dbl&gt;, CD20 &lt;dbl&gt;, p53 &lt;dbl&gt;, Beta catenin &lt;dbl&gt;,
 #   HLA-DR &lt;dbl&gt;, CD11b &lt;dbl&gt;, CD45 &lt;dbl&gt;, H3K9ac &lt;dbl&gt;, Pan-Keratin &lt;dbl&gt;, …</code></pre>
 <p>Add coordinates of the cells.</p>
-<p>Doing it in R takes quite some time but offers more control that the center of mass function in scipy (python).</p>
+<p>Doing it in R takes quite some time but offers more control that the <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.center_of_mass.html">center of mass function in scipy</a></p>
 <pre class="r"><code>if (&quot;alternative_coordinates.RDS&quot; %in% list.files(&quot;data&quot;)) {
   alternative.coord &lt;- readRDS(&quot;data/alternative_coordinates.RDS&quot;)
 } else {
@@ -630,52 +703,14 @@ raw_data %&gt;% slice_head(n=6)
 <pre class="r"><code>data &lt;- raw_data %&gt;%
   inner_join(alternative.coord, by = c(&quot;SampleID&quot; = &quot;id&quot;, 
                                        &quot;cellLabelInImage&quot; = &quot;i&quot;)) %&gt;%
-  rename(row = x.center, col = y.center)
-
-# IDs only in image for sample 40
-# I guess these were not real cells, so I can ignore them?</code></pre>
+  rename(row = x.center, col = y.center)</code></pre>
 <p>Diving into sample 40. Let’s check which cell IDs where in the tiff but not in the meta data. Maybe those spots turned out not be cells in the end (segmentation errors?).</p>
-<pre class="r"><code>dplyr::setdiff(alternative.coord %&gt;% filter(id == 40) %&gt;% pull(i),
-               data %&gt;% filter(SampleID == 40) %&gt;% pull(cellLabelInImage))
-  [1]   41   44   46   56   64   70   73   76   77   80   91  102  106  107  116
- [16]  118  125  129  130  134  138  139  144  147  159  163  173  176  182  191
- [31]  192  206  209  212  221  235  236  239  241  243  245  247  251  252  276
- [46]  278  289  290  294  299  301  310  342  347  350  352  353  354  379  384
- [61]  394  403  405  406  414  421  423  437  438  447  450  473  481  487  488
- [76]  490  493  495  504  511  523  534  535  546  556  559  561  568  575  581
- [91]  587  594  597  614  633  639  641  642  648  662  670  672  697  704  705
-[106]  709  710  720  726  730  746  748  757  760  768  772  775  790  791  804
-[121]  807  810  816  821  836  881  889  895  896  912  915  917  921  927  934
-[136]  939  940  942  947  960  975  999 1007 1015 1028 1037 1039 1049 1050 1056
-[151] 1070 1081 1088 1090 1096 1097 1098 1099 1115 1125 1133 1135 1141 1142 1143
-[166] 1144 1146 1151 1166 1176 1178 1181 1206 1224 1228 1229 1239 1243 1246 1249
-[181] 1261 1288 1299 1304 1322 1324 1328 1330 1334 1337 1339 1340 1343 1346 1348
-[196] 1357 1363 1366 1369 1373 1379 1387 1396 1401 1409 1410 1419 1420 1421 1432
-[211] 1476 1480 1481 1527 1532 1560 1563 1569 1593 1610 1649 1674 1708 1719 1720
-[226] 1733 1744 1747 1768 1773 1777 1795 1800 1824 1846 1886 1890 1901 1905 1907
-[241] 1913 1916 1923 1962 1994 1996 1997 1999 2005 2030 2037 2041 2049 2055 2060
-[256] 2084 2087 2120 2126 2139 2153 2155 2164 2175 2185 2190 2204 2214 2225 2228
-[271] 2241 2253 2262 2268 2281 2288 2289 2295 2306 2315 2318 2319 2320 2327 2348
-[286] 2360 2387 2388 2397 2399 2414 2417 2432 2446 2451 2464 2475 2484 2489 2500
-[301] 2501 2502 2508 2514 2524 2535 2536 2539 2545 2567 2569 2581 2596 2599 2600
-[316] 2603 2617 2618 2623 2627 2631 2632 2636 2655 2674 2679 2680 2688 2714 2716
-[331] 2727 2743 2749 2768 2774 2781 2783 2784 2789 2796 2798 2799 2805 2808 2812
-[346] 2822 2824 2843 2844 2847 2853 2862 2864 2865 2878 2880 2896 2899 2901 2905
-[361] 2926 2946 2951 2958 2968 2990 3015 3019 3027 3031 3032 3033 3055 3084 3098
-[376] 3102 3112 3145 3162 3186 3195 3213 3226 3227 3236 3264 3272 3285 3293 3294
-[391] 3301 3344 3346 3347 3361 3375 3392 3394 3397 3398 3400 3414 3451 3438 3443
-[406] 3450 3455 3462 3476 3481 3511 3517 3522 3524 3532 3534 3539 3541 3542 3568
-[421] 3586 3587 3588 3600 3609 3610 3613 3620 3638 3636 3649 3659 3664 3665 3678
-[436] 3680 3688 3696 3703 3704 3709 3711 3716 3722 3737 3742 3765 3772 3789 3794
-[451] 3797 3813 3819 3820 3826 3831 3843 3857 3870 3883 3888 3899 3905 3919 3921
-[466] 3922 3925 3928 3943 3947 3948 3957 3960 3974 3976 3989 3991 4005 4007 4019
-[481] 4021 4036 4039 4042 4053 4067 4068 4075 4076 4094 4110 4112 4117 4124 4149
-[496] 4168 4169 4173 4177 4180 4182 4183 4201 4203 4213 4216 4226 4251 4263 4273
-[511] 4278 4279 4285 4287 4302 4308 4333 4350 4385 4391 4396 4414 4421 4429 4442
-[526] 4447 4454 4473 4494 4499 4501 4518 4527 4534 4542 4562 4570 4578 4575 4579
-[541] 4581 4589 4595 4597 4603 4615 4622 4628 4634 4645 4651 4662 4681 4685 4696
-[556] 4702 4704 4707 4716 4717 4719 4734 4737 4752 4756 4759 4764 4767 4769 4783
-[571] 4800 4835</code></pre>
+<pre class="r"><code>dplyr::setdiff(
+  alternative.coord %&gt;% filter(id == 40) %&gt;% pull(i),
+  data %&gt;% filter(SampleID == 40) %&gt;% pull(cellLabelInImage)
+  ) %&gt;%
+  length()
+[1] 572</code></pre>
 <p>Before proceeding with the analysis, check whether we have any NAs.</p>
 <pre class="r"><code>stopifnot(sum(map_int(colnames(data), ~ sum(is.na(data[[.x]])))) == 0)</code></pre>
 <p>Split the data into expression matrix and meta data.</p>
@@ -715,13 +750,50 @@ expr %&gt;% slice_head(n=6)
 </div>
 <div id="metadata" class="section level1">
 <h1>Metadata</h1>
-<p>Number of cells per sample.</p>
+<p>Number of cells per sample. Curiously there is not sample 30.</p>
 <pre class="r"><code>meta %&gt;%
   count(SampleID) %&gt;%
   ggplot() +
   geom_bar(aes(x=SampleID, y=n), stat = &quot;identity&quot;)</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Number of “cell types” over all samples.</p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-8-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Number of “cell types” over all samples as annotated by the authors or the study. We mostly have tumor and immune cells. Keratin serves as a marker for cancer cells.</p>
 <pre class="r"><code>meta %&gt;%
   count(Group) %&gt;%
   arrange(desc(n))
@@ -734,7 +806,61 @@ expr %&gt;% slice_head(n=6)
 4 Tumor                   3167
 5 Endothelial             2086
 6 Unidentified            1725</code></pre>
-<p>Number of “immune cell types” over all samples.</p>
+<p>How were the cells actually classified?</p>
+<p>When looking at the first two principal components, we see quite a clear distinction though the first plot suffers from overplotting. Plotting only 2 percent of the points makes things a little bit better.</p>
+<pre class="r"><code>pca &lt;- stats::prcomp(expr)
+ggplot() +
+  geom_point(aes(x=seq_len(length(pca$sdev)), y = pca$sdev^2))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-10-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>ggplot() +
+  geom_point(aes(x=pca$x[,1], pca$x[,2], color = meta$Group), size = 0.1)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-10-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>subs &lt;- sample(nrow(pca$x), .02*nrow(pca$x))
+ggplot() +
+  geom_point(aes(x=pca$x[subs,1], pca$x[subs,2], 
+                 color = meta$Group[subs]), size = 0.1)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-10-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Cluster the cells using the leiden algorithm? Omitting here, because it is computiationally quite expensive.</p>
+<pre class="r"><code>nn &lt;- RANN::nn2(expr, k = 50)
+leiden.clusts &lt;- leiden::leiden(nn)</code></pre>
+<p>Next we will have a closer look at the immune populations. And according to the number of cells present, macrophages and T-cells are the major players, followed by B-cells.</p>
 <pre class="r"><code>meta %&gt;%
   count(immuneGroup) %&gt;%
   arrange(desc(n))
@@ -763,7 +889,44 @@ expr %&gt;% slice_head(n=6)
   ggplot() +
   geom_histogram(aes(x=expression), bins = 100) +
   facet_wrap(~ marker, scales = &quot;free&quot;)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-11-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-13-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-13-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>The same plot with a log10 x-axis (thus all 0 value were removed) and no free scales.</p>
 <pre class="r"><code>expr %&gt;%
   pivot_longer(cols = everything(), names_to = &quot;marker&quot;, values_to = &quot;expression&quot;) %&gt;%
@@ -774,7 +937,44 @@ expr %&gt;% slice_head(n=6)
 Warning in self$trans$transform(x): NaNs produced
 Warning: Transformation introduced infinite values in continuous x-axis
 Warning: Removed 7585634 rows containing non-finite values (stat_bin).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-12-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-14-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-14-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Looking at the boxplot for the expression per marker over all samples, ignoring outliers which are defined as points which includes all points outside of median ± 1.5 * IQR (interquantile range), we can again the broad variablity.</p>
 <pre class="r"><code>expr %&gt;%
   pivot_longer(cols = everything(), names_to = &quot;marker&quot;, values_to = &quot;expression&quot;) %&gt;%
@@ -782,7 +982,44 @@ Warning: Removed 7585634 rows containing non-finite values (stat_bin).</code></p
   geom_boxplot(aes(y=expression, x=marker), outlier.shape = NA) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   coord_cartesian(ylim = c(-5, 5))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-15-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="spatial-data" class="section level1">
 <h1>Spatial Data</h1>
@@ -794,7 +1031,44 @@ Warning: Removed 7585634 rows containing non-finite values (stat_bin).</code></p
   geom_point(aes(x = row, y = col, col = Group), size = .1) +
   facet_wrap(~ SampleID) + 
   guides(colour = guide_legend(override.aes = list(size = 4)))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-14-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-16-1.png" width="1728" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-16-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="mixing-score" class="section level2">
 <h2>Mixing Score</h2>
 <p>Calculating the mixing score.</p>
@@ -848,7 +1122,44 @@ contacts.smp %&gt;%
   ggplot() +
   geom_bar(aes(x=sample, y=ratio.tumor.immune), stat=&quot;identity&quot;) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-17-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>
 contacts.smp %&gt;%
   mutate(sample = names(coord.type.smp)) %&gt;%
@@ -888,7 +1199,44 @@ contacts.smp %&gt;%
   filter(SampleID == 40) %&gt;%
   ggplot() +
   geom_point(aes(x = row, y = col, col = Group), size=.4)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-16-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-18-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-18-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>And furthermore, we will look at the tiff to.</p>
 <pre class="r"><code>library(tiff)
 id = 40
@@ -913,7 +1261,44 @@ df %&gt;%
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank())</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-20-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Second, we will visualize the tiff and the labeled center of mass together. And on this scale the result actually looks quite nice.</p>
 <pre class="r"><code>s.40 &lt;- meta %&gt;%
   filter(SampleID == 40)
@@ -930,7 +1315,7 @@ ggplot() +
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank())</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>To qualitatively assess the performance of the segmentation we will furthermore look at a close up of sample 40, more specifically the region from row 0 to row 600 and from col 1448 to col 2048. And we can see that the center of mass (colored point) mostly matches the cell boundaries, but not always! Moreover, in a second plot the cell ids were plotted.</p>
 <pre class="r"><code>c.max &lt;- dim(binary)[1]
 top_left &lt;- list(row = 0, col = c.max)
@@ -973,11 +1358,85 @@ ggplot() +
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank())</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
+Past versions of unnamed-chunk-22-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-22-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>
 ggplot(labels.40) +
   geom_label(aes(x = row, y = col, label = value), size = 2.5)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-20-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-22-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-2">
+Past versions of unnamed-chunk-22-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-22-2.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="run-misty-on-all-samples" class="section level1">
@@ -1046,7 +1505,44 @@ ggplot(data.frame(dist = mean.dists.direct.neighbors)) +
   lims(x = c(0,100))
 Warning: Removed 1331 rows containing non-finite values (stat_bin).
 Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
+Past versions of unnamed-chunk-24-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-24-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-24-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>
 # summary
 summary(mean.dists.direct.neighbors)
@@ -1083,7 +1579,7 @@ neighbor.dists %&gt;%
   lims(x = c(0, 200))
 Warning: Removed 490 rows containing non-finite values (stat_bin).
 Warning: Removed 8 rows containing missing values (geom_bar).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-22-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-24-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="generating-the-misty-views" class="section level2">
 <h2>Generating the MISTy views</h2>
@@ -1130,7 +1626,44 @@ Warning: Removed 8 rows containing missing values (geom_bar).</code></pre>
 <p>Checking whether things worked (for sample 1).</p>
 <pre class="r"><code>plot_diagnostics(results.smp$s1, name=&quot;s1&quot;, low = 0.5)
 Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-26-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
+Past versions of unnamed-chunk-28-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>if (&quot;misty_results_earth_smp.RDS&quot; %in% list.files(&quot;data&quot;)) {
   earth.results.smp &lt;- readRDS(&quot;data/misty_results_earth_smp.RDS&quot;)
 } else {
@@ -1151,7 +1684,44 @@ Warning: Removed 32 rows containing missing values (geom_point).</code></pre>
 <p>Checking whether things worked (for sample 1).</p>
 <pre class="r"><code>plot_diagnostics(earth.results.smp$s1, name=&quot;s1&quot;)
 Warning: Removed 42 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-30-1.png" width="1920" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-1">
+Past versions of unnamed-chunk-30-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-30-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="aggregating-results" class="section level1">
@@ -1175,14 +1745,88 @@ ranger.measures &lt;- map_dfr(targets, function(tar) {
   ggplot() +
   geom_bar(aes(x = target, y = mean.gain), stat=&quot;identity&quot;) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-32-1">
+Past versions of unnamed-chunk-32-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-32-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-32-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>
 ranger.measures %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;%
   ggplot() +
   geom_boxplot(aes(x = target, y = value)) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-30-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-32-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-32-2">
+Past versions of unnamed-chunk-32-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-32-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-32-2.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="earth-r2-gain" class="section level2">
 <h2>Earth R2 gain</h2>
@@ -1201,14 +1845,51 @@ ranger.measures %&gt;%
   ggplot() +
   geom_bar(aes(x = target, y = mean.gain), stat=&quot;identity&quot;) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-34-1">
+Past versions of unnamed-chunk-34-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-34-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-34-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>
 earth.measures %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;%
   ggplot() +
   geom_boxplot(aes(x = target, y = value)) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-32-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-34-2.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="comparison-of-ranger-and-earth-results" class="section level2">
 <h2>Comparison of Ranger and Earth results</h2>
@@ -1223,7 +1904,44 @@ all %&gt;%
   geom_boxplot(aes(x=target, y=value)) +
   facet_wrap(~ method, nrow=2) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) </code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-33-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-35-1">
+Past versions of unnamed-chunk-35-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-35-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="gain-r2" class="section level3">
 <h3>Gain R2</h3>
@@ -1236,7 +1954,44 @@ all %&gt;%
   labs(title = m) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-34-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-1">
+Past versions of unnamed-chunk-36-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-36-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="multi-r2-1" class="section level3">
 <h3>Multi R2</h3>
@@ -1249,7 +2004,7 @@ all %&gt;%
   labs(title = m) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-37-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="intra-r2" class="section level3">
 <h3>Intra R2</h3>
@@ -1262,7 +2017,7 @@ all %&gt;%
   labs(title = m) +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-38-1.png" width="960" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1294,6 +2049,7 @@ other attached packages:
  [1] tiff_0.1-8      forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7    
  [5] purrr_0.3.4     readr_2.0.1     tidyr_1.1.3     tibble_3.1.4   
  [9] ggplot2_3.3.5   tidyverse_1.3.1 future_1.22.1   mistyR_1.1.10  
+[13] workflowr_1.6.2
 
 loaded via a namespace (and not attached):
  [1] httr_1.4.2         sass_0.4.0         bit64_4.0.5        vroom_1.5.4       
@@ -1303,17 +2059,17 @@ loaded via a namespace (and not attached):
 [17] RColorBrewer_1.1-2 promises_1.2.0.1   rvest_1.0.1        colorspace_2.0-2  
 [21] htmltools_0.5.2    httpuv_1.6.2       pkgconfig_2.0.3    broom_0.7.9       
 [25] listenv_0.8.0      haven_2.4.3        scales_1.1.1       RANN_2.6.1        
-[29] later_1.3.0        tzdb_0.1.2         git2r_0.28.0       generics_0.1.0    
-[33] farver_2.1.0       ellipsis_0.3.2     withr_2.4.2        cli_3.0.1         
-[37] magrittr_2.0.1     crayon_1.4.1       readxl_1.3.1       deldir_0.2-10     
-[41] evaluate_0.14      fs_1.5.0           fansi_0.5.0        parallelly_1.28.1 
-[45] xml2_1.3.2         distances_0.1.8    tools_4.1.1        hms_1.1.0         
-[49] lifecycle_1.0.0    munsell_0.5.0      reprex_2.0.1       compiler_4.1.1    
-[53] jquerylib_0.1.4    rlang_0.4.11       grid_4.1.1         rstudioapi_0.13   
-[57] labeling_0.4.2     rmarkdown_2.10     gtable_0.3.0       codetools_0.2-18  
-[61] DBI_1.1.1          R6_2.5.1           gridExtra_2.3      lubridate_1.7.10  
-[65] knitr_1.33         fastmap_1.1.0      bit_4.0.4          utf8_1.2.2        
-[69] workflowr_1.6.2    rprojroot_2.0.2    stringi_1.7.4      parallel_4.1.1    
+[29] whisker_0.4        later_1.3.0        tzdb_0.1.2         git2r_0.28.0      
+[33] generics_0.1.0     farver_2.1.0       ellipsis_0.3.2     withr_2.4.2       
+[37] cli_3.0.1          magrittr_2.0.1     crayon_1.4.1       readxl_1.3.1      
+[41] deldir_0.2-10      evaluate_0.14      fs_1.5.0           fansi_0.5.0       
+[45] parallelly_1.28.1  xml2_1.3.2         distances_0.1.8    tools_4.1.1       
+[49] hms_1.1.0          lifecycle_1.0.0    munsell_0.5.0      reprex_2.0.1      
+[53] compiler_4.1.1     jquerylib_0.1.4    rlang_0.4.11       grid_4.1.1        
+[57] rstudioapi_0.13    labeling_0.4.2     rmarkdown_2.10     gtable_0.3.0      
+[61] codetools_0.2-18   DBI_1.1.1          R6_2.5.1           gridExtra_2.3     
+[65] lubridate_1.7.10   knitr_1.33         fastmap_1.1.0      bit_4.0.4         
+[69] utf8_1.2.2         rprojroot_2.0.2    stringi_1.7.4      parallel_4.1.1    
 [73] Rcpp_1.0.7         vctrs_0.3.8        dbplyr_2.1.1       tidyselect_1.1.1  
 [77] xfun_0.25         </code></pre>
 </div>
