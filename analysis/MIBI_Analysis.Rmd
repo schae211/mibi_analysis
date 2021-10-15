@@ -146,6 +146,14 @@ meta %>%
   arrange(desc(n))
 ```
 
+Patient data
+
+```{r}
+patient.info <- read_csv("data/patient_class.csv",
+                         col_names = c("SampleID", "Grade"))
+patient.info %>% slice_head(n=6)
+```
+
 How were the cells actually classified?
 
 When looking at the first two principal components, we see quite a clear
@@ -403,7 +411,7 @@ df <- binary.df %>%
   pivot_longer(cols = !(row), names_to = "col") %>%
   mutate(row = as.numeric(row), col = as.numeric(col))
 
-subs <- sample(nrow(df), .1 * nrow(df))
+subs <- sample(nrow(df), .03 * nrow(df))
 
 df %>%
   slice(n = subs) %>%
@@ -414,7 +422,8 @@ df %>%
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank()) +
-  scale_colour_manual(values = c("TRUE" = "green2", "FALSE" = "blue1"))  + 
+  scale_colour_manual(values = c("TRUE" = "green2", 
+                                 "FALSE" = "blue4"))  + 
   guides(colour = guide_legend(override.aes = list(size = 2)))
 ```
 
@@ -499,7 +508,13 @@ ggplot(labels.40) +
 
 Select only proteins from the expression matrix and check for NAs.
 
+Also we need to check the variance for each marker in each same and
+exclude the marker if the variance is 0. The same is true for markers
+whose number of unique values is lower than the desired number of cv
+folds (here 10).
+
 ```{r}
+cv.folds = 10
 expr.smp <- unique(meta$SampleID) %>%
   set_names(paste0("s", .)) %>%
   map(function(id) {
@@ -507,11 +522,24 @@ expr.smp <- unique(meta$SampleID) %>%
       filter(meta$SampleID == id) %>%
       # Select only proteins
       select(11:47)
+    
+    # Check for zero variance (otherwise MISTy throws an error)
+    target.var <- apply(ret.expr, 2, stats::sd, na.rm = TRUE)
+    ret.expr <- ret.expr %>% select(-names(which(target.var == 0)))
+    
+    # Check for how many unique values
+    target.unique <- colnames(ret.expr) %>%
+      purrr::set_names() %>%
+      purrr::map_int(~ length(unique(ret.expr %>% pull(.x))))
+    ret.expr <- ret.expr %>% select(
+      names(target.unique[target.unique > cv.folds])
+      )
       
     colnames(ret.expr) <- make.names(colnames(ret.expr))
     ret.expr
   })
 
+# Check NAs for sample 40
 sum(map_int(names(expr.smp$s40), ~ sum(is.na(expr.smp$s40[.x]))))
 
 coord.smp <- unique(meta$SampleID) %>%
@@ -522,6 +550,7 @@ coord.smp <- unique(meta$SampleID) %>%
       select(row, col)
   })
 
+# Check NAs for sample 40
 sum(map_int(names(coord.smp$s40), ~ sum(is.na(coord.smp$s40[.x]))))
 
 nrow(expr.smp$s40) == nrow(coord.smp$s40)
@@ -600,18 +629,7 @@ indifference which will conclusively be 40).
 if ("misty_views_smp.RDS" %in% list.files("data")) {
   misty.views.smp <- readRDS("data/misty_views_smp.RDS")
 } else {
-  cv.folds = 10
   misty.views.smp <- map2(expr.smp, coord.smp, function(expr, coord) {
-    
-    # Check for zero variance (otherwise MISTy throws an error)
-    target.var <- apply(expr, 2, stats::sd, na.rm = TRUE)
-    expr <- expr %>% select(-names(which(target.var == 0)))
-    
-    # Check for how many unique values
-    target.unique <- colnames(expr) %>%
-      purrr::set_names() %>%
-      purrr::map_int(~ length(unique(expr %>% pull(.x))))
-    expr <- expr %>% select(names(target.unique[target.unique > cv.folds]))
     
     # Create views and run MISTy
     create_initial_view(expr) %>%
@@ -765,3 +783,125 @@ all.measures %>%
         axis.text.x.bottom = element_text(vjust = 0.4)) +
   scale_colour_manual(values = colors) 
 ```
+
+## Contributions
+
+```{r}
+all.contributions <- map2_dfr(results.smp, names(results.smp), 
+                              function(smp, name) {
+  smp$contributions %>%
+    select(target, view, value) %>%
+    filter(!str_starts(view, "p\\."), view != "intercept") %>%
+    mutate(sample = name)
+  })
+
+sum.contributions <- all.contributions %>%
+  group_by(target, view) %>%
+  summarise(sum = sum(value)) %>% 
+  # remove negative values here?
+  mutate(sum = ifelse(sum < 0, 0, sum)) %>%
+  pivot_wider(names_from = view, values_from = sum) %>%
+  # harcoded names here!
+  mutate(total = sum(intra, juxta.40, para.120)) %>%
+  mutate(rel.intra = intra/total,
+         rel.juxta = juxta.40/total,
+         rel.para = para.120/total) %>%
+  select(c(starts_with("rel"), target)) %>%
+  pivot_longer(cols = starts_with("rel"))
+
+ggplot(sum.contributions, aes(x = target, y = value)) +
+  geom_col(aes(group = name, fill = name)) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_classic() +
+  labs(x = "Target", y = "Contribution") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Visualizing the contriubtions using boxplots for each target, we can 
+see again the the intra and the paraview are most important, whereas
+the juxtaview is rather unimportant.
+
+```{r fig.width=6, fig.height=8}
+all.contributions %>%
+  ggplot() +
+  geom_boxplot(aes(x=view, y=value), 
+               col = rep(c("forestgreen", "tomato", "slateblue"), 36)) +
+  facet_wrap(~ target) +
+  labs(x = "Target", y = "Contribution") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+## Importances
+
+How should we aggregate the importances?
+
+```{r}
+all.importances <- map2_dfr(results.smp, names(results.smp), 
+                              function(smp, name) {
+  smp$importances %>%
+    mutate(sample = name)
+  })
+```
+
+For example summing up the importances from all samples like that:
+
+```{r fig.height=6, fig.width=14}
+all.importances %>%
+  group_by(view, Predictor, Target) %>%
+  summarise(Sum.Imp = sum(Importance)) %>%
+  ggplot(aes(x = Predictor, y = Target)) +
+    geom_tile(aes(fill = Sum.Imp)) +
+    facet_wrap(~ view, ncol = 3) +
+    theme_classic() +
+    theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) +
+    coord_equal() +
+    scale_fill_viridis_c()
+```
+
+Or rather taking the mean like that?
+
+```{r fig.height=6, fig.width=14}
+all.importances %>%
+  group_by(view, Predictor, Target) %>%
+  summarise(Mean.Imp = mean(Importance)) %>%
+  ggplot(aes(x = Predictor, y = Target)) +
+    geom_tile(aes(fill = Mean.Imp)) +
+    facet_wrap(~ view, ncol = 3) +
+    theme_classic() +
+    theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) +
+    coord_equal() +
+    scale_fill_viridis_c()
+```
+
+# Save data
+
+```{r}
+saveRDS(expr.smp, "data/expression_per_sample.RDS")
+saveRDS(meta, "data/meta_data.RDS")
+
+# Generating Sample Meta Data
+immune.counts <- meta %>%
+  group_by(SampleID) %>%
+  count(Group) %>%
+  pivot_wider(names_from = Group, values_from = n,
+              names_prefix = "Count.")
+
+total.counts <- meta %>%
+  count(SampleID) %>%
+  rename(Count.Total = n)
+
+mixing.score <- round(
+  contacts.smp %>% 
+    mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
+    pull(ratio.tumor.immune),
+  2)
+
+sample.meta <- patient.info %>%
+  filter(SampleID != 30) %>%
+  mutate(ratio.tumor.immune = mixing.score) %>%
+  inner_join(immune.counts, by = "SampleID") %>%
+  inner_join(total.counts, by = "SampleID")
+
+saveRDS(sample.meta, "data/sample_meta.RDS")
+```
+

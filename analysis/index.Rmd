@@ -8,10 +8,18 @@ editor_options:
   chunk_output_type: console
 ---
 
-Analysis of spatial proteomics dataset from "A Structured Tumor-Immune 
-Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion 
-Beam Imaging" by L. Keren et al. (https://dx.doi.org/10.1016/j.cell.2018.08.039)
+# Analysis of multiplexed ion beam imaging (spatial proteomics) dataset from "A Structured Tumor-Immune Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion Beam Imaging" by Keren, L. et al.
 
-Click below to see the analysis results:
+## DOI: https://dx.doi.org/10.1016/j.cell.2018.08.039
+## Journal: Cell 174, 1373-1387.e19 (2018).
+  
+# What kind of analysis were conducted?
 
-[Results](MIBI_Analysis.html)
+- "Exploratory Data Analysis" contains the preliminary analysis of the data
+including visualization about the abundance of different cell types, 
+composition of the different samples, results for running MISTy on
+all cells in each sample.
+
+- "MISTy Stratification" contains a fine grained analysis of the spatial
+data by using MISTy with certain subsets of the data only including 
+certain cell types.

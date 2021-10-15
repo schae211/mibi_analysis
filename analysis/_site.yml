@@ -5,8 +5,10 @@ navbar:
   left:
   - text: Home
     href: index.html
-  - text: Analysis
+  - text: Exploratory Data Analysis
     href: MIBI_Analysis.html
+  - text: MISTy Stratification
+    href: MISTy_Stratification.html
   right:
   - icon: fa-github
     text: Source code
