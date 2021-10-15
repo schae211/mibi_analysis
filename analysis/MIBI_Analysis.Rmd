@@ -148,6 +148,9 @@ meta %>%
 
 How were the cells actually classified?
 
+<details>
+<summary>Click here for more details</summary>
+
 When looking at the first two principal components, we see quite a clear
 distinction though the first plot suffers from overplotting. Plotting only
 2 percent of the points makes things a little bit better.
@@ -161,16 +164,39 @@ ggplot() +
 subs <- sample(nrow(pca$x), .02*nrow(pca$x))
 ggplot() +
   geom_point(aes(x=pca$x[subs,1], pca$x[subs,2], 
-                 color = meta$Group[subs]), size = 0.1)
+                 color = meta$Group[subs]), size = 0.2)
 ```
 
 Cluster the cells using the leiden algorithm? Omitting here, because
 it is computiationally quite expensive.
 
-```{r eval=FALSE}
-nn <- RANN::nn2(expr, k = 50)
-leiden.clusts <- leiden::leiden(nn)
+```{r}
+snn <- bluster::makeSNNGraph(pca$x[,1:20], k = 20)
+clust.louvain <- igraph::cluster_louvain(snn)$membership
+table(clust.louvain)
 ```
+
+How are the marker distributed in the clusters?
+
+```{r fig.width=6, fig.height=6}
+# Making Psuedobulks per cluster
+expr.matrix <- as.matrix(
+  expr %>%
+    select(- c("Background", "P", "Si", "Au", "Na", "Ca", "Ta", "dsDNA",
+               "Fe"))
+)
+pseudobulk <- as.matrix(
+  map_dfr(unique(clust.louvain), function(i) {
+    colSums(expr.matrix[clust.louvain == i,])
+  })
+)
+rownames(pseudobulk) <- unique(clust.louvain)
+
+# Plotting Heatmap
+pheatmap::pheatmap(t(pseudobulk))
+```
+
+</details>
 
 Next we will have a closer look at the immune populations. And according
 to the number of cells present, macrophages and T-cells are the major
@@ -197,21 +223,10 @@ expr %>%
   facet_wrap(~ marker, scales = "free")
 ```
 
-The same plot with a log10 x-axis (thus all 0 value were removed) 
-and no free scales.
-
-```{r fig.height=12, fig.width=18}
-expr %>%
-  pivot_longer(cols = everything(), names_to = "marker", values_to = "expression") %>%
-  ggplot() +
-  geom_histogram(aes(x=expression), bins = 100) +
-  facet_wrap(~ marker) +
-  scale_x_log10()
-```
-
 Looking at the boxplot for the expression per marker over all samples, ignoring
 outliers which are defined as points which includes all points outside of 
-median ± 1.5 * IQR (interquantile range), we can again the broad variablity.
+median ± 1.5 * IQR (interquantile range), we can again see the broad
+variablity.
 
 ```{r}
 expr %>%
@@ -220,6 +235,16 @@ expr %>%
   geom_boxplot(aes(y=expression, x=marker), outlier.shape = NA) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   coord_cartesian(ylim = c(-5, 5))
+```
+
+Focusing on the measured proteins, the most highly expressed species 
+(according to the mean) were:
+
+```{r}
+tibble(marker = colnames(expr), mean.expression = colMeans(expr)) %>%
+  filter(!(marker %in% c("Ta", "Au", "P", "Si", "C", "Na", "Ca", "Fe", 
+                         "dsDNA", "Backgrond"))) %>%
+  slice_max(mean.expression, n=6)
 ```
 
 # Spatial Data
@@ -248,7 +273,11 @@ meta %>%
 
 ## Mixing Score
 
-Calculating the mixing score.
+Calculating the mixing score by counting for all immune cells in each
+sample how many contacts to they have to cancer cells divided by the 
+contacts to other immune cells. The contacts are determined by
+Delaunay Triangulation and cells are only considered to be neighbors
+if the distance between them is below 40.
 
 ```{r}
 coord.type.smp <- unique(meta$SampleID) %>%
@@ -301,19 +330,42 @@ contacts.smp %>%
   ggplot() +
   geom_bar(aes(x=sample, y=ratio.tumor.immune), stat="identity") +
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+```
 
+Looking at the samples with the top mixing score.
+
+```{r fig.width=12, fig.height=4}
 contacts.smp %>%
   mutate(sample = names(coord.type.smp)) %>%
   mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
   arrange(desc(ratio.tumor.immune)) %>%
   slice_max(ratio.tumor.immune, n=6)
 
+meta %>%
+  filter(SampleID %in% c(15, 18, 22, 24)) %>%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size = .1) +
+  facet_wrap(~ SampleID, ncol = 4) + 
+  guides(colour = guide_legend(override.aes = list(size = 4)))
+```
+
+Looking at the samples with the lowest mixing score.
+
+```{r fig.width=12, fig.height=4}
 contacts.smp %>%
   mutate(sample = names(coord.type.smp)) %>%
   mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
   arrange(desc(ratio.tumor.immune)) %>%
   slice_min(ratio.tumor.immune, n=6)
+
+meta %>%
+  filter(SampleID %in% c(35, 28, 16, 37)) %>%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size = .1) +
+  facet_wrap(~ SampleID, ncol = 4) + 
+  guides(colour = guide_legend(override.aes = list(size = 4)))
 ```
+
 
 And we can see that those mixing scores resemble exactly what we see
 in the visualization.
@@ -328,7 +380,8 @@ calculated center of mass.
 meta %>%
   filter(SampleID == 40) %>%
   ggplot() +
-  geom_point(aes(x = row, y = col, col = Group), size=.4)
+  geom_point(aes(x = row, y = col, col = Group), size=.4)  + 
+  guides(colour = guide_legend(override.aes = list(size = 2)))
 ```
 
 And furthermore, we will look at the tiff to.
@@ -355,13 +408,19 @@ df <- binary.df %>%
   pivot_longer(cols = !(row), names_to = "col") %>%
   mutate(row = as.numeric(row), col = as.numeric(col))
 
+subs <- sample(nrow(df), .1 * nrow(df))
+
 df %>%
+  slice(n = subs) %>%
+  mutate(cell.present = value) %>%
   ggplot() +
-  geom_point(aes(x=row, y=col, col=value), size=.1) +
+  geom_point(aes(x=row, y=col, col=cell.present), size=.1) +
   theme(
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
-    axis.ticks = element_blank())
+    axis.ticks = element_blank()) +
+  scale_colour_manual(values = c("TRUE" = "green2", "FALSE" = "blue1"))  + 
+  guides(colour = guide_legend(override.aes = list(size = 2)))
 ```
 
 Second, we will visualize the tiff and the labeled center of mass together.
@@ -378,11 +437,12 @@ tiff.40 <- df %>%
 ggplot() +
   geom_point(data = tiff.40, aes(x=row, y=col), col="black", 
              size = 0.1, stroke = 0, shape = 16) +
-  geom_point(data = s.40, aes(x=row, y=col, col=Group), size = 1) +
+  geom_point(data = s.40, aes(x=row, y=col, col=Group), size = .5) +
   theme(
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
-    axis.ticks = element_blank())
+    axis.ticks = element_blank())  + 
+  guides(colour = guide_legend(override.aes = list(size = 2)))
 ```
 
 To qualitatively assess the performance of the segmentation we will furthermore
@@ -437,8 +497,6 @@ ggplot() +
 ggplot(labels.40) +
   geom_label(aes(x = row, y = col, label = value), size = 2.5)
 ```
-
-
 
 # Run MISTy on all samples
 
@@ -507,7 +565,8 @@ mean.dists.direct.neighbors <- map(coord.smp, function(smp) {
 # histogram
 ggplot(data.frame(dist = mean.dists.direct.neighbors)) +
   geom_histogram(aes(dist), bins = 100) +
-  lims(x = c(0,100))
+  lims(x = c(0,100)) +
+  geom_vline(xintercept = 40, col = "blue")
 
 # summary
 summary(mean.dists.direct.neighbors)
@@ -532,7 +591,8 @@ neighbor.dists %>%
   ggplot() +
   geom_histogram(aes(value), bins = 100) +
   facet_wrap(~ name) +
-  lims(x = c(0, 200))
+  lims(x = c(0, 200)) +
+  geom_vline(xintercept = 120, col = "blue")
 ```
 
 ## Generating the MISTy views
@@ -618,7 +678,7 @@ if ("misty_results_earth_smp.RDS" %in% list.files("data")) {
 Checking whether things worked (for sample 1).
 
 ```{r fig.height=14, fig.width=20}
-plot_diagnostics(earth.results.smp$s1, name="s1")
+plot_diagnostics(earth.results.smp$s1, name="s1", low = .5)
 ```
 
 # Aggregating results
@@ -741,5 +801,15 @@ all %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
+# Ideas
 
+Do the analysis again, but stratify by certain features.
+
+a) Whether the tumors are compartimentalized or not (see mixing score)
+
+b) Patient information (e.g. grade of the tumor)
+
+c) Composition of the tissue (e.g. what kind of immune cells are present?)
+
+d) 
 

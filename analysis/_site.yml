@@ -5,12 +5,8 @@ navbar:
   left:
   - text: Home
     href: index.html
-  - text: About
-    href: about.html
   - text: Analysis
     href: MIBI_Analysis.html
-  - text: License
-    href: license.html
   right:
   - icon: fa-github
     text: Source code
