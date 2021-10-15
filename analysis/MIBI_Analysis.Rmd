@@ -148,9 +148,6 @@ meta %>%
 
 How were the cells actually classified?
 
-<details>
-<summary>Click here for more details</summary>
-
 When looking at the first two principal components, we see quite a clear
 distinction though the first plot suffers from overplotting. Plotting only
 2 percent of the points makes things a little bit better.
@@ -195,8 +192,6 @@ rownames(pseudobulk) <- unique(clust.louvain)
 # Plotting Heatmap
 pheatmap::pheatmap(t(pseudobulk))
 ```
-
-</details>
 
 Next we will have a closer look at the immune populations. And according
 to the number of cells present, macrophages and T-cells are the major
@@ -683,7 +678,7 @@ plot_diagnostics(earth.results.smp$s1, name="s1", low = .5)
 
 # Aggregating results
 
-## Ranger Gain R2
+## Preparation
 
 ```{r}
 targets <- unique(results.smp$s1$improvements$target)
@@ -696,27 +691,7 @@ ranger.measures <- map_dfr(targets, function(tar) {
       mutate(sample = n)
   })
 })
-```
 
-```{r}
-ranger.measures %>%
-  filter(measure == "gain.R2") %>%
-  group_by(target) %>%
-  summarise(mean.gain = mean(value)) %>%
-  ggplot() +
-  geom_bar(aes(x = target, y = mean.gain), stat="identity") +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
-
-ranger.measures %>%
-  filter(measure == "gain.R2") %>%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
-```
-
-## Earth R2 gain
-
-```{r}
 earth.measures <- map_dfr(targets, function(tar) {
   map2_dfr(earth.results.smp, names(earth.results.smp), function(smp, n) {
     smp$improvements %>%
@@ -725,91 +700,68 @@ earth.measures <- map_dfr(targets, function(tar) {
       mutate(sample = n)
   })
 })
-```
 
-```{r}
-earth.measures %>%
-  filter(measure == "gain.R2") %>%
-  group_by(target) %>%
-  summarise(mean.gain = mean(value)) %>%
-  ggplot() +
-  geom_bar(aes(x = target, y = mean.gain), stat="identity") +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
-
-earth.measures %>%
-  filter(measure == "gain.R2") %>%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+all.measures <- rbind(
+  ranger.measures %>% mutate(method = "ranger"),
+  earth.measures %>% mutate(method = "earth")
+)
 ```
 
 ## Comparison of Ranger and Earth results
 
-### Multi R2
-
-```{r fig.width=8, fig.height=8}
-tmp1 <- ranger.measures %>% mutate(method = "ranger")
-tmp2 <- earth.measures %>% mutate(method = "earth")
-all <- rbind(tmp1, tmp2)
-all %>%
-  filter(measure == "multi.R2") %>%
-  ggplot() +
-  geom_boxplot(aes(x=target, y=value)) +
-  facet_wrap(~ method, nrow=2) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+```{r}
+colors <- c("earth" = "forestgreen", "ranger" = "blue1")
 ```
+
+```{r}
+plot_comparison <- function(df, m) {
+  df %>%
+  filter(measure == m) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=method)) +
+  labs(title = m) +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_colour_manual(values = colors) +
+  theme(axis.text.x.bottom = element_text(vjust = 0.4))
+}
+```
+
 
 ### Gain R2
 
+So overall the see the same trend for earth (MARS) and ranger (RF), but
+the performance of ranger is better in almost all cases. The gain in 
+variance explained and overall R2 of the multiview are consistently 
+higher.
+
 ```{r fig.width=10, fig.height=6}
-m <- "gain.R2"
-all %>%
-  mutate(new_target = paste0(target, "_", method)) %>%
-  filter(measure == m) %>%
-  ggplot() +
-  geom_boxplot(aes(x=new_target, y=value, col=method)) +
-  labs(title = m) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5))
+plot_comparison(all.measures, "gain.R2")
 ```
 
 ### Multi R2
 
 ```{r fig.width=10, fig.height=6}
-m <- "multi.R2"
-all %>%
-  mutate(new_target = paste0(target, "_", method)) %>%
-  filter(measure == m) %>%
-  ggplot() +
-  geom_boxplot(aes(x=new_target, y=value, col=method)) +
-  labs(title = m) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5))
+plot_comparison(all.measures, "multi.R2")
 ```
 
 ### Intra R2
 
 ```{r fig.width=10, fig.height=6}
-m <- "intra.R2"
-all %>%
-  mutate(new_target = paste0(target, "_", method)) %>%
-  filter(measure == m) %>%
-  ggplot() +
-  geom_boxplot(aes(x=new_target, y=value, col=method)) +
-  labs(title = m) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5))
+plot_comparison(all.measures, "intra.R2")
 ```
 
-# Ideas
+### All in one plot
 
-Do the analysis again, but stratify by certain features.
-
-a) Whether the tumors are compartimentalized or not (see mixing score)
-
-b) Patient information (e.g. grade of the tumor)
-
-c) Composition of the tissue (e.g. what kind of immune cells are present?)
-
-d) 
-
+```{r fig.width=10, fig.height=14}
+all.measures %>%
+  mutate(measure = factor(measure, 
+                          levels = c("gain.R2", "multi.R2", "intra.R2"))) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col = method)) +
+  facet_wrap(~ measure, ncol = 1, scales = "free") +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5),
+        axis.text.x.bottom = element_text(vjust = 0.4)) +
+  scale_colour_manual(values = colors) 
+```
