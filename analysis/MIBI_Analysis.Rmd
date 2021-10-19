@@ -542,7 +542,6 @@ sample.meta <- patient.info %>%
   left_join(patient.info.paper, by = c("SampleID" = "InternalId"))
 ```
 
-
 # Run MISTy on all samples
 
 ## Preparation
