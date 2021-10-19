@@ -31,3 +31,7 @@ all cells in each sample.
 
 Running MISTy on certain cell type subsets only considering effects from
 another subset for the calculation of the paraview.
+
+## Model Comparison
+
+Internal Benchmark

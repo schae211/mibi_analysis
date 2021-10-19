@@ -1,5 +1,5 @@
 ---
-title: "MISTy_Stratification"
+title: "Cell Type-specific Analysis"
 output:
   html_document:
     toc: true

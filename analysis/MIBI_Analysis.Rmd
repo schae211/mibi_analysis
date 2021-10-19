@@ -1,5 +1,5 @@
 ---
-title: "Exploratory Data Analysis MiBi"
+title: "Exploratory Data Analysis MIBI"
 output:
   html_document:
     toc: true
@@ -679,7 +679,7 @@ neighbor.dists %>%
 
 ## Generating the MISTy views
 
-Based on the data above, I am ging to use a neighbor threshold of 40 for
+Based on the data above, I am going to use a neighbor threshold of 40 for
 the juxtaview and a cutoff of 120 for the paraview (plus the zone of
 indifference which will conclusively be 40).
 
@@ -687,7 +687,7 @@ indifference which will conclusively be 40).
 if ("misty_views_smp.RDS" %in% list.files("data")) {
   misty.views.smp <- readRDS("data/misty_views_smp.RDS")
 } else {
-  misty.views.smp <- map2(expr.smp, coord.smp, function(expr, coord) {
+  misty.views.smp <- map(expr.smp, coord.smp, function(expr, coord) {
     
     # Create views and run MISTy
     create_initial_view(expr) %>%
@@ -698,6 +698,8 @@ if ("misty_views_smp.RDS" %in% list.files("data")) {
   saveRDS(misty.views.smp, "data/misty_views_smp.RDS")
 }
 ```
+
+## Using Random Forest
 
 Running with RF as ML algorithm to build the view-specific models.
 
@@ -721,56 +723,7 @@ if ("ranger.results.RDS" %in% list.files("data")) {
 mistyR::plot_improvement_stats(ranger.results)
 ```
 
-Running with MARS as ML algorithm to build the view-specific models.
-
-```{r}
-if ("earth.results.RDS" %in% list.files("data")) {
-  earth.results <- readRDS("data/earth.results.RDS")
-} else {
-  cv.folds = 10
-  earth.results.folders <- map2(
-    misty.views.smp, names(misty.views.smp), function(smp, name) {
-      
-      smp %>% run_misty(results.folder = paste0("analysis/results/earth_", name),
-                        cv.folds = cv.folds, method = "bag", learner = "earth")
-    })
-  earth.results <- collect_results(earth.results.folders)
-  saveRDS(earth.results, "data/earth.results.RDS")
-}
-```
-
-```{r}
-mistyR::plot_improvement_stats(earth.results)
-```
-
-# Comparing the results
-
-## Improvements
-
-```{r fig.width=10, fig.height=14}
-colors <- c("earth" = "forestgreen", "ranger" = "blue1")
-
-all.improvements <- rbind(
-  ranger.results$improvements %>% mutate(method = "ranger"),
-  earth.results$improvements %>% mutate(method = "earth")
-)
-
-all.improvements %>%
-  filter(measure %in% c("gain.R2", "multi.R2", "intra.R2")) %>%
-  mutate(measure = factor(measure, 
-                          levels = c("gain.R2", "multi.R2", "intra.R2"))) %>%
-  ggplot() +
-  geom_boxplot(aes(x=target, y=value, col = method)) +
-  facet_wrap(~ measure, ncol = 1, scales = "free") +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5),
-        axis.text.x.bottom = element_text(vjust = 0.4)) +
-  scale_colour_manual(values = colors)
-```
-
 ## View Contributions
-
-Random Forest (ranger):
 
 ```{r}
 mistyR::plot_view_contributions(ranger.results)
@@ -787,37 +740,12 @@ ranger.results$contributions %>%
   facet_wrap(~ view, ncol = 1)
 ```
 
-MARS (earth):
-
-```{r}
-mistyR::plot_view_contributions(earth.results)
-```
-
-```{r fig.width=6, fig.height=6}
-earth.results$contributions %>%
-  filter(!str_starts(view, "p\\."), view != "intercept") %>%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ view, ncol = 1)
-```
-
 ## Importances
-
-Random Forest
 
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(ranger.results, view = "intra", clean = TRUE)
 mistyR::plot_interaction_heatmap(ranger.results, view = "juxta.40", clean = TRUE)
 mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
-```
-
-MARS
-
-```{r fig.width=6, fig.height=6}
-mistyR::plot_interaction_heatmap(earth.results, view = "intra", clean = TRUE)
-mistyR::plot_interaction_heatmap(earth.results, view = "juxta.40", clean = TRUE)
-mistyR::plot_interaction_heatmap(earth.results, view = "para.120", clean = TRUE)
 ```
 
 ## Signature

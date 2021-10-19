@@ -9,6 +9,8 @@ navbar:
     href: MIBI_Analysis.html
   - text: Cell Type Specific Analysis
     href: MISTy_Stratification.html
+  - text: Model Comparison
+    href: Model_Comparison.html
   right:
   - icon: fa-github
     text: Source code

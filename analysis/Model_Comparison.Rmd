@@ -1,0 +1,174 @@
+---
+title: "Model Comparison"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+---
+
+# Set up
+
+Messages will be hidden and the output collapsed to make the Rmd more clear.
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+```
+
+Loaded packages.
+
+```{r}
+library(mistyR)
+library(future)
+plan("multisession", workers=14)
+library(tidyverse)
+```
+
+Loading data generated in MIBI_Analysis.Rmd
+
+```{r}
+meta <- readRDS("data/meta_data.RDS")
+all.expr <- readRDS("data/expression.RDS")
+meta.smp <- readRDS("data/sample_meta.RDS")
+misty.views.smp <- readRDS("data/misty_views_smp.RDS")
+```
+
+# Introduction
+
+To extend the functionality of MISTy a new API was implemented to model
+the different views which are ultimatively combined in a linear meta model.
+This analysis is supposed to test how these new models work on real-world 
+datasets.
+
+# Running MISTy
+
+The MISTy views were generated with the following parameters:
+
+- Intraview: Default
+- Juxtaview: l = 40
+- Paraview: l = 120, zoi = 40
+
+## Random Forest
+
+```{r}
+if ("ranger.results.RDS" %in% list.files("data")) {
+  ranger.results <- readRDS("data/ranger.results.RDS")
+} else {
+  cv.folds = 10
+  ranger.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/ranger_", name),
+                        cv.folds = cv.folds)
+    })
+  ranger.results <- collect_results(ranger.results.folders)
+  saveRDS(ranger.results, "data/ranger.results.RDS")
+}
+```
+
+```{r}
+mistyR::plot_improvement_stats(ranger.results)
+```
+
+## MARS (Multivariante Adaptive Regression Splines)
+
+Running with MARS as ML algorithm to build the view-specific models.
+
+```{r}
+if ("earth.results.RDS" %in% list.files("data")) {
+  earth.results <- readRDS("data/earth.results.RDS")
+} else {
+  cv.folds = 10
+  earth.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/earth_", name),
+                        cv.folds = cv.folds, method = "bag", learner = "earth")
+    })
+  earth.results <- collect_results(earth.results.folders)
+  saveRDS(earth.results, "data/earth.results.RDS")
+}
+```
+
+```{r}
+mistyR::plot_improvement_stats(earth.results)
+```
+
+# Comparing the results
+
+## Improvements
+
+```{r fig.width=10, fig.height=14}
+colors <- c("earth" = "forestgreen", "ranger" = "blue1")
+
+all.improvements <- rbind(
+  ranger.results$improvements %>% mutate(method = "ranger"),
+  earth.results$improvements %>% mutate(method = "earth")
+)
+
+all.improvements %>%
+  filter(measure %in% c("gain.R2", "multi.R2", "intra.R2")) %>%
+  mutate(measure = factor(measure, 
+                          levels = c("gain.R2", "multi.R2", "intra.R2"))) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col = method)) +
+  facet_wrap(~ measure, ncol = 1, scales = "free") +
+  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
+        plot.title = element_text(hjust = 0.5),
+        axis.text.x.bottom = element_text(vjust = 0.4)) +
+  scale_colour_manual(values = colors)
+```
+
+## View Contributions
+
+Random Forest (ranger):
+
+```{r}
+mistyR::plot_view_contributions(ranger.results)
+```
+
+Also looking at the variability.
+
+```{r fig.width=6, fig.height=6}
+ranger.results$contributions %>%
+  filter(!str_starts(view, "p\\."), view != "intercept") %>%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ view, ncol = 1)
+```
+
+MARS (earth):
+
+```{r}
+mistyR::plot_view_contributions(earth.results)
+```
+
+```{r fig.width=6, fig.height=6}
+earth.results$contributions %>%
+  filter(!str_starts(view, "p\\."), view != "intercept") %>%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ view, ncol = 1)
+```
+
+## Importances
+
+Random Forest
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_interaction_heatmap(ranger.results, view = "intra", clean = TRUE)
+mistyR::plot_interaction_heatmap(ranger.results, view = "juxta.40", clean = TRUE)
+mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
+```
+
+MARS
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_interaction_heatmap(earth.results, view = "intra", clean = TRUE)
+mistyR::plot_interaction_heatmap(earth.results, view = "juxta.40", clean = TRUE)
+mistyR::plot_interaction_heatmap(earth.results, view = "para.120", clean = TRUE)
+```
+
