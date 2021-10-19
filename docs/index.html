@@ -336,7 +336,7 @@ div.tocify {
   <a href="MIBI_Analysis.html">Exploratory Data Analysis</a>
 </li>
 <li>
-  <a href="MISTy_Stratification.html">MISTy Stratification</a>
+  <a href="MISTy_Stratification.html">Cell Type Specific Analysis</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -363,7 +363,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -372,7 +372,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -384,7 +384,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-10-19
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -400,28 +400,28 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree4a538bcb31dceab5f313177e2c248a122f8cff1dtargetblank4a538bca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/4a538bcb31dceab5f313177e2c248a122f8cff1d" target="_blank">4a538bc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreee0b969bc0e51cdab42864e50d5fec0681d7269a2targetblanke0b969ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/e0b969bc0e51cdab42864e50d5fec0681d7269a2" target="_blank">e0b969b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree4a538bcb31dceab5f313177e2c248a122f8cff1dtargetblank4a538bca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreee0b969bc0e51cdab42864e50d5fec0681d7269a2targetblanke0b969ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/4a538bcb31dceab5f313177e2c248a122f8cff1d" target="_blank">4a538bc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/e0b969bc0e51cdab42864e50d5fec0681d7269a2" target="_blank">e0b969b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -430,14 +430,15 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    analysis/figure/
     Ignored:    analysis/results/
-    Ignored:    data/alternative_coordinates.RDS
     Ignored:    data/cancer.immune.results.RDS
     Ignored:    data/cancer.immune.views.RDS
     Ignored:    data/cellData.csv
+    Ignored:    data/coord.RDS
     Ignored:    data/coordinates.csv
     Ignored:    data/earth.results.RDS
     Ignored:    data/expression.RDS
     Ignored:    data/expression_per_sample.RDS
+    Ignored:    data/graph.clusters.RDS
     Ignored:    data/meta_data.RDS
     Ignored:    data/misty_views_smp.RDS
     Ignored:    data/patient_class.csv
@@ -448,7 +449,7 @@ Ignored files:
 
 Unstaged changes:
     Modified:   .gitignore
-    Modified:   analysis/index.Rmd
+    Deleted:    data/wget-log
 
 </code></pre>
 <p>
@@ -487,6 +488,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/e0b969bc0e51cdab42864e50d5fec0681d7269a2/analysis/index.Rmd" target="_blank">e0b969b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+<td>
+reorder, commenting
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f50056ee87acd9287c1eafe940a6e76e1816fc7d/analysis/index.Rmd" target="_blank">f50056e</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+<td>
+minor fix to index.html
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/f50056ee87acd9287c1eafe940a6e76e1816fc7d/docs/index.html" target="_blank">f50056e</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+<td>
+minor fix to index.html
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -681,21 +733,22 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<div id="analysis-of-multiplexed-ion-beam-imaging-spatial-proteomics-dataset-from-a-structured-tumor-immune-microenvironment-in-triple-negative-breast-cancer-revealed-by-multiplexed-ion-beam-imaging-by-keren-l.-et-al." class="section level1">
-<h1>Analysis of multiplexed ion beam imaging (spatial proteomics) dataset from “A Structured Tumor-Immune Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion Beam Imaging” by Keren, L. et al.</h1>
-<div id="doi-httpsdx.doi.org10.1016j.cell.2018.08.039" class="section level2">
-<h2>DOI: <a href="https://dx.doi.org/10.1016/j.cell.2018.08.039" class="uri">https://dx.doi.org/10.1016/j.cell.2018.08.039</a></h2>
+<div id="data-description" class="section level1">
+<h1>Data Description</h1>
+<p>Multiplexed Ion Beam Imaging (spatial proteomics) dataset from “A Structured Tumor-Immune Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion Beam Imaging” by Keren, L. et al.</p>
+<p>DOI: <a href="https://dx.doi.org/10.1016/j.cell.2018.08.039" class="uri">https://dx.doi.org/10.1016/j.cell.2018.08.039</a></p>
+<p>Journal: Cell 174, 1373-1387.e19 (2018).</p>
 </div>
-<div id="journal-cell-174-1373-1387.e19-2018." class="section level2">
-<h2>Journal: Cell 174, 1373-1387.e19 (2018).</h2>
+<div id="file-descriptions" class="section level1">
+<h1>File Descriptions</h1>
+<div id="exploratory-data-analysis" class="section level2">
+<h2>Exploratory Data Analysis</h2>
+<p>Exploratory and preliminary analysis of the data including visualization about the abundance of different cell types, composition of the different samples, results for running MISTy on all cells in each sample.</p>
 </div>
+<div id="cell-type-specific-analysis" class="section level2">
+<h2>Cell Type Specific Analysis</h2>
+<p>Running MISTy on certain cell type subsets only considering effects from another subset for the calculation of the paraview.</p>
 </div>
-<div id="what-kind-of-analysis-were-conducted" class="section level1">
-<h1>What kind of analysis were conducted?</h1>
-<ul>
-<li><p>“Exploratory Data Analysis” contains the preliminary analysis of the data including visualization about the abundance of different cell types, composition of the different samples, results for running MISTy on all cells in each sample.</p></li>
-<li><p>“MISTy Stratification” contains a fine grained analysis of the spatial data by using MISTy with certain subsets of the data only including certain cell types.</p></li>
-</ul>
 </div>
 
 
