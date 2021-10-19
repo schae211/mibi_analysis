@@ -499,16 +499,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree667692d0d3718ce16d77103dd0057d627c9edf2dtargetblank667692da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/667692d0d3718ce16d77103dd0057d627c9edf2d" target="_blank">667692d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree05d78a4a58a256efbae877923c581ce0cb6c972atargetblank05d78a4a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/05d78a4a58a256efbae877923c581ce0cb6c972a" target="_blank">05d78a4</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree667692d0d3718ce16d77103dd0057d627c9edf2dtargetblank667692da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree05d78a4a58a256efbae877923c581ce0cb6c972atargetblank05d78a4a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/667692d0d3718ce16d77103dd0057d627c9edf2d" target="_blank">667692d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/05d78a4a58a256efbae877923c581ce0cb6c972a" target="_blank">05d78a4</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -571,6 +571,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/05d78a4a58a256efbae877923c581ce0cb6c972a/analysis/MIBI_Analysis.Rmd" target="_blank">05d78a4</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+<td>
+changing toc
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/MIBI_Analysis.html" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1030,8 +1064,8 @@ expr %&gt;% slice_head(n=6)
 #   HLA-DR &lt;dbl&gt;, CD11b &lt;dbl&gt;, CD45 &lt;dbl&gt;, H3K9ac &lt;dbl&gt;, Pan-Keratin &lt;dbl&gt;,
 #   H3K27me3 &lt;dbl&gt;, phospho-S6 &lt;dbl&gt;, MPO &lt;dbl&gt;, Keratin6 &lt;dbl&gt;, …</code></pre>
 </div>
-<div id="metadata" class="section level1">
-<h1>Metadata</h1>
+<div id="meta-data" class="section level1">
+<h1>Meta Data</h1>
 <div id="cell-counts" class="section level2">
 <h2>Cell Counts</h2>
 <p>Number of cells per sample. Curiously sample 30 is missing.</p>
@@ -1367,8 +1401,8 @@ schae211
 </div>
 </div>
 </div>
-<div id="distribution-of-the-markers" class="section level1">
-<h1>Distribution of the markers</h1>
+<div id="count-data" class="section level1">
+<h1>Count Data</h1>
 <p>Histograms per marker over all samples. We can see that that there is a huge variability in the expression of different markers. The measured entities other than proteins (Au, Background, Beta catentin, C, Ca, Fe, Si, Ta) were later excluded from the analysis with MISTy.</p>
 <p>How were the “counts” normalized?</p>
 <p>According to the readme.rtf the markers were normalized by dividing the counts by the cell size and transforming with arcsinh (inverse hyperbolic sine).</p>
@@ -1554,6 +1588,8 @@ schae211
 </div>
 <div id="spatial-data" class="section level1">
 <h1>Spatial Data</h1>
+<div id="general" class="section level2">
+<h2>General</h2>
 <p>What is the scale?</p>
 <p>1 Pixel corresponds to about 390 nm.</p>
 <p>We will first look at the spatial data from all samples in one plot. The cell types are annotated according to the information the authors of the original study provided.</p>
@@ -1643,6 +1679,7 @@ schae211
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 <div id="mixing-score" class="section level2">
@@ -1942,8 +1979,8 @@ schae211
 </div>
 <p>And we can see that those mixing scores resemble exactly what we see in the images.</p>
 </div>
-<div id="validate-processing-using-sample-40" class="section level2">
-<h2>Validate Processing using Sample 40</h2>
+<div id="sample-40" class="section level2">
+<h2>Sample 40</h2>
 <p>Looking more closely at sample 40 to make sure that the preprocessing went right. First, we will look at the cells only using their calculated center of mass.</p>
 <pre class="r"><code>meta %&gt;%
   filter(SampleID == 40) %&gt;%
@@ -2400,8 +2437,8 @@ schae211
 </div>
 </div>
 </div>
-<div id="merging-sample-metadata" class="section level1">
-<h1>Merging Sample Metadata</h1>
+<div id="merging-metadata" class="section level1">
+<h1>Merging Metadata</h1>
 <pre class="r"><code># Generating Sample Meta Data
 immune.counts &lt;- meta %&gt;%
   group_by(SampleID) %&gt;%
@@ -2730,8 +2767,8 @@ schae211
   saveRDS(misty.views.smp, &quot;data/misty_views_smp.RDS&quot;)
 }</code></pre>
 </div>
-<div id="using-random-forest" class="section level2">
-<h2>Using Random Forest</h2>
+<div id="random-forest-implementation" class="section level2">
+<h2>Random Forest Implementation</h2>
 <p>Running with RF as ML algorithm to build the view-specific models.</p>
 <pre class="r"><code>if (&quot;ranger.results.RDS&quot; %in% list.files(&quot;data&quot;)) {
   ranger.results &lt;- readRDS(&quot;data/ranger.results.RDS&quot;)
@@ -2858,6 +2895,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">cdd0218</a>
 </td>
 <td>
@@ -2947,6 +2995,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" target="_blank">cdd0218</a>
 </td>
 <td>
@@ -3020,6 +3079,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-1.png" target="_blank">cdd0218</a>
@@ -3105,6 +3175,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-2.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-2.png" target="_blank">81cfa53</a>
 </td>
 <td>
@@ -3131,9 +3212,46 @@ schae211
 </div>
 <pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;para.120&quot;, clean = TRUE)</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-37-3.png" width="576" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-37-3">
+Past versions of unnamed-chunk-37-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-37-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-3.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="signature" class="section level2">
-<h2>Signature</h2>
+</div>
+</div>
+<div id="signatures" class="section level2">
+<h2>Signatures</h2>
 <div id="performance" class="section level3">
 <h3>Performance</h3>
 <pre class="r"><code>ranger.perf.sig &lt;- mistyR::extract_signature(ranger.results, &quot;performance&quot;)
@@ -3165,6 +3283,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-39-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-39-1.png" target="_blank">cdd0218</a>
@@ -3251,6 +3380,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-40-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-40-1.png" target="_blank">cdd0218</a>
@@ -3341,6 +3481,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-41-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-41-1.png" target="_blank">cdd0218</a>
 </td>
 <td>
@@ -3418,6 +3569,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-42-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-42-1.png" target="_blank">cdd0218</a>
 </td>
 <td>
@@ -3482,6 +3644,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-43-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-43-1.png" target="_blank">cdd0218</a>
@@ -3553,6 +3726,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-45-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-45-1.png" target="_blank">cdd0218</a>
 </td>
 <td>
@@ -3615,6 +3799,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-46-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-46-1.png" target="_blank">cdd0218</a>
@@ -3680,6 +3875,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" target="_blank">5c6e1e1</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" target="_blank">cdd0218</a>
