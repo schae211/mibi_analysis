@@ -540,7 +540,6 @@ sample.meta <- patient.info %>%
                    Classification == 2 ~ "cold")) %>% 
   mutate(SampleID = as.character(SampleID)) %>%
   left_join(patient.info.paper, by = c("SampleID" = "InternalId"))
-View(sample.meta)
 ```
 
 
@@ -830,8 +829,7 @@ ggplot() +
 ```
 
 Color by the log of the tumor.immune ration (see calculation above). This is
-basically a measurement of the mixing score (dividing the number of contact
-of tumor-tumor by tumor-immune contacts).
+basically a measurement of the mixing score (number of immune-tumor interactions divided by the number of immune-immune interactions).
 
 ```{r}
 ggplot() +
