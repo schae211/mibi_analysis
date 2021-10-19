@@ -129,7 +129,7 @@ expr <- data %>%
 expr %>% slice_head(n=6)
 ```
 
-# Metadata
+# Meta Data
 
 ## Cell Counts
 
@@ -232,7 +232,7 @@ rownames(pseudobulk) <- unique(graph.clusters)
 pheatmap::pheatmap(t(pseudobulk))
 ```
 
-# Distribution of the markers
+# Count Data
 
 Histograms per marker over all samples. We can see that that there is a huge
 variability in the expression of different markers. The measured entities 
@@ -277,6 +277,8 @@ tibble(marker = colnames(expr), mean.expression = colMeans(expr)) %>%
 ```
 
 # Spatial Data
+
+## General
 
 What is the scale?
 
@@ -391,7 +393,7 @@ meta %>%
 And we can see that those mixing scores resemble exactly what we see
 in the images.
 
-## Validate Processing using Sample 40
+## Sample 40
 
 Looking more closely at sample 40 to make sure that the preprocessing
 went right. First, we will look at the cells only using their
@@ -524,7 +526,7 @@ ggplot(labels.40) +
   geom_label(aes(x = row, y = col, label = value), size = 2.5)
 ```
 
-# Merging Sample Metadata
+# Merging Metadata
 
 ```{r}
 # Generating Sample Meta Data
@@ -699,7 +701,7 @@ if ("misty_views_smp.RDS" %in% list.files("data")) {
 }
 ```
 
-## Using Random Forest
+## Random Forest Implementation
 
 Running with RF as ML algorithm to build the view-specific models.
 
@@ -748,7 +750,7 @@ mistyR::plot_interaction_heatmap(ranger.results, view = "juxta.40", clean = TRUE
 mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
 ```
 
-## Signature
+## Signatures
 
 ### Performance
 
