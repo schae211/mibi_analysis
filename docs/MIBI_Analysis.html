@@ -11,7 +11,7 @@
 
 
 
-<title>Exploratory Data Analysis MiBi</title>
+<title>Exploratory Data Analysis MIBI</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -338,6 +338,9 @@ div.tocify {
 <li>
   <a href="MISTy_Stratification.html">Cell Type Specific Analysis</a>
 </li>
+<li>
+  <a href="Model_Comparison.html">Model Comparison</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -356,7 +359,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Exploratory Data Analysis MiBi</h1>
+<h1 class="title toc-ignore">Exploratory Data Analysis MIBI</h1>
 
 </div>
 
@@ -496,16 +499,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreee0b969bc0e51cdab42864e50d5fec0681d7269a2targetblanke0b969ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/e0b969bc0e51cdab42864e50d5fec0681d7269a2" target="_blank">e0b969b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree667692d0d3718ce16d77103dd0057d627c9edf2dtargetblank667692da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/667692d0d3718ce16d77103dd0057d627c9edf2d" target="_blank">667692d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreee0b969bc0e51cdab42864e50d5fec0681d7269a2targetblanke0b969ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree667692d0d3718ce16d77103dd0057d627c9edf2dtargetblank667692da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/e0b969bc0e51cdab42864e50d5fec0681d7269a2" target="_blank">e0b969b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/667692d0d3718ce16d77103dd0057d627c9edf2d" target="_blank">667692d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -529,10 +532,7 @@ Ignored files:
     Ignored:    data/raw_tiffs/
     Ignored:    data/sample_meta.RDS
     Ignored:    old_files/
-
-Unstaged changes:
-    Modified:   .gitignore
-    Deleted:    data/wget-log
+    Ignored:    results/
 
 </code></pre>
 <p>
@@ -571,6 +571,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/667692d0d3718ce16d77103dd0057d627c9edf2d/analysis/MIBI_Analysis.Rmd" target="_blank">667692d</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+<td>
+created file for comparing different models
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/MIBI_Analysis.html" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1146,6 +1180,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-13-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-13-1.png" target="_blank">8e9dacf</a>
 </td>
 <td>
@@ -1186,6 +1231,43 @@ schae211
                  color = meta$Group[subs]), size = 0.1) +
   guides(colour = guide_legend(override.aes = list(size = 2)))</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-13-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-2">
+Past versions of unnamed-chunk-13-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-13-2.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Clustering the cells using the Louvain algorithm.</p>
 <pre class="r"><code>if (&quot;graph.clusters.RDS&quot; %in% list.files(&quot;data&quot;)) {
   graph.clusters &lt;- readRDS(&quot;data/graph.clusters.RDS&quot;)
@@ -1235,6 +1317,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-15-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-15-1.png" target="_blank">8e9dacf</a>
@@ -1309,6 +1402,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-16-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-16-1.png" target="_blank">8e9dacf</a>
 </td>
 <td>
@@ -1374,6 +1478,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-17-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-17-1.png" target="_blank">81cfa53</a>
@@ -1471,6 +1586,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-19-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-19-1.png" target="_blank">8e9dacf</a>
@@ -1601,6 +1727,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-20-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-20-1.png" target="_blank">8e9dacf</a>
 </td>
 <td>
@@ -1679,6 +1816,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-21-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-21-1.png" target="_blank">8e9dacf</a>
 </td>
 <td>
@@ -1744,6 +1892,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-22-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-22-1.png" target="_blank">8e9dacf</a>
@@ -1814,6 +1973,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-23-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-23-1.png" target="_blank">81cfa53</a>
@@ -1896,6 +2066,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-25-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-25-1.png" target="_blank">8e9dacf</a>
 </td>
 <td>
@@ -1960,6 +2141,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-26-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-26-1.png" target="_blank">8e9dacf</a>
@@ -2064,6 +2256,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-27-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-27-1.png" target="_blank">81cfa53</a>
 </td>
 <td>
@@ -2136,6 +2339,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" target="_blank">81cfa53</a>
@@ -2344,6 +2558,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-31-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-31-1.png" target="_blank">81cfa53</a>
 </td>
 <td>
@@ -2452,6 +2677,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-31-2.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/ae4e33b49b41439e0120195a0bd8869816f68713/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-31-2.png" target="_blank">ae4e33b</a>
 </td>
 <td>
@@ -2479,11 +2715,11 @@ schae211
 </div>
 <div id="generating-the-misty-views" class="section level2">
 <h2>Generating the MISTy views</h2>
-<p>Based on the data above, I am ging to use a neighbor threshold of 40 for the juxtaview and a cutoff of 120 for the paraview (plus the zone of indifference which will conclusively be 40).</p>
+<p>Based on the data above, I am going to use a neighbor threshold of 40 for the juxtaview and a cutoff of 120 for the paraview (plus the zone of indifference which will conclusively be 40).</p>
 <pre class="r"><code>if (&quot;misty_views_smp.RDS&quot; %in% list.files(&quot;data&quot;)) {
   misty.views.smp &lt;- readRDS(&quot;data/misty_views_smp.RDS&quot;)
 } else {
-  misty.views.smp &lt;- map2(expr.smp, coord.smp, function(expr, coord) {
+  misty.views.smp &lt;- map(expr.smp, coord.smp, function(expr, coord) {
     
     # Create views and run MISTy
     create_initial_view(expr) %&gt;%
@@ -2493,6 +2729,9 @@ schae211
   names(misty.views.smp) &lt;- names(expr.smp)
   saveRDS(misty.views.smp, &quot;data/misty_views_smp.RDS&quot;)
 }</code></pre>
+</div>
+<div id="using-random-forest" class="section level2">
+<h2>Using Random Forest</h2>
 <p>Running with RF as ML algorithm to build the view-specific models.</p>
 <pre class="r"><code>if (&quot;ranger.results.RDS&quot; %in% list.files(&quot;data&quot;)) {
   ranger.results &lt;- readRDS(&quot;data/ranger.results.RDS&quot;)
@@ -2531,6 +2770,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-34-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-34-1.png" target="_blank">0d26834</a>
@@ -2579,22 +2829,100 @@ schae211
 </table>
 </div>
 </div>
-<p>Running with MARS as ML algorithm to build the view-specific models.</p>
-<pre class="r"><code>if (&quot;earth.results.RDS&quot; %in% list.files(&quot;data&quot;)) {
-  earth.results &lt;- readRDS(&quot;data/earth.results.RDS&quot;)
-} else {
-  cv.folds = 10
-  earth.results.folders &lt;- map2(
-    misty.views.smp, names(misty.views.smp), function(smp, name) {
-      
-      smp %&gt;% run_misty(results.folder = paste0(&quot;analysis/results/earth_&quot;, name),
-                        cv.folds = cv.folds, method = &quot;bag&quot;, learner = &quot;earth&quot;)
-    })
-  earth.results &lt;- collect_results(earth.results.folders)
-  saveRDS(earth.results, &quot;data/earth.results.RDS&quot;)
-}</code></pre>
-<pre class="r"><code>mistyR::plot_improvement_stats(earth.results)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="view-contributions" class="section level2">
+<h2>View Contributions</h2>
+<pre class="r"><code>mistyR::plot_view_contributions(ranger.results)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-35-1">
+Past versions of unnamed-chunk-35-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-35-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">0d26834</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c51680c847a670d86fd113c0baa4d4e94c51d75d/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">c51680c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-15
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/ae4e33b49b41439e0120195a0bd8869816f68713/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">ae4e33b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-14
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eea2c597d36c85d1da230a7f4c33caa7d6ce0c23/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-35-1.png" target="_blank">eea2c59</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-13
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Also looking at the variability.</p>
+<pre class="r"><code>ranger.results$contributions %&gt;%
+  filter(!str_starts(view, &quot;p\\.&quot;), view != &quot;intercept&quot;) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ view, ncol = 1)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-1">
 Past versions of unnamed-chunk-36-1.png
@@ -2617,6 +2945,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-36-1.png" target="_blank">0d26834</a>
@@ -2655,30 +2994,10 @@ schae211
 </div>
 </div>
 </div>
-</div>
-<div id="comparing-the-results" class="section level1">
-<h1>Comparing the results</h1>
-<div id="improvements" class="section level2">
-<h2>Improvements</h2>
-<pre class="r"><code>colors &lt;- c(&quot;earth&quot; = &quot;forestgreen&quot;, &quot;ranger&quot; = &quot;blue1&quot;)
-
-all.improvements &lt;- rbind(
-  ranger.results$improvements %&gt;% mutate(method = &quot;ranger&quot;),
-  earth.results$improvements %&gt;% mutate(method = &quot;earth&quot;)
-)
-
-all.improvements %&gt;%
-  filter(measure %in% c(&quot;gain.R2&quot;, &quot;multi.R2&quot;, &quot;intra.R2&quot;)) %&gt;%
-  mutate(measure = factor(measure, 
-                          levels = c(&quot;gain.R2&quot;, &quot;multi.R2&quot;, &quot;intra.R2&quot;))) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x=target, y=value, col = method)) +
-  facet_wrap(~ measure, ncol = 1, scales = &quot;free&quot;) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5),
-        axis.text.x.bottom = element_text(vjust = 0.4)) +
-  scale_colour_manual(values = colors)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-37-1.png" width="960" style="display: block; margin: auto;" /></p>
+<div id="importances" class="section level2">
+<h2>Importances</h2>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;intra&quot;, clean = TRUE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-37-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-37-1">
 Past versions of unnamed-chunk-37-1.png
@@ -2701,6 +3020,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-1.png" target="_blank">0d26834</a>
@@ -2749,18 +3079,14 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="view-contributions" class="section level2">
-<h2>View Contributions</h2>
-<p>Random Forest (ranger):</p>
-<pre class="r"><code>mistyR::plot_view_contributions(ranger.results)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;juxta.40&quot;, clean = TRUE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-37-2.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-38-1">
-Past versions of unnamed-chunk-38-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-37-2">
+Past versions of unnamed-chunk-37-2.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-38-1" class="collapse">
+<div id="fig-unnamed-chunk-37-2" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -2779,7 +3105,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-38-1.png" target="_blank">0d26834</a>
+<a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-2.png" target="_blank">81cfa53</a>
 </td>
 <td>
 schae211
@@ -2790,60 +3116,33 @@ schae211
 </tr>
 <tr>
 <td>
-<a href="https://github.com/schae211/mibi_analysis/blob/8e9dacfa8777eb9154805bde0ca621bd7a322f06/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-38-1.png" target="_blank">8e9dacf</a>
+<a href="https://github.com/schae211/mibi_analysis/blob/c51680c847a670d86fd113c0baa4d4e94c51d75d/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-37-2.png" target="_blank">c51680c</a>
 </td>
 <td>
 schae211
 </td>
 <td>
 2021-10-15
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/a042b5213bf7428521c849307427042bc346f9a9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-38-1.png" target="_blank">a042b52</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-15
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/c51680c847a670d86fd113c0baa4d4e94c51d75d/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-38-1.png" target="_blank">c51680c</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-15
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/ae4e33b49b41439e0120195a0bd8869816f68713/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-38-1.png" target="_blank">ae4e33b</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-14
 </td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<p>Also looking at the variability.</p>
-<pre class="r"><code>ranger.results$contributions %&gt;%
-  filter(!str_starts(view, &quot;p\\.&quot;), view != &quot;intercept&quot;) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ view, ncol = 1)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-39-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;para.120&quot;, clean = TRUE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-37-3.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="signature" class="section level2">
+<h2>Signature</h2>
+<div id="performance" class="section level3">
+<h3>Performance</h3>
+<pre class="r"><code>ranger.perf.sig &lt;- mistyR::extract_signature(ranger.results, &quot;performance&quot;)
+ranger.perf.pca &lt;- stats::prcomp(ranger.perf.sig %&gt;% select(-sample))</code></pre>
+<p>Color by Grade.</p>
+<pre class="r"><code>ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(sample.meta$GRADE)))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-39-1">
 Past versions of unnamed-chunk-39-1.png
@@ -2866,6 +3165,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-39-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-39-1.png" target="_blank">0d26834</a>
@@ -2914,8 +3224,10 @@ schae211
 </table>
 </div>
 </div>
-<p>MARS (earth):</p>
-<pre class="r"><code>mistyR::plot_view_contributions(earth.results)</code></pre>
+<p>Color by Classification.</p>
+<pre class="r"><code>ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(sample.meta$Classification)))</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-40-1">
@@ -2939,6 +3251,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-40-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-40-1.png" target="_blank">0d26834</a>
@@ -2987,13 +3310,13 @@ schae211
 </table>
 </div>
 </div>
-<pre class="r"><code>earth.results$contributions %&gt;%
-  filter(!str_starts(view, &quot;p\\.&quot;), view != &quot;intercept&quot;) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ view, ncol = 1)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-41-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Color by the log of the tumor.immune ration (see calculation above). This is basically a measurement of the mixing score (number of immune-tumor interactions divided by the number of immune-immune interactions).</p>
+<pre class="r"><code>ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=log10(sample.meta$ratio.tumor.immune))) +
+  scale_color_viridis_c()</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-1">
 Past versions of unnamed-chunk-41-1.png
@@ -3016,6 +3339,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-41-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-41-1.png" target="_blank">0d26834</a>
@@ -3053,12 +3387,13 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="importances" class="section level2">
-<h2>Importances</h2>
-<p>Random Forest</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;intra&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-42-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Color by total counts.</p>
+<pre class="r"><code>ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=sample.meta$Count.Total)) +
+  scale_color_viridis_c()</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-42-1">
 Past versions of unnamed-chunk-42-1.png
@@ -3081,6 +3416,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-42-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-42-1.png" target="_blank">81cfa53</a>
@@ -3107,13 +3453,13 @@ schae211
 </table>
 </div>
 </div>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;juxta.40&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-42-2.png" width="576" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;para.120&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-42-3.png" width="576" style="display: block; margin: auto;" /></p>
-<p>MARS</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(earth.results, view = &quot;intra&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-43-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Which factors drive the variance in the results?</p>
+<pre class="r"><code>fviz_pca_var(ranger.perf.pca, col.var=&quot;contrib&quot;,
+             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+             repel = TRUE)
+Warning: ggrepel: 33 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-43-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-43-1">
 Past versions of unnamed-chunk-43-1.png
@@ -3136,6 +3482,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-43-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-43-1.png" target="_blank">0d26834</a>
@@ -3162,20 +3519,14 @@ schae211
 </table>
 </div>
 </div>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(earth.results, view = &quot;juxta.40&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-43-2.png" width="576" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(earth.results, view = &quot;para.120&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-43-3.png" width="576" style="display: block; margin: auto;" /></p>
 </div>
-<div id="signature" class="section level2">
-<h2>Signature</h2>
-<div id="performance" class="section level3">
-<h3>Performance</h3>
-<pre class="r"><code>ranger.perf.sig &lt;- mistyR::extract_signature(ranger.results, &quot;performance&quot;)
-ranger.perf.pca &lt;- stats::prcomp(ranger.perf.sig %&gt;% select(-sample))</code></pre>
+<div id="importance" class="section level3">
+<h3>Importance</h3>
+<pre class="r"><code>ranger.imp.sig &lt;- mistyR::extract_signature(ranger.results, &quot;importance&quot;)
+ranger.imp.pca &lt;- stats::prcomp(ranger.imp.sig %&gt;% select(-sample))</code></pre>
 <p>Color by Grade.</p>
 <pre class="r"><code>ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
                  col=factor(sample.meta$GRADE)))</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3200,6 +3551,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-45-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-45-1.png" target="_blank">0d26834</a>
@@ -3228,7 +3590,7 @@ schae211
 </div>
 <p>Color by Classification.</p>
 <pre class="r"><code>ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
                  col=factor(sample.meta$Classification)))</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
@@ -3255,6 +3617,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-46-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-46-1.png" target="_blank">0d26834</a>
 </td>
 <td>
@@ -3279,12 +3652,11 @@ schae211
 </table>
 </div>
 </div>
-<p>Color by the log of the tumor.immune ration (see calculation above). This is basically a measurement of the mixing score (number of immune-tumor interactions divided by the number of immune-immune interactions).</p>
-<pre class="r"><code>ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], 
-                 y=ranger.perf.pca$x[,2],
-                 col=log10(sample.meta$ratio.tumor.immune))) +
-  scale_color_viridis_c()</code></pre>
+<pre class="r"><code>fviz_pca_var(ranger.imp.pca, col.var=&quot;contrib&quot;,
+             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+             repel = TRUE)
+Warning: ggrepel: 528 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-47-1">
@@ -3310,6 +3682,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" target="_blank">0d26834</a>
 </td>
 <td>
@@ -3323,126 +3706,6 @@ schae211
 </table>
 </div>
 </div>
-<p>Color by total counts.</p>
-<pre class="r"><code>ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], 
-                 y=ranger.perf.pca$x[,2],
-                 col=sample.meta$Count.Total)) +
-  scale_color_viridis_c()</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>Which factors drive the variance in the results?</p>
-<pre class="r"><code>fviz_pca_var(ranger.perf.pca, col.var=&quot;contrib&quot;,
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE)
-Warning: ggrepel: 33 unlabeled data points (too many overlaps). Consider
-increasing max.overlaps</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-49-1">
-Past versions of unnamed-chunk-49-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-49-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-49-1.png" target="_blank">0d26834</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-19
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="importance" class="section level3">
-<h3>Importance</h3>
-<pre class="r"><code>ranger.imp.sig &lt;- mistyR::extract_signature(ranger.results, &quot;importance&quot;)
-ranger.imp.pca &lt;- stats::prcomp(ranger.imp.sig %&gt;% select(-sample))</code></pre>
-<p>Color by Grade.</p>
-<pre class="r"><code>ggplot() +
-  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
-                 col=factor(sample.meta$GRADE)))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-51-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-51-1">
-Past versions of unnamed-chunk-51-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-51-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/81cfa5318c8c4141aeadbf763f38c98c2f0b0826/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-51-1.png" target="_blank">81cfa53</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-19
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-51-1.png" target="_blank">0d26834</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-19
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Color by Classification.</p>
-<pre class="r"><code>ggplot() +
-  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
-                 col=factor(sample.meta$Classification)))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>fviz_pca_var(ranger.imp.pca, col.var=&quot;contrib&quot;,
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE)
-Warning: ggrepel: 528 unlabeled data points (too many overlaps). Consider
-increasing max.overlaps</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-53-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
