@@ -12,6 +12,7 @@ analysis/site_libs
 data/*.RDS
 data/*.csv
 data/raw_tiffs/*.tiff
+data/*.RData
 
 results/
 old_files/
