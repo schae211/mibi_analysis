@@ -7,7 +7,7 @@ navbar:
     href: index.html
   - text: Exploratory Data Analysis
     href: MIBI_Analysis.html
-  - text: MISTy Stratification
+  - text: Cell Type Specific Analysis
     href: MISTy_Stratification.html
   right:
   - icon: fa-github

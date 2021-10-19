@@ -28,6 +28,9 @@ library("factoextra")
 
 # Loading and Processing Data
 
+The columns Group and ImmuneGroup in the cell metadata are translated from
+numbers to their actual meaning.
+
 ```{r}
 input <- read_csv("data/cellData.csv")
 
@@ -51,16 +54,16 @@ raw_data %>% slice_head(n=6)
 
 Add coordinates of the cells.
 
-Doing it in R takes quite some time but offers more control that the 
-[center of mass function in scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.center_of_mass.html)
+Doing it in R takes quite some time but offers more control than the 
+[center of mass function in scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.center_of_mass.html).
 
 ```{r}
-if ("alternative_coordinates.RDS" %in% list.files("data")) {
-  alternative.coord <- readRDS("data/alternative_coordinates.RDS")
+if ("coord.RDS" %in% list.files("data")) {
+  coord <- readRDS("data/coord.RDS")
 } else {
   library(tiff)
   lbs <- c(1:29, 31:41)
-  alternative.coord <- furrr::future_map_dfr(lbs, function(id) {
+  coord <- furrr::future_map_dfr(lbs, function(id) {
     print(id)
     # Read in raw matrix (in tiff format)
     tiff <- readTIFF(paste0("/home/philipp/data/saez/p", id, "_labeledcellData.tiff"),
@@ -82,7 +85,7 @@ if ("alternative_coordinates.RDS" %in% list.files("data")) {
       )
     })
   })
-  saveRDS(alternative.coord, file = "data/alternative_coordinates.RDS")
+  saveRDS(coord, file = "data/coord.RDS")
 }
 ```
 
@@ -90,7 +93,7 @@ Join the coordinates with the meta data.
 
 ```{r}
 data <- raw_data %>%
-  inner_join(alternative.coord, by = c("SampleID" = "id", 
+  inner_join(coord, by = c("SampleID" = "id", 
                                        "cellLabelInImage" = "i")) %>%
   rename(row = x.center, col = y.center)
 ```
@@ -101,7 +104,7 @@ in the end (segmentation errors?).
 
 ```{r}
 dplyr::setdiff(
-  alternative.coord %>% filter(id == 40) %>% pull(i),
+  coord %>% filter(id == 40) %>% pull(i),
   data %>% filter(SampleID == 40) %>% pull(cellLabelInImage)
   ) %>%
   length()
@@ -128,7 +131,9 @@ expr %>% slice_head(n=6)
 
 # Metadata
 
-Number of cells per sample. Curiously there is not sample 30.
+## Cell Counts
+
+Number of cells per sample. Curiously sample 30 is missing.
 
 ```{r}
 meta %>%
@@ -147,7 +152,19 @@ meta %>%
   arrange(desc(n))
 ```
 
-Patient data
+Next we will have a closer look at the immune populations. And according
+to the number of cells present, macrophages and T-cells are the major
+players, followed by B-cells.
+
+```{r}
+meta %>%
+  count(immuneGroup) %>%
+  arrange(desc(n))
+```
+
+## Patient/Sample Metadata
+
+Patient data provided with the raw data.
 
 ```{r}
 patient.info <- read_csv("data/patient_class.csv",
@@ -155,31 +172,44 @@ patient.info <- read_csv("data/patient_class.csv",
 patient.info %>% slice_head(n=6)
 ```
 
-How were the cells actually classified?
+```{r}
+patient.info.paper <- readxl::read_xlsx("data/mmc2.xlsx", 
+                                        skip = 1, col_names = TRUE)
+
+patient.info.paper %>% slice_head(n=6)
+```
+
+## Cell Annotation
+
+How were the cells actually annotated?
 
 When looking at the first two principal components, we see quite a clear
-distinction though the first plot suffers from overplotting. Plotting only
-2 percent of the points makes things a little bit better.
+distinction between tumor and immune cells.
+(Random subsetting used to reduce overplotting).
 
 ```{r}
 pca <- stats::prcomp(expr)
+subs <- sample(nrow(pca$x), .05*nrow(pca$x))
 ggplot() +
   geom_point(aes(x=seq_len(length(pca$sdev)), y = pca$sdev^2))
 ggplot() +
-  geom_point(aes(x=pca$x[,1], pca$x[,2], color = meta$Group), size = 0.1)
-subs <- sample(nrow(pca$x), .02*nrow(pca$x))
-ggplot() +
   geom_point(aes(x=pca$x[subs,1], pca$x[subs,2], 
-                 color = meta$Group[subs]), size = 0.2)
+                 color = meta$Group[subs]), size = 0.1) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))
 ```
 
-Cluster the cells using the leiden algorithm? Omitting here, because
-it is computiationally quite expensive.
+Clustering the cells using the Louvain algorithm.
 
 ```{r}
-snn <- bluster::makeSNNGraph(pca$x[,1:20], k = 20)
-clust.louvain <- igraph::cluster_louvain(snn)$membership
-table(clust.louvain)
+if ("graph.clusters.RDS" %in% list.files("data")) {
+  graph.clusters <- readRDS("data/graph.clusters.RDS")
+} else {
+  # shared nearest neighbor graph
+  snn <- bluster::makeSNNGraph(pca$x[,1:20], k = 20)
+  # louvain clustering
+  graph.clusters <- igraph::cluster_louvain(snn)$membership
+  saveRDS(graph.clusters, "data/graph.clusters.RDS")
+}
 ```
 
 How are the marker distributed in the clusters?
@@ -192,24 +222,14 @@ expr.matrix <- as.matrix(
                "Fe"))
 )
 pseudobulk <- as.matrix(
-  map_dfr(unique(clust.louvain), function(i) {
-    colSums(expr.matrix[clust.louvain == i,])
+  map_dfr(unique(graph.clusters), function(i) {
+    colSums(expr.matrix[graph.clusters == i,])
   })
 )
-rownames(pseudobulk) <- unique(clust.louvain)
+rownames(pseudobulk) <- unique(graph.clusters)
 
 # Plotting Heatmap
 pheatmap::pheatmap(t(pseudobulk))
-```
-
-Next we will have a closer look at the immune populations. And according
-to the number of cells present, macrophages and T-cells are the major
-players, followed by B-cells.
-
-```{r}
-meta %>%
-  count(immuneGroup) %>%
-  arrange(desc(n))
 ```
 
 # Distribution of the markers
@@ -218,6 +238,11 @@ Histograms per marker over all samples. We can see that that there is a huge
 variability in the expression of different markers. The measured entities 
 other than proteins (Au, Background, Beta catentin, C, Ca, Fe, Si, Ta) were
 later excluded from the analysis with MISTy.
+
+How were the "counts" normalized?
+
+According to the readme.rtf the markers were normalized by dividing the 
+counts by the cell size and transforming with arcsinh (inverse hyperbolic sine).
 
 ```{r fig.height=12, fig.width=18}
 expr %>%
@@ -230,7 +255,7 @@ expr %>%
 Looking at the boxplot for the expression per marker over all samples, ignoring
 outliers which are defined as points which includes all points outside of 
 median ± 1.5 * IQR (interquantile range), we can again see the broad
-variablity.
+variability.
 
 ```{r}
 expr %>%
@@ -242,7 +267,7 @@ expr %>%
 ```
 
 Focusing on the measured proteins, the most highly expressed species 
-(according to the mean) were:
+(according to the mean) are:
 
 ```{r}
 tibble(marker = colnames(expr), mean.expression = colMeans(expr)) %>%
@@ -253,7 +278,9 @@ tibble(marker = colnames(expr), mean.expression = colMeans(expr)) %>%
 
 # Spatial Data
 
-First, what is the scale? 1 Pixel corresponds to about 390 nm.
+What is the scale?
+
+1 Pixel corresponds to about 390 nm.
 
 We will first look at the spatial data from all samples in one plot. The
 cell types are annotated according to the information the authors of the 
@@ -263,11 +290,8 @@ As pointed out in their publication, one can see that there is a continuum
 between mixing of immune cells (yellow) and cancer tissue (green and blue).
 Either we can see a clear interface between both populations or they are
 totally mixed. This is actually associated with the clinical outcome.
-
-In principle I could stratify the samples based on this phenotype (using
-the same mixing score which was used in the paper, namely dividing the number
-of immune-tumor interactions (direct neighbors?) by the number of immune-immune
-interactions.
+Below this observation is quanitified by calculating a similar mixing score
+as they did in the original publication.
 
 ```{r fig.height=12, fig.width=18}
 meta %>%
@@ -286,6 +310,9 @@ Delaunay Triangulation and cells are only considered to be neighbors
 if the distance between them is below 40.
 
 ```{r}
+# Setting the distance threshold for what is considered a neighbor in the DT.
+neighbor.thr <- 40
+
 coord.type.smp <- unique(meta$SampleID) %>%
   set_names(paste0("s", .)) %>%
   map(function(id) {
@@ -305,8 +332,6 @@ get_neighbors <- function(ddobj, id) {
     ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
   )
 }
-
-neighbor.thr <- 40
 
 contacts.smp <- coord.type.smp %>%
   set_names() %>%
@@ -334,19 +359,16 @@ contacts.smp %>%
                          levels = names(coord.type.smp))) %>%
   mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
   ggplot() +
-  geom_bar(aes(x=sample, y=ratio.tumor.immune), stat="identity") +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) 
+  geom_bar(aes(x=reorder(sample, -ratio.tumor.immune), 
+               y=ratio.tumor.immune), 
+           stat="identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = "Sample", y = "Mixing Score")
 ```
 
-Looking at the samples with the top mixing score.
+Looking at the samples with the top mixing score, namely 15, 18, 22, 24.
 
 ```{r fig.width=12, fig.height=4}
-contacts.smp %>%
-  mutate(sample = names(coord.type.smp)) %>%
-  mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
-  arrange(desc(ratio.tumor.immune)) %>%
-  slice_max(ratio.tumor.immune, n=6)
-
 meta %>%
   filter(SampleID %in% c(15, 18, 22, 24)) %>%
   ggplot() +
@@ -355,15 +377,9 @@ meta %>%
   guides(colour = guide_legend(override.aes = list(size = 4)))
 ```
 
-Looking at the samples with the lowest mixing score.
+Looking at the samples with the lowest mixing score, namely 35, 28, 16, 37.
 
 ```{r fig.width=12, fig.height=4}
-contacts.smp %>%
-  mutate(sample = names(coord.type.smp)) %>%
-  mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
-  arrange(desc(ratio.tumor.immune)) %>%
-  slice_min(ratio.tumor.immune, n=6)
-
 meta %>%
   filter(SampleID %in% c(35, 28, 16, 37)) %>%
   ggplot() +
@@ -372,11 +388,10 @@ meta %>%
   guides(colour = guide_legend(override.aes = list(size = 4)))
 ```
 
-
 And we can see that those mixing scores resemble exactly what we see
-in the visualization.
+in the images.
 
-## Close up sample 40
+## Validate Processing using Sample 40
 
 Looking more closely at sample 40 to make sure that the preprocessing
 went right. First, we will look at the cells only using their
@@ -456,7 +471,7 @@ To qualitatively assess the performance of the segmentation we will furthermore
 look at a close up of sample 40, more specifically the region from row 0 to
 row 600 and from col 1448 to col 2048. And we can see
 that the center of mass (colored point) mostly matches the cell boundaries,
-but not always! Moreover, in a second plot the cell ids were plotted.
+but not always!
 
 ```{r fig.height=8, fig.width=10}
 c.max <- dim(binary)[1]
@@ -500,12 +515,16 @@ ggplot() +
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank())
+```
 
+Here are the corresponding IDs for comparison to the meta data.
+
+```{r}
 ggplot(labels.40) +
   geom_label(aes(x = row, y = col, label = value), size = 2.5)
 ```
 
-# Sample Metadata
+# Merging Sample Metadata
 
 ```{r}
 # Generating Sample Meta Data
@@ -525,9 +544,6 @@ mixing.score <- round(
     pull(ratio.tumor.immune),
   2)
 
-patient.info.paper <- readxl::read_xlsx("data/mmc2.xlsx", 
-                                        skip = 1, col_names = TRUE)
-
 sample.meta <- patient.info %>%
   filter(SampleID != 30) %>%
   mutate(ratio.tumor.immune = as.vector(mixing.score)) %>%
@@ -540,6 +556,8 @@ sample.meta <- patient.info %>%
                    Classification == 2 ~ "cold")) %>% 
   mutate(SampleID = as.character(SampleID)) %>%
   left_join(patient.info.paper, by = c("SampleID" = "InternalId"))
+
+sample.meta %>% slice_head(n=6)
 ```
 
 # Run MISTy on all samples
