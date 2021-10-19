@@ -1,11 +1,10 @@
 ---
 title: "Home"
-site: workflowr::wflow_site
 output:
-  workflowr::wflow_html:
+  html_document:
     toc: false
-editor_options:
-  chunk_output_type: console
+    toc_float: false
+    theme: united
 ---
 
 # Analysis of multiplexed ion beam imaging (spatial proteomics) dataset from "A Structured Tumor-Immune Microenvironment in Triple Negative Breast Cancer Revealed by Multiplexed Ion Beam Imaging" by Keren, L. et al.
