@@ -23,6 +23,7 @@ library(mistyR)
 library(future)
 plan("multisession", workers=14)
 library(tidyverse)
+library("factoextra")
 ```
 
 # Loading and Processing Data
@@ -150,7 +151,7 @@ Patient data
 
 ```{r}
 patient.info <- read_csv("data/patient_class.csv",
-                         col_names = c("SampleID", "Grade"))
+                         col_names = c("SampleID", "Classification"))
 patient.info %>% slice_head(n=6)
 ```
 
@@ -251,6 +252,8 @@ tibble(marker = colnames(expr), mean.expression = colMeans(expr)) %>%
 ```
 
 # Spatial Data
+
+First, what is the scale? 1 Pixel corresponds to about 390 nm.
 
 We will first look at the spatial data from all samples in one plot. The
 cell types are annotated according to the information the authors of the 
@@ -502,6 +505,45 @@ ggplot(labels.40) +
   geom_label(aes(x = row, y = col, label = value), size = 2.5)
 ```
 
+# Sample Metadata
+
+```{r}
+# Generating Sample Meta Data
+immune.counts <- meta %>%
+  group_by(SampleID) %>%
+  count(Group) %>%
+  pivot_wider(names_from = Group, values_from = n,
+              names_prefix = "Count.")
+
+total.counts <- meta %>%
+  count(SampleID) %>%
+  rename(Count.Total = n)
+
+mixing.score <- round(
+  contacts.smp %>% 
+    mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
+    pull(ratio.tumor.immune),
+  2)
+
+patient.info.paper <- readxl::read_xlsx("data/mmc2.xlsx", 
+                                        skip = 1, col_names = TRUE)
+
+sample.meta <- patient.info %>%
+  filter(SampleID != 30) %>%
+  mutate(ratio.tumor.immune = as.vector(mixing.score)) %>%
+  inner_join(immune.counts, by = "SampleID") %>%
+  inner_join(total.counts, by = "SampleID") %>%
+  # see paper Figure 3, Panel C
+  mutate(Classification = 
+         case_when(Classification == 0 ~ "mixed",
+                   Classification == 1 ~ "compartimentalized",
+                   Classification == 2 ~ "cold")) %>% 
+  mutate(SampleID = as.character(SampleID)) %>%
+  left_join(patient.info.paper, by = c("SampleID" = "InternalId"))
+View(sample.meta)
+```
+
+
 # Run MISTy on all samples
 
 ## Preparation
@@ -641,138 +683,64 @@ if ("misty_views_smp.RDS" %in% list.files("data")) {
 }
 ```
 
+Running with RF as ML algorithm to build the view-specific models.
+
 ```{r}
-if ("misty_results_smp.RDS" %in% list.files("data")) {
-  results.smp <- readRDS("data/misty_results_smp.RDS")
+if ("ranger.results.RDS" %in% list.files("data")) {
+  ranger.results <- readRDS("data/ranger.results.RDS")
 } else {
   cv.folds = 10
-  results.smp <- misty.views.smp %>%
-    set_names() %>%
-    map(function(smp) {
-      smp %>%
-        run_misty(cv.folds = cv.folds) %>%
-        collect_results()
+  ranger.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/ranger_", name),
+                        cv.folds = cv.folds)
     })
-  names(results.smp) <- names(expr.smp)
-  saveRDS(results.smp, "data/misty_results_smp.RDS")
+  ranger.results <- collect_results(ranger.results.folders)
+  saveRDS(ranger.results, "data/ranger.results.RDS")
 }
 ```
 
 ```{r}
-source("code/custom_plotting.R")
+mistyR::plot_improvement_stats(ranger.results)
 ```
 
-Checking whether things worked (for sample 1).
-
-```{r fig.height=14, fig.width=20}
-plot_diagnostics(results.smp$s1, name="s1", low = 0.5)
-```
+Running with MARS as ML algorithm to build the view-specific models.
 
 ```{r}
-if ("misty_results_earth_smp.RDS" %in% list.files("data")) {
-  earth.results.smp <- readRDS("data/misty_results_earth_smp.RDS")
+if ("earth.results.RDS" %in% list.files("data")) {
+  earth.results <- readRDS("data/earth.results.RDS")
 } else {
   cv.folds = 10
-  earth.results.smp <- misty.views.smp %>%
-    set_names() %>%
-    map(function(smp) {
-      smp %>%
-        run_misty(cv.folds = cv.folds, 
-                  method = "bag", 
-                  learner = "earth",
-                  n.learners = 100) %>%
-        collect_results()
+  earth.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/earth_", name),
+                        cv.folds = cv.folds, method = "bag", learner = "earth")
     })
-  names(earth.results.smp) <- names(expr.smp)
-  saveRDS(earth.results.smp, "data/misty_results_earth_smp.RDS")
+  earth.results <- collect_results(earth.results.folders)
+  saveRDS(earth.results, "data/earth.results.RDS")
 }
 ```
 
-Checking whether things worked (for sample 1).
-
-```{r fig.height=14, fig.width=20}
-plot_diagnostics(earth.results.smp$s1, name="s1", low = .5)
-```
-
-# Aggregating results
-
-## Preparation
-
 ```{r}
-targets <- unique(results.smp$s1$improvements$target)
-
-ranger.measures <- map_dfr(targets, function(tar) {
-  map2_dfr(results.smp, names(results.smp), function(smp, n) {
-    smp$improvements %>%
-      filter(target == tar) %>%
-      filter(measure %in% c("intra.R2", "multi.R2", "gain.R2")) %>%
-      mutate(sample = n)
-  })
-})
-
-earth.measures <- map_dfr(targets, function(tar) {
-  map2_dfr(earth.results.smp, names(earth.results.smp), function(smp, n) {
-    smp$improvements %>%
-      filter(target == tar) %>%
-      filter(measure %in% c("intra.R2", "multi.R2", "gain.R2")) %>%
-      mutate(sample = n)
-  })
-})
-
-all.measures <- rbind(
-  ranger.measures %>% mutate(method = "ranger"),
-  earth.measures %>% mutate(method = "earth")
-)
+mistyR::plot_improvement_stats(earth.results)
 ```
 
-## Comparison of Ranger and Earth results
+# Comparing the results
 
-```{r}
-colors <- c("earth" = "forestgreen", "ranger" = "blue1")
-```
-
-```{r}
-plot_comparison <- function(df, m) {
-  df %>%
-  filter(measure == m) %>%
-  ggplot() +
-  geom_boxplot(aes(x=target, y=value, col=method)) +
-  labs(title = m) +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5)) +
-  scale_colour_manual(values = colors) +
-  theme(axis.text.x.bottom = element_text(vjust = 0.4))
-}
-```
-
-
-### Gain R2
-
-So overall the see the same trend for earth (MARS) and ranger (RF), but
-the performance of ranger is better in almost all cases. The gain in 
-variance explained and overall R2 of the multiview are consistently 
-higher.
-
-```{r fig.width=10, fig.height=6}
-plot_comparison(all.measures, "gain.R2")
-```
-
-### Multi R2
-
-```{r fig.width=10, fig.height=6}
-plot_comparison(all.measures, "multi.R2")
-```
-
-### Intra R2
-
-```{r fig.width=10, fig.height=6}
-plot_comparison(all.measures, "intra.R2")
-```
-
-### All in one plot
+## Improvements
 
 ```{r fig.width=10, fig.height=14}
-all.measures %>%
+colors <- c("earth" = "forestgreen", "ranger" = "blue1")
+
+all.improvements <- rbind(
+  ranger.results$improvements %>% mutate(method = "ranger"),
+  earth.results$improvements %>% mutate(method = "earth")
+)
+
+all.improvements %>%
+  filter(measure %in% c("gain.R2", "multi.R2", "intra.R2")) %>%
   mutate(measure = factor(measure, 
                           levels = c("gain.R2", "multi.R2", "intra.R2"))) %>%
   ggplot() +
@@ -781,127 +749,151 @@ all.measures %>%
   theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
         plot.title = element_text(hjust = 0.5),
         axis.text.x.bottom = element_text(vjust = 0.4)) +
-  scale_colour_manual(values = colors) 
+  scale_colour_manual(values = colors)
 ```
 
-## Contributions
+## View Contributions
+
+Random Forest (ranger):
 
 ```{r}
-all.contributions <- map2_dfr(results.smp, names(results.smp), 
-                              function(smp, name) {
-  smp$contributions %>%
-    select(target, view, value) %>%
-    filter(!str_starts(view, "p\\."), view != "intercept") %>%
-    mutate(sample = name)
-  })
-
-sum.contributions <- all.contributions %>%
-  group_by(target, view) %>%
-  summarise(sum = sum(value)) %>% 
-  # remove negative values here?
-  mutate(sum = ifelse(sum < 0, 0, sum)) %>%
-  pivot_wider(names_from = view, values_from = sum) %>%
-  # harcoded names here!
-  mutate(total = sum(intra, juxta.40, para.120)) %>%
-  mutate(rel.intra = intra/total,
-         rel.juxta = juxta.40/total,
-         rel.para = para.120/total) %>%
-  select(c(starts_with("rel"), target)) %>%
-  pivot_longer(cols = starts_with("rel"))
-
-ggplot(sum.contributions, aes(x = target, y = value)) +
-  geom_col(aes(group = name, fill = name)) +
-  scale_fill_brewer(palette = "Set2") +
-  theme_classic() +
-  labs(x = "Target", y = "Contribution") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+mistyR::plot_view_contributions(ranger.results)
 ```
 
-Visualizing the contriubtions using boxplots for each target, we can 
-see again the the intra and the paraview are most important, whereas
-the juxtaview is rather unimportant.
+Also looking at the variability.
 
-```{r fig.width=6, fig.height=8}
-all.contributions %>%
+```{r fig.width=6, fig.height=6}
+ranger.results$contributions %>%
+  filter(!str_starts(view, "p\\."), view != "intercept") %>%
   ggplot() +
-  geom_boxplot(aes(x=view, y=value), 
-               col = rep(c("forestgreen", "tomato", "slateblue"), 36)) +
-  facet_wrap(~ target) +
-  labs(x = "Target", y = "Contribution") +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ view, ncol = 1)
+```
+
+MARS (earth):
+
+```{r}
+mistyR::plot_view_contributions(earth.results)
+```
+
+```{r fig.width=6, fig.height=6}
+earth.results$contributions %>%
+  filter(!str_starts(view, "p\\."), view != "intercept") %>%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ view, ncol = 1)
 ```
 
 ## Importances
 
-How should we aggregate the importances?
+Random Forest
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_interaction_heatmap(ranger.results, view = "intra", clean = TRUE)
+mistyR::plot_interaction_heatmap(ranger.results, view = "juxta.40", clean = TRUE)
+mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
+```
+
+MARS
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_interaction_heatmap(earth.results, view = "intra", clean = TRUE)
+mistyR::plot_interaction_heatmap(earth.results, view = "juxta.40", clean = TRUE)
+mistyR::plot_interaction_heatmap(earth.results, view = "para.120", clean = TRUE)
+```
+
+## Signature
+
+### Performance
 
 ```{r}
-all.importances <- map2_dfr(results.smp, names(results.smp), 
-                              function(smp, name) {
-  smp$importances %>%
-    mutate(sample = name)
-  })
+ranger.perf.sig <- mistyR::extract_signature(ranger.results, "performance")
+ranger.perf.pca <- stats::prcomp(ranger.perf.sig %>% select(-sample))
 ```
 
-For example summing up the importances from all samples like that:
+Color by Grade.
 
-```{r fig.height=6, fig.width=14}
-all.importances %>%
-  group_by(view, Predictor, Target) %>%
-  summarise(Sum.Imp = sum(Importance)) %>%
-  ggplot(aes(x = Predictor, y = Target)) +
-    geom_tile(aes(fill = Sum.Imp)) +
-    facet_wrap(~ view, ncol = 3) +
-    theme_classic() +
-    theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) +
-    coord_equal() +
-    scale_fill_viridis_c()
+```{r}
+ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(sample.meta$GRADE)))
 ```
 
-Or rather taking the mean like that?
+Color by Classification.
 
-```{r fig.height=6, fig.width=14}
-all.importances %>%
-  group_by(view, Predictor, Target) %>%
-  summarise(Mean.Imp = mean(Importance)) %>%
-  ggplot(aes(x = Predictor, y = Target)) +
-    geom_tile(aes(fill = Mean.Imp)) +
-    facet_wrap(~ view, ncol = 3) +
-    theme_classic() +
-    theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) +
-    coord_equal() +
-    scale_fill_viridis_c()
+```{r}
+ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(sample.meta$Classification)))
+```
+
+Color by the log of the tumor.immune ration (see calculation above). This is
+basically a measurement of the mixing score (dividing the number of contact
+of tumor-tumor by tumor-immune contacts).
+
+```{r}
+ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=log10(sample.meta$ratio.tumor.immune))) +
+  scale_color_viridis_c()
+```
+
+Color by total counts.
+
+```{r}
+ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=sample.meta$Count.Total)) +
+  scale_color_viridis_c()
+```
+
+Which factors drive the variance in the results?
+
+```{r}
+fviz_pca_var(ranger.perf.pca, col.var="contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
+```
+
+### Importance
+
+```{r}
+ranger.imp.sig <- mistyR::extract_signature(ranger.results, "importance")
+ranger.imp.pca <- stats::prcomp(ranger.imp.sig %>% select(-sample))
+```
+
+Color by Grade.
+
+```{r}
+ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=factor(sample.meta$GRADE)))
+```
+
+Color by Classification.
+
+```{r}
+ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=factor(sample.meta$Classification)))
+```
+
+```{r}
+fviz_pca_var(ranger.imp.pca, col.var="contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
 ```
 
 # Save data
 
 ```{r}
+saveRDS(expr, "data/expression.RDS")
 saveRDS(expr.smp, "data/expression_per_sample.RDS")
 saveRDS(meta, "data/meta_data.RDS")
-
-# Generating Sample Meta Data
-immune.counts <- meta %>%
-  group_by(SampleID) %>%
-  count(Group) %>%
-  pivot_wider(names_from = Group, values_from = n,
-              names_prefix = "Count.")
-
-total.counts <- meta %>%
-  count(SampleID) %>%
-  rename(Count.Total = n)
-
-mixing.score <- round(
-  contacts.smp %>% 
-    mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
-    pull(ratio.tumor.immune),
-  2)
-
-sample.meta <- patient.info %>%
-  filter(SampleID != 30) %>%
-  mutate(ratio.tumor.immune = mixing.score) %>%
-  inner_join(immune.counts, by = "SampleID") %>%
-  inner_join(total.counts, by = "SampleID")
-
 saveRDS(sample.meta, "data/sample_meta.RDS")
 ```
 

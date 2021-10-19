@@ -1,0 +1,300 @@
+---
+title: "MISTy_Stratification"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+---
+
+# Set up
+
+Messages will be hidden and the output collapsed to make the Rmd more clear.
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+```
+
+Loaded packages.
+
+```{r}
+library(mistyR)
+library(future)
+plan("multisession", workers=14)
+library(tidyverse)
+```
+
+Loading data generated in MIBI_Analysis.Rmd
+
+```{r}
+meta <- readRDS("data/meta_data.RDS")
+all.expr <- readRDS("data/expression.RDS")
+meta.smp <- readRDS("data/sample_meta.RDS")
+```
+
+# Rationale
+
+I think running MISTy on stratified samples does not make sense since we can
+easily stratify the results later on based on certain features such as
+tumor grade, tumor classification, etc. and whether we include a certain
+sample does not change the MISTy results for another sample.
+
+Therefore, stratification makes more sense on the level of units (here 
+single cells) for example by running MISTy only on immune cells and using
+only cancer cells to create the paraview. This way we could try to find out
+which tumor markers influence the immune cell/response.
+
+# Compute the views
+
+Parameters
+
+```{r}
+cv.folds <- 10
+```
+
+## Tumor -> Immune
+
+Import the get_weight function.
+
+```{r}
+# only removed the constant part here.
+get_weight <- function(family = c("gaussian", "exponential", "linear"),
+                       distances, parameter, zoi) {
+  expr.family <- match.arg(family)
+  
+  distances[distances < zoi] <- Inf
+  dim.orig <- dim(distances)
+  
+  switch(expr.family,
+    "gaussian" = {
+      exp(-distances^2 / parameter^2)
+    },
+    "exponential" = {
+      exp(-distances / parameter)
+    },
+    "linear" = {
+      weights <- pmax(0, 1 - distances / parameter)
+      dim(weights) <- dim.orig
+      weights
+    }
+  )
+}
+```
+
+Show how the cancer -> immune views are genereated for the first sample.
+
+```{r}
+# Get expression, positions, and types for a sample
+expr <- all.expr[meta$SampleID == 1, ] %>% select(11:47)
+pos <- meta %>% filter(SampleID == 1) %>% select(row, col)
+types <- meta %>% filter(SampleID == 1) %>% pull(Group)
+
+# Get the ids of immune cells
+immune.ids <- which(types == "Immune")
+
+# Get the ids of cancer cells
+cancer.ids <- which(types %in% c("Keratin-positive tumor", "Tumor"))
+
+# Get the distances between all cells
+dists <- distances::distances(as.data.frame(pos))
+
+# Parameters for get weight
+l <- 120
+zoi <- 40
+family <- "gaussian"
+
+view.df <- map_dfr(immune.ids, function(i) {
+  weights <- get_weight(family, dists[i, ], l, zoi)
+  weighted.sum <- colSums(expr[cancer.ids, ] * weights[cancer.ids])
+  data.frame(t(weighted.sum))
+})
+
+# Sanity Check for view.df
+
+# 1. Check for zero variance (otherwise MISTy throws an error)
+target.var <- apply(view.df, 2, stats::sd, na.rm = TRUE)
+view.df <- view.df %>% select(-names(which(target.var == 0)))
+
+# 2. Check for how many unique values
+target.unique <- colnames(view.df) %>%
+  purrr::set_names() %>%
+  purrr::map_int(~ length(unique(view.df %>% pull(.x))))
+
+view.df <- view.df %>% select(
+  names(target.unique[target.unique > cv.folds])
+  )
+
+view <- create_view(paste0("cancer.paraview.", l),
+            view.df,
+            paste0("c.para.", l))
+
+# Sanity Check for intra.df
+# 1. Check for zero variance (otherwise MISTy throws an error)
+intra.df <- expr[immune.ids,]
+target.var <- apply(intra.df, 2, stats::sd, na.rm = TRUE)
+intra.df <- intra.df %>% select(-names(which(target.var == 0)))
+
+# 2. Check for how many unique values
+target.unique <- colnames(intra.df) %>%
+  purrr::set_names() %>%
+  purrr::map_int(~ length(unique(intra.df %>% pull(.x))))
+
+intra.df <- intra.df %>% select(
+  names(target.unique[target.unique > cv.folds])
+  )
+
+# Make correct colnames
+colnames(intra.df) <- make.names(colnames(intra.df))
+colnames(view.df) <- make.names(colnames(view.df))
+
+# Create custom "paraview"
+view <- create_view(paste0("cancer.paraview.", l),
+            view.df,
+            paste0("c.para.", l))
+
+misty.views <- create_initial_view(intra.df) %>%
+  add_views(view)
+```
+
+Check whether we can run MISTy.
+
+```{r}
+x <- run_misty(misty.views) %>%
+  collect_results()
+plot_improvement_stats(x)
+```
+
+Now the same for every sample. Plus views will be saved.
+
+```{r}
+if ("cancer.immune.views.RDS" %in% list.files("data")) {
+  cancer.immune.views <- readRDS("data/cancer.immune.views.RDS")
+} else {
+  
+  # Set parameters
+  l <- 120
+  zoi <- 40
+  family <- "gaussian"
+
+  # Map over all samples and compute the cancer -> immune view
+  cancer.immune.views <- furrr::future_map(unique(meta$SampleID), function(id) {
+    
+  # Get expression, positions, and types for a sample
+  expr <- all.expr[meta$SampleID == id, ] %>% select(11:47)
+  pos <- meta %>% filter(SampleID == id) %>% select(row, col)
+  types <- meta %>% filter(SampleID == id) %>% pull(Group)
+  
+  # Get the ids of immune cells
+  immune.ids <- which(types == "Immune")
+  
+  # Get the ids of cancer cells
+  cancer.ids <- which(types %in% c("Keratin-positive tumor", "Tumor"))
+  
+  # Get the distances between all cells
+  dists <- distances::distances(as.data.frame(pos))
+  
+  view.df <- map_dfr(immune.ids, function(i) {
+    weights <- get_weight(family, dists[i, ], l, zoi)
+    weighted.sum <- colSums(expr[cancer.ids, ] * weights[cancer.ids])
+    data.frame(t(weighted.sum))
+  })
+  
+  # Sanity Check for view.df
+  # 1. Check for zero variance (otherwise MISTy throws an error)
+  target.var <- apply(view.df, 2, stats::sd, na.rm = TRUE)
+  view.df <- view.df %>% select(-names(which(target.var == 0)))
+  
+  # 2. Check for how many unique values
+  target.unique <- colnames(view.df) %>%
+    purrr::set_names() %>%
+    purrr::map_int(~ length(unique(view.df %>% pull(.x))))
+  
+  view.df <- view.df %>% select(
+    names(target.unique[target.unique > cv.folds])
+    )
+  
+  view <- create_view(paste0("cancer.paraview.", l),
+              view.df,
+              paste0("c.para.", l))
+  
+  # Sanity Check for intra.df
+  # 1. Check for zero variance (otherwise MISTy throws an error)
+  intra.df <- expr[immune.ids,]
+  target.var <- apply(intra.df, 2, stats::sd, na.rm = TRUE)
+  intra.df <- intra.df %>% select(-names(which(target.var == 0)))
+  
+  # 2. Check for how many unique values
+  target.unique <- colnames(intra.df) %>%
+    purrr::set_names() %>%
+    purrr::map_int(~ length(unique(intra.df %>% pull(.x))))
+  
+  intra.df <- intra.df %>% select(
+    names(target.unique[target.unique > cv.folds])
+    )
+  
+  # Make correct colnames
+  colnames(intra.df) <- make.names(colnames(intra.df))
+  colnames(view.df) <- make.names(colnames(view.df))
+  
+  # Create custom "paraview"
+  view <- create_view(paste0("cancer.paraview.", l),
+              view.df,
+              paste0("c.para.", l))
+  
+  # Add all in return.views
+  return.views <- create_initial_view(intra.df) %>%
+    add_views(view)
+
+  return.views
+  })
+  names(cancer.immune.views) <- names(expr.smp)
+  saveRDS(cancer.immune.views, "data/cancer.immune.views.RDS")
+}
+```
+
+# Run MISTy
+
+## Running
+
+```{r}
+if ("cancer.immune.results.RDS" %in% list.files("data")) {
+  cancer.immune.results <- readRDS("data/cancer.immune.results.RDS")
+} else {
+  cv.folds = 10
+  cancer.immune.folders <- map2(
+    cancer.immune.views, names(cancer.immune.views), function(smp, name) {
+      
+      smp %>% run_misty(
+        results.folder = paste0("analysis/cell.specific.results/cancer.immune_",
+                                name),
+                        cv.folds = cv.folds)
+    })
+  cancer.immune.results <- collect_results(cancer.immune.folders)
+  saveRDS(cancer.immune.results, "data/cancer.immune.results.RDS")
+}
+```
+
+## Results
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.R2")
+```
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.RMSE")
+```
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_view_contributions(cancer.immune.results)
+```
+
+```{r fig.width=8, fig.height=8}
+mistyR::plot_interaction_heatmap(cancer.immune.results, view = "intra", 
+                                 clean = TRUE)
+```
+
+```{r fig.width=8, fig.height=8}
+mistyR::plot_interaction_heatmap(cancer.immune.results, view = "c.para.120",
+                                 clean = TRUE, cutoff = .5)
+```
