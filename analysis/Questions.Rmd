@@ -9,15 +9,19 @@ output:
 
 # Questions
 
-1. How does the site where the sample is taken from the solid tumor influence
-the sample-to-sample heterogenity?
+1. How does the site/location in the solid tumor where the sample is taken from
+influence the sample-to-sample heterogeneity?
 
 2. What are the different markers indicative of?
-- Tumor-related: EGFR, p53
+- Tumor-related: EGFR, p53, (also CD138 neoplastic cells?)
 - Metabolic activity / proliferation: Ki-67, pS6
 - Immunoregulatory proteins: PD-1, PD-L1, LAG3, IDO
--
+- Plasma cells: CD138
+- Macrophages: CD209, CD11c, 
 
+3. On which other MIBI datasets could we test MISTy on?
+- Spatio-temporal coordination at the maternal-fetal interface promotes 
+trophoblast invasion and vascular remodeling in the first half of human pregnancy
 
-
-3. What other datasets are the to test MISTy on?
+4. Can I simply take the mean p-values when looking whether the gain in 
+variance is significant for a given target?

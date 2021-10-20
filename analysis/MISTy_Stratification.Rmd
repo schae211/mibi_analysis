@@ -5,6 +5,8 @@ output:
     toc: true
     toc_float: true
     theme: united
+editor_options: 
+  chunk_output_type: inline
 ---
 
 # Set up
@@ -379,8 +381,152 @@ if ("immune.immune.results.RDS" %in% list.files("data")) {
 
 ### Gain.R2
 
+We see quite some gain in variance explained for IDO which is an immunoregulatory
+protein. The same is true for PD-L1
+
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.R2")
+```
+
+However, the mean p-values are rather hight because there is such a large
+variability in the samples.
+
+```{r}
+cancer.immune.results$improvements %>% 
+  filter(measure == "p.R2") %>%
+  group_by(target) %>%
+  summarise(p.mean = mean(value)) %>%
+  arrange(p.mean)
+```
+
+So what happens if we actually stratify the samples here based on the 
+classification (e.g. hoping to find a much stronger PD-L1 signal in the
+compartimentalized samples).
+
+And in fact it is true that the gain in variance is higher for those
+immunoregulatory proteins in compartimentalized tumors.
+
+```{r fig.height=4, fig.width=8}
+meta.smp
+cancer.immune.results$improvements %>%
+  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by = "SampleID") %>%
+  filter(measure == "gain.R2") %>%
+  filter(Classification != "cold") %>%
+  ggplot() +
+  geom_boxplot(aes(x = reorder(target, -value), y = value, col = Classification)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Checking the values for immunoregulatory proteins.
+
+First by summarizing using the mean.
+
+```{r}
+cancer.immune.results$improvements %>%
+  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by = "SampleID") %>%
+  filter(Classification != "cold") %>%
+  filter(target %in% c("IDO", "PD.L1", "PD1")) %>%
+  group_by(target, Classification, measure) %>%
+  summarise(mean.measure = mean(value, na.rm=TRUE)) %>%
+  pivot_wider(names_from = measure, values_from = mean.measure)
+```
+
+And then the median.
+
+```{r}
+cancer.immune.results$improvements %>%
+  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by = "SampleID") %>%
+  filter(Classification != "cold") %>%
+  filter(target %in% c("IDO", "PD.L1", "PD1")) %>%
+  group_by(target, Classification, measure) %>%
+  summarise(mean.measure = median(value, na.rm=TRUE)) %>%
+  pivot_wider(names_from = measure, values_from = mean.measure)
+```
+
+Also interestingly the gain in variance explained is negatively correlated
+with the mixing score, meaning the more contact there is between immune and
+tumor cells the less variance can be explained for IDO.
+
+```{r}
+cor(x = cancer.immune.results$improvements %>%
+    mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+    left_join(meta.smp, by = "SampleID") %>%
+    filter(Classification != "cold") %>%
+    filter(target == "IDO") %>%
+    filter(measure == "gain.R2") %>%
+    filter(ratio.tumor.immune < 300) %>%
+    pull(value),
+    y = cancer.immune.results$improvements %>%
+        mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+        left_join(meta.smp, by = "SampleID") %>%
+        filter(Classification != "cold") %>%
+        filter(target == "IDO") %>%
+        filter(measure == "gain.R2") %>%
+        filter(ratio.tumor.immune < 300) %>%
+        pull(ratio.tumor.immune))
+
+cancer.immune.results$improvements %>%
+  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by = "SampleID") %>%
+  filter(Classification != "cold") %>%
+  filter(target == "IDO") %>%
+  filter(measure == "gain.R2") %>%
+  filter(ratio.tumor.immune < 300) %>%
+  ggplot() +
+  geom_point(aes(x=ratio.tumor.immune, y=value)) +
+  geom_smooth(aes(x=ratio.tumor.immune, y=value), method="lm", formula = y ~ x)
+```
+
+This is not the case for PD-L1.
+
+```{r}
+cor(x = cancer.immune.results$improvements %>%
+    mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+    left_join(meta.smp, by = "SampleID") %>%
+    filter(Classification != "cold") %>%
+    filter(target == "PD.L1") %>%
+    filter(measure == "gain.R2") %>%
+    filter(ratio.tumor.immune < 300) %>%
+    pull(value),
+    y = cancer.immune.results$improvements %>%
+        mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+        left_join(meta.smp, by = "SampleID") %>%
+        filter(Classification != "cold") %>%
+        filter(target == "PD.L1") %>%
+        filter(measure == "gain.R2") %>%
+        filter(ratio.tumor.immune < 300) %>%
+        pull(ratio.tumor.immune))
+
+cancer.immune.results$improvements %>%
+  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by = "SampleID") %>%
+  filter(Classification != "cold") %>%
+  filter(target == "PD.L1") %>%
+  filter(measure == "gain.R2") %>%
+  filter(ratio.tumor.immune < 300) %>%
+  ggplot() +
+  geom_point(aes(x=ratio.tumor.immune, y=value)) +
+  geom_smooth(aes(x=ratio.tumor.immune, y=value), method="lm", formula = y ~ x)
+```
+
+Now in general how is the mixing score correlated with the gain in variance
+for all targets.
+
+```{r}
+cancer.immune.results$improvements %>%
+  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by = "SampleID") %>%
+  filter(measure == "gain.R2") %>%
+  filter(ratio.tumor.immune < 300) %>%
+  group_by(target) %>%
+  summarise(c = cor(value, ratio.tumor.immune)) %>%
+  ggplot() +
+  geom_bar(aes(x=reorder(target, -c), y=c), stat="identity") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = "correlation between gain.R2 and mixing score", x = "targets")
 ```
 
 ### View Contributions
