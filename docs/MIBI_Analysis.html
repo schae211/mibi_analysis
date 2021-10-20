@@ -505,16 +505,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree6d9c4a617cd14517c94bb0e83aeffbfe5a312490targetblank6d9c4a6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/6d9c4a617cd14517c94bb0e83aeffbfe5a312490" target="_blank">6d9c4a6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7fae4ce775881b35a5a009045e3d2d6d71eee8b8targetblank7fae4cea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/7fae4ce775881b35a5a009045e3d2d6d71eee8b8" target="_blank">7fae4ce</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree6d9c4a617cd14517c94bb0e83aeffbfe5a312490targetblank6d9c4a6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7fae4ce775881b35a5a009045e3d2d6d71eee8b8targetblank7fae4cea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/6d9c4a617cd14517c94bb0e83aeffbfe5a312490" target="_blank">6d9c4a6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/7fae4ce775881b35a5a009045e3d2d6d71eee8b8" target="_blank">7fae4ce</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -580,6 +580,7 @@ Ignored files:
     Ignored:    data/ranger.results.RDS
     Ignored:    data/raw_tiffs/
     Ignored:    data/sample_meta.RDS
+    Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
 
 </code></pre>
@@ -619,6 +620,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/7fae4ce775881b35a5a009045e3d2d6d71eee8b8/analysis/MIBI_Analysis.Rmd" target="_blank">7fae4ce</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+<td>
+mixing score correlated with number of tumor cells
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/35c3b3675b452fdcc5cbf2c3a80534179e2c2b01/docs/MIBI_Analysis.html" target="_blank">35c3b36</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1784,10 +1819,15 @@ schae211
 <div id="mixing-score" class="section level2">
 <h2>Mixing Score</h2>
 <p>Calculating the mixing score by counting for all immune cells in each sample how many contacts to they have to cancer cells divided by the contacts to other immune cells. The contacts are determined by Delaunay Triangulation and cells are only considered to be neighbors if the distance between them is below 40.</p>
+<p>Importantly this mixing score is higher if there are more tumor cells than immune cells (as seen by the filling color of the barplot below).</p>
 <pre class="r"><code># Setting the distance threshold for what is considered a neighbor in the DT.
 neighbor.thr &lt;- 40
 
-coord.type.smp &lt;- unique(meta$SampleID) %&gt;%
+if (&quot;tumor.immune.contacts.RDS&quot; %in% list.files(&quot;data&quot;)) {
+  contacts.smp &lt;- readRDS(&quot;data/tumor.immune.contacts.RDS&quot;)
+} else {
+  
+  coord.type.smp &lt;- unique(meta$SampleID) %&gt;%
   set_names(paste0(&quot;s&quot;, .)) %&gt;%
   map(function(id) {
     meta %&gt;%
@@ -1799,15 +1839,15 @@ coord.type.smp &lt;- unique(meta$SampleID) %&gt;%
       mutate(id = seq_len(nrow(.)))
   })
 
-# helper function for getting direct neighbors
-get_neighbors &lt;- function(ddobj, id) {
-  dplyr::union(
-    ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
-    ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
-  )
-}
+  # helper function for getting direct neighbors
+  get_neighbors &lt;- function(ddobj, id) {
+    dplyr::union(
+      ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
+      ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
+    )
+  }
 
-contacts.smp &lt;- coord.type.smp %&gt;%
+  contacts.smp &lt;- coord.type.smp %&gt;%
   set_names() %&gt;%
   map_dfr(function(smp) {
     
@@ -1827,17 +1867,26 @@ contacts.smp &lt;- coord.type.smp %&gt;%
       unlist %&gt;%
       table
   })
+}
 
-contacts.smp %&gt;%
-  mutate(sample = factor(names(coord.type.smp), 
-                         levels = names(coord.type.smp))) %&gt;%
-  mutate(ratio.tumor.immune = Tumor/Immune * 100) %&gt;%
+meta %&gt;%
+  group_by(SampleID) %&gt;%
+  count(Group) %&gt;% 
+  pivot_wider(names_from = Group, values_from=n, names_prefix = &quot;Count.&quot;) %&gt;%
+  cbind(contacts.smp) %&gt;%
+  mutate(ratio.tumor.immune = as.vector(Tumor/Immune * 100)) %&gt;%
+  rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;) %&gt;%
+  replace(is.na(.), 0) %&gt;%
+  mutate(Count.Tumor.Total = Count.Keratin.positive.Tumor + Count.Tumor) %&gt;%
+  mutate(ratio.count.tumor.immune = Count.Tumor.Total / Count.Immune) %&gt;%
   ggplot() +
-  geom_bar(aes(x=reorder(sample, -ratio.tumor.immune), 
-               y=ratio.tumor.immune), 
+  geom_bar(aes(x=reorder(SampleID, -ratio.tumor.immune), 
+               y=ratio.tumor.immune,
+               fill=ratio.count.tumor.immune), 
            stat=&quot;identity&quot;) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  labs(x = &quot;Sample&quot;, y = &quot;Mixing Score&quot;)</code></pre>
+  labs(x = &quot;Sample&quot;, y = &quot;Mixing Score&quot;) +
+  scale_fill_viridis_c()</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
@@ -1922,7 +1971,7 @@ schae211
 </div>
 <p>Looking at the samples with the top mixing score, namely 15, 18, 22, 24.</p>
 <pre class="r"><code>meta %&gt;%
-  filter(SampleID %in% c(15, 18, 22, 24)) %&gt;%
+  filter(SampleID %in% c(15, 18, 22, 24, 31, 25, 21, 26)) %&gt;%
   ggplot() +
   geom_point(aes(x = row, y = col, col = Group), size = .1) +
   facet_wrap(~ SampleID, ncol = 4) + 
@@ -2000,7 +2049,7 @@ schae211
 </div>
 <p>Looking at the samples with the lowest mixing score, namely 35, 28, 16, 37.</p>
 <pre class="r"><code>meta %&gt;%
-  filter(SampleID %in% c(35, 28, 16, 37)) %&gt;%
+  filter(SampleID %in% c(35, 28, 16, 37, 4, 40, 41, 5)) %&gt;%
   ggplot() +
   geom_point(aes(x = row, y = col, col = Group), size = .1) +
   facet_wrap(~ SampleID, ncol = 4) + 
@@ -2475,6 +2524,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/35c3b3675b452fdcc5cbf2c3a80534179e2c2b01/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" target="_blank">35c3b36</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-28-1.png" target="_blank">cdd0218</a>
@@ -3977,6 +4037,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/35c3b3675b452fdcc5cbf2c3a80534179e2c2b01/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" target="_blank">35c3b36</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -4096,8 +4167,8 @@ loaded via a namespace (and not attached):
 [65] hms_1.1.1          knitr_1.36         pillar_1.6.3       ggpubr_0.4.0      
 [69] ggsignif_0.6.3     codetools_0.2-18   reprex_2.0.1       glue_1.4.2        
 [73] evaluate_0.14      data.table_1.14.2  modelr_0.1.8       vctrs_0.3.8       
-[77] tzdb_0.1.2         httpuv_1.6.3       cellranger_1.1.0   gtable_0.3.0      
-[81] RANN_2.6.1         assertthat_0.2.1   openxlsx_4.2.4     xfun_0.26         
+[77] tzdb_0.1.2         httpuv_1.6.3       cellranger_1.1.0   RANN_2.6.1        
+[81] gtable_0.3.0       assertthat_0.2.1   openxlsx_4.2.4     xfun_0.26         
 [85] broom_0.7.9        rstatix_0.7.0      later_1.3.0        viridisLite_0.4.0 
 [89] pheatmap_1.0.12    globals_0.14.0     ellipsis_0.3.2    </code></pre>
 </div>

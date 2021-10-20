@@ -505,16 +505,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreec5545a8ba1e1528dcc5ae853b644dd4d29be3dddtargetblankc5545a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/c5545a8ba1e1528dcc5ae853b644dd4d29be3ddd" target="_blank">c5545a8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7fae4ce775881b35a5a009045e3d2d6d71eee8b8targetblank7fae4cea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/7fae4ce775881b35a5a009045e3d2d6d71eee8b8" target="_blank">7fae4ce</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreec5545a8ba1e1528dcc5ae853b644dd4d29be3dddtargetblankc5545a8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7fae4ce775881b35a5a009045e3d2d6d71eee8b8targetblank7fae4cea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/c5545a8ba1e1528dcc5ae853b644dd4d29be3ddd" target="_blank">c5545a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/7fae4ce775881b35a5a009045e3d2d6d71eee8b8" target="_blank">7fae4ce</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -580,6 +580,7 @@ Ignored files:
     Ignored:    data/ranger.results.RDS
     Ignored:    data/raw_tiffs/
     Ignored:    data/sample_meta.RDS
+    Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
 
 </code></pre>
@@ -619,6 +620,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/7fae4ce775881b35a5a009045e3d2d6d71eee8b8/analysis/MISTy_Stratification.Rmd" target="_blank">7fae4ce</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+<td>
+mixing score correlated with number of tumor cells
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/MISTy_Stratification.html" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+<td>
+s.o.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1228,50 +1263,145 @@ schae211
 </table>
 </div>
 </div>
-<p>However, the mean p-values are rather hight because there is such a large variability in the samples.</p>
+<p>However, the mean p-values are rather high because there is such a large variability between the samples.</p>
 <pre class="r"><code>cancer.immune.results$improvements %&gt;% 
-  filter(measure == &quot;p.R2&quot;) %&gt;%
-  group_by(target) %&gt;%
-  summarise(p.mean = mean(value)) %&gt;%
-  arrange(p.mean)
-# A tibble: 36 × 2
-   target       p.mean
-   &lt;chr&gt;         &lt;dbl&gt;
- 1 CD20          0.126
- 2 CD209         0.138
- 3 HLA_Class_1   0.154
- 4 CD11c         0.179
- 5 HLA.DR        0.192
- 6 phospho.S6    0.221
- 7 Beta.catenin  0.266
- 8 IDO           0.277
- 9 PD.L1         0.280
-10 CD31          0.280
-# … with 26 more rows</code></pre>
+  group_by(target, measure) %&gt;%
+  summarise(mean = round(mean(value), 2), median = round(median(value), 2),
+            .groups = &quot;keep&quot;) %&gt;% 
+  pivot_longer(cols = c(mean, median), names_to = &quot;summary&quot;) %&gt;%
+  pivot_wider(names_from = measure, values_from = value) %&gt;%
+  select(c(target, summary, gain.R2, gain.RMSE, p.R2, p.RMSE)) %&gt;%
+  filter(target %in% c(&quot;CD138&quot;, &quot;CD209&quot;, &quot;CD11c&quot;, &quot;CD20&quot;, &quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;)) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">target</th>
+<th align="left">summary</th>
+<th align="right">gain.R2</th>
+<th align="right">gain.RMSE</th>
+<th align="right">p.R2</th>
+<th align="right">p.RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">CD11c</td>
+<td align="left">mean</td>
+<td align="right">5.12</td>
+<td align="right">4.55</td>
+<td align="right">0.18</td>
+<td align="right">0.25</td>
+</tr>
+<tr class="even">
+<td align="left">CD11c</td>
+<td align="left">median</td>
+<td align="right">4.27</td>
+<td align="right">3.70</td>
+<td align="right">0.10</td>
+<td align="right">0.28</td>
+</tr>
+<tr class="odd">
+<td align="left">CD138</td>
+<td align="left">mean</td>
+<td align="right">7.69</td>
+<td align="right">4.72</td>
+<td align="right">NA</td>
+<td align="right">0.33</td>
+</tr>
+<tr class="even">
+<td align="left">CD138</td>
+<td align="left">median</td>
+<td align="right">5.68</td>
+<td align="right">2.97</td>
+<td align="right">NA</td>
+<td align="right">0.41</td>
+</tr>
+<tr class="odd">
+<td align="left">CD20</td>
+<td align="left">mean</td>
+<td align="right">4.82</td>
+<td align="right">3.28</td>
+<td align="right">0.13</td>
+<td align="right">0.28</td>
+</tr>
+<tr class="even">
+<td align="left">CD20</td>
+<td align="left">median</td>
+<td align="right">2.79</td>
+<td align="right">2.37</td>
+<td align="right">0.04</td>
+<td align="right">0.29</td>
+</tr>
+<tr class="odd">
+<td align="left">CD209</td>
+<td align="left">mean</td>
+<td align="right">6.79</td>
+<td align="right">2.47</td>
+<td align="right">0.14</td>
+<td align="right">0.37</td>
+</tr>
+<tr class="even">
+<td align="left">CD209</td>
+<td align="left">median</td>
+<td align="right">5.60</td>
+<td align="right">3.83</td>
+<td align="right">0.06</td>
+<td align="right">0.41</td>
+</tr>
+<tr class="odd">
+<td align="left">IDO</td>
+<td align="left">mean</td>
+<td align="right">3.35</td>
+<td align="right">2.17</td>
+<td align="right">0.28</td>
+<td align="right">0.37</td>
+</tr>
+<tr class="even">
+<td align="left">IDO</td>
+<td align="left">median</td>
+<td align="right">2.80</td>
+<td align="right">1.94</td>
+<td align="right">0.27</td>
+<td align="right">0.42</td>
+</tr>
+<tr class="odd">
+<td align="left">PD.L1</td>
+<td align="left">mean</td>
+<td align="right">2.40</td>
+<td align="right">1.90</td>
+<td align="right">0.28</td>
+<td align="right">0.39</td>
+</tr>
+<tr class="even">
+<td align="left">PD.L1</td>
+<td align="left">median</td>
+<td align="right">2.26</td>
+<td align="right">1.86</td>
+<td align="right">0.26</td>
+<td align="right">0.43</td>
+</tr>
+<tr class="odd">
+<td align="left">PD1</td>
+<td align="left">mean</td>
+<td align="right">1.91</td>
+<td align="right">1.39</td>
+<td align="right">0.33</td>
+<td align="right">0.43</td>
+</tr>
+<tr class="even">
+<td align="left">PD1</td>
+<td align="left">median</td>
+<td align="right">1.49</td>
+<td align="right">0.92</td>
+<td align="right">0.34</td>
+<td align="right">0.46</td>
+</tr>
+</tbody>
+</table>
 <p>So what happens if we actually stratify the samples here based on the classification (e.g. hoping to find a much stronger PD-L1 signal in the compartimentalized samples).</p>
 <p>And in fact it is true that the gain in variance is higher for those immunoregulatory proteins in compartimentalized tumors.</p>
-<pre class="r"><code>meta.smp
-# A tibble: 40 × 38
-   SampleID Classification     ratio.tumor.immune Count.Endothelial Count.Immune
-   &lt;chr&gt;    &lt;chr&gt;                           &lt;dbl&gt;             &lt;int&gt;        &lt;int&gt;
- 1 1        mixed                           42.5                 35         2558
- 2 2        mixed                           80.3                100          956
- 3 3        compartimentalized              11.2                112         3179
- 4 4        compartimentalized               4.81               132         4161
- 5 5        compartimentalized               9.08               196         2790
- 6 6        compartimentalized              15.5                110         2320
- 7 7        mixed                           88.4                  4          558
- 8 8        mixed                           60.7                  1          561
- 9 9        compartimentalized              14.1                 75         3272
-10 10       compartimentalized              15.3                 40         2866
-# … with 30 more rows, and 33 more variables:
-#   Count.Keratin-positive tumor &lt;int&gt;, Count.Mesenchymal-like &lt;int&gt;,
-#   Count.Tumor &lt;int&gt;, Count.Unidentified &lt;int&gt;, Count.Total &lt;int&gt;,
-#   DONOR_NO &lt;dbl&gt;, YEAR &lt;dbl&gt;, ANON_ID_ONCOSHARE &lt;dbl&gt;, AGE_AT_DX &lt;dbl&gt;,
-#   YEARDX &lt;chr&gt;, STAGE &lt;chr&gt;, SITE_02 &lt;chr&gt;, LATERAL &lt;chr&gt;, GRADE &lt;chr&gt;,
-#   TCODE_P &lt;chr&gt;, NCODE_P &lt;chr&gt;, MCODE_P &lt;chr&gt;, AJCC_P &lt;chr&gt;, ER &lt;chr&gt;,
-#   PR &lt;chr&gt;, HER2NEU &lt;chr&gt;, CS_TUM_SIZE &lt;chr&gt;, RESULT_GENE_1 &lt;chr&gt;, …
-cancer.immune.results$improvements %&gt;%
+<pre class="r"><code>cancer.immune.results$improvements %&gt;%
   mutate(SampleID = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
   left_join(meta.smp, by = &quot;SampleID&quot;) %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;%
@@ -1302,6 +1432,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-13-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-13-1.png" target="_blank">42bc887</a>
@@ -1336,18 +1477,19 @@ schae211
   filter(Classification != &quot;cold&quot;) %&gt;%
   filter(target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;)) %&gt;%
   group_by(target, Classification, measure) %&gt;%
-  summarise(mean.measure = mean(value, na.rm=TRUE)) %&gt;%
+  summarise(mean.measure = round(mean(value, na.rm=TRUE),2),
+            .groups=&quot;keep&quot;) %&gt;%
   pivot_wider(names_from = measure, values_from = mean.measure)
 # A tibble: 6 × 10
 # Groups:   target, Classification [6]
   target Classification     gain.R2 gain.RMSE intra.R2 intra.RMSE multi.R2
   &lt;chr&gt;  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 IDO    compartimentalized    3.42      2.44    0.252      0.617    0.286
-2 IDO    mixed                 3.27      1.88    0.165      0.449    0.197
-3 PD.L1  compartimentalized    2.69      2.40    0.282      0.423    0.309
-4 PD.L1  mixed                 2.13      1.44    0.174      0.571    0.196
-5 PD1    compartimentalized    2.04      1.50    0.169      0.777    0.190
-6 PD1    mixed                 1.82      1.31    0.214      1.12     0.232
+1 IDO    compartimentalized    3.42      2.44     0.25       0.62     0.29
+2 IDO    mixed                 3.27      1.88     0.16       0.45     0.2 
+3 PD.L1  compartimentalized    2.69      2.4      0.28       0.42     0.31
+4 PD.L1  mixed                 2.13      1.44     0.17       0.57     0.2 
+5 PD1    compartimentalized    2.04      1.5      0.17       0.78     0.19
+6 PD1    mixed                 1.82      1.31     0.21       1.12     0.23
 # … with 3 more variables: multi.RMSE &lt;dbl&gt;, p.R2 &lt;dbl&gt;, p.RMSE &lt;dbl&gt;</code></pre>
 <p>And then the median.</p>
 <pre class="r"><code>cancer.immune.results$improvements %&gt;%
@@ -1356,18 +1498,19 @@ schae211
   filter(Classification != &quot;cold&quot;) %&gt;%
   filter(target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;)) %&gt;%
   group_by(target, Classification, measure) %&gt;%
-  summarise(mean.measure = median(value, na.rm=TRUE)) %&gt;%
+  summarise(mean.measure = round(median(value, na.rm=TRUE), 2),
+            .groups=&quot;keep&quot;) %&gt;%
   pivot_wider(names_from = measure, values_from = mean.measure)
 # A tibble: 6 × 10
 # Groups:   target, Classification [6]
   target Classification     gain.R2 gain.RMSE intra.R2 intra.RMSE multi.R2
   &lt;chr&gt;  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 IDO    compartimentalized   3.11      2.77     0.249      0.650    0.290
-2 IDO    mixed                0.956     1.15     0.169      0.453    0.201
-3 PD.L1  compartimentalized   2.90      2.58     0.213      0.327    0.246
-4 PD.L1  mixed                1.57      1.24     0.167      0.541    0.165
-5 PD1    compartimentalized   1.56      1.16     0.176      0.716    0.196
-6 PD1    mixed                1.16      0.827    0.184      1.01     0.230
+1 IDO    compartimentalized    3.11      2.77     0.25       0.65     0.29
+2 IDO    mixed                 0.96      1.15     0.17       0.45     0.2 
+3 PD.L1  compartimentalized    2.9       2.58     0.21       0.33     0.25
+4 PD.L1  mixed                 1.57      1.24     0.17       0.54     0.17
+5 PD1    compartimentalized    1.56      1.16     0.18       0.72     0.2 
+6 PD1    mixed                 1.16      0.83     0.18       1.01     0.23
 # … with 3 more variables: multi.RMSE &lt;dbl&gt;, p.R2 &lt;dbl&gt;, p.RMSE &lt;dbl&gt;</code></pre>
 <p>Also interestingly the gain in variance explained is negatively correlated with the mixing score, meaning the more contact there is between immune and tumor cells the less variance can be explained for IDO.</p>
 <pre class="r"><code>cor(x = cancer.immune.results$improvements %&gt;%
@@ -1423,6 +1566,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-16-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-16-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -1436,35 +1590,20 @@ schae211
 </table>
 </div>
 </div>
-<p>This is not the case for PD-L1.</p>
-<pre class="r"><code>cor(x = cancer.immune.results$improvements %&gt;%
-    mutate(SampleID = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-    left_join(meta.smp, by = &quot;SampleID&quot;) %&gt;%
-    filter(Classification != &quot;cold&quot;) %&gt;%
-    filter(target == &quot;PD.L1&quot;) %&gt;%
-    filter(measure == &quot;gain.R2&quot;) %&gt;%
-    filter(ratio.tumor.immune &lt; 300) %&gt;%
-    pull(value),
-    y = cancer.immune.results$improvements %&gt;%
-        mutate(SampleID = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-        left_join(meta.smp, by = &quot;SampleID&quot;) %&gt;%
-        filter(Classification != &quot;cold&quot;) %&gt;%
-        filter(target == &quot;PD.L1&quot;) %&gt;%
-        filter(measure == &quot;gain.R2&quot;) %&gt;%
-        filter(ratio.tumor.immune &lt; 300) %&gt;%
-        pull(ratio.tumor.immune))
-[1] 0.05381175
-
-cancer.immune.results$improvements %&gt;%
+<p>What about the other targets? There are positive and negative correlations of the gain in variance explained and the tumor-immune mixing score.</p>
+<pre class="r"><code>cancer.immune.results$improvements %&gt;%
   mutate(SampleID = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
   left_join(meta.smp, by = &quot;SampleID&quot;) %&gt;%
-  filter(Classification != &quot;cold&quot;) %&gt;%
-  filter(target == &quot;PD.L1&quot;) %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;%
   filter(ratio.tumor.immune &lt; 300) %&gt;%
+  group_by(target) %&gt;%
+  summarise(c = cor(value, ratio.tumor.immune), mean.R2.gain = mean(value)) %&gt;%
+  filter(mean.R2.gain &gt;= 1) %&gt;%
   ggplot() +
-  geom_point(aes(x=ratio.tumor.immune, y=value)) +
-  geom_smooth(aes(x=ratio.tumor.immune, y=value), method=&quot;lm&quot;, formula = y ~ x)</code></pre>
+  geom_bar(aes(x=reorder(target, -c), y=c, fill=mean.R2.gain), stat=&quot;identity&quot;) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = &quot;correlation between gain.R2 and mixing score&quot;, x = &quot;targets&quot;) +
+  scale_fill_viridis_c()</code></pre>
 <p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
@@ -1490,6 +1629,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-17-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-17-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -1503,24 +1653,55 @@ schae211
 </table>
 </div>
 </div>
-<p>Now in general how is the mixing score correlated with the gain in variance for all targets.</p>
-<pre class="r"><code>cancer.immune.results$improvements %&gt;%
-  mutate(SampleID = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(meta.smp, by = &quot;SampleID&quot;) %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;%
-  filter(ratio.tumor.immune &lt; 300) %&gt;%
-  group_by(target) %&gt;%
-  summarise(c = cor(value, ratio.tumor.immune)) %&gt;%
-  ggplot() +
-  geom_bar(aes(x=reorder(target, -c), y=c), stat=&quot;identity&quot;) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  labs(y = &quot;correlation between gain.R2 and mixing score&quot;, x = &quot;targets&quot;)</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="view-contributions" class="section level3">
 <h3>View Contributions</h3>
 <pre class="r"><code>mistyR::plot_view_contributions(cancer.immune.results)</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-18-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="importances" class="section level3">
+<h3>Importances</h3>
+<p>Intraview:</p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(cancer.immune.results, view = &quot;intra&quot;, 
+                                 clean = TRUE)</code></pre>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-19-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
 Past versions of unnamed-chunk-19-1.png
@@ -1545,6 +1726,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-19-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-19-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -1558,12 +1750,9 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="importances" class="section level3">
-<h3>Importances</h3>
-<p>Intraview:</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(cancer.immune.results, view = &quot;intra&quot;, 
-                                 clean = TRUE)</code></pre>
+<p>Paraview:</p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(cancer.immune.results, view = &quot;c.para.120&quot;,
+                                 clean = TRUE, cutoff = .8)</code></pre>
 <p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
@@ -1587,6 +1776,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-20-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/35c3b3675b452fdcc5cbf2c3a80534179e2c2b01/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-20-1.png" target="_blank">35c3b36</a>
@@ -1613,16 +1813,25 @@ schae211
 </table>
 </div>
 </div>
-<p>Paraview:</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(cancer.immune.results, view = &quot;c.para.120&quot;,
-                                 clean = TRUE, cutoff = .8)</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="signatures" class="section level3">
+<h3>Signatures</h3>
+<p>Performance</p>
+<pre class="r"><code>cancer.immune.perf.sig &lt;- mistyR::extract_signature(cancer.immune.results,
+                                                    &quot;performance&quot;)
+cancer.immune.perf.pca &lt;- stats::prcomp(cancer.immune.perf.sig %&gt;%
+                                          select(-sample))</code></pre>
+<pre class="r"><code>ggplot() +
+  geom_point(aes(x=cancer.immune.perf.pca$x[,1], 
+                 y=cancer.immune.perf.pca$x[,2],
+                 col=factor(meta.smp$GRADE)))</code></pre>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
-Past versions of unnamed-chunk-21-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
+Past versions of unnamed-chunk-22-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-21-1" class="collapse">
+<div id="fig-unnamed-chunk-22-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1641,7 +1850,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-21-1.png" target="_blank">42bc887</a>
+<a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-22-1.png" target="_blank">42bc887</a>
 </td>
 <td>
 schae211
@@ -1654,18 +1863,11 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="signatures" class="section level3">
-<h3>Signatures</h3>
-<p>Performance</p>
-<pre class="r"><code>cancer.immune.perf.sig &lt;- mistyR::extract_signature(cancer.immune.results,
-                                                    &quot;performance&quot;)
-cancer.immune.perf.pca &lt;- stats::prcomp(cancer.immune.perf.sig %&gt;%
-                                          select(-sample))</code></pre>
-<pre class="r"><code>ggplot() +
-  geom_point(aes(x=cancer.immune.perf.pca$x[,1], 
-                 y=cancer.immune.perf.pca$x[,2],
-                 col=factor(meta.smp$GRADE)))</code></pre>
+<pre class="r"><code>fviz_pca_var(cancer.immune.perf.pca, col.var=&quot;contrib&quot;,
+             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+             repel = TRUE)
+Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
 <p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
@@ -1691,61 +1893,18 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-23-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-23-1.png" target="_blank">42bc887</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-20
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>fviz_pca_var(cancer.immune.perf.pca, col.var=&quot;contrib&quot;,
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE)
-Warning: ggrepel: 27 unlabeled data points (too many overlaps). Consider
-increasing max.overlaps</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
-Past versions of unnamed-chunk-24-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-24-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/35c3b3675b452fdcc5cbf2c3a80534179e2c2b01/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-24-1.png" target="_blank">35c3b36</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-20
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-24-1.png" target="_blank">42bc887</a>
 </td>
 <td>
 schae211
@@ -1767,6 +1926,12 @@ cancer.immune.imp.pca &lt;- stats::prcomp(cancer.immune.imp.sig %&gt;%
   geom_point(aes(x=cancer.immune.imp.pca$x[,1], 
                  y=cancer.immune.imp.pca$x[,2],
                  col=factor(meta.smp$GRADE)))</code></pre>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>fviz_pca_var(cancer.immune.imp.pca, col.var=&quot;contrib&quot;,
+             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+             repel = TRUE)
+Warning: ggrepel: 550 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
 <p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-1">
@@ -1792,6 +1957,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-26-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-26-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -1805,12 +1981,14 @@ schae211
 </table>
 </div>
 </div>
-<pre class="r"><code>fviz_pca_var(cancer.immune.imp.pca, col.var=&quot;contrib&quot;,
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE)
-Warning: ggrepel: 550 unlabeled data points (too many overlaps). Consider
-increasing max.overlaps</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-27-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="immune---immune-2" class="section level2">
+<h2>Immune -&gt; Immune</h2>
+<div id="gain.r2-1" class="section level3">
+<h3>Gain.R2</h3>
+<pre class="r"><code>mistyR::plot_improvement_stats(immune.immune.results, measure = &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-27-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-27-1">
 Past versions of unnamed-chunk-27-1.png
@@ -1835,6 +2013,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-27-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-27-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -1849,18 +2038,54 @@ schae211
 </div>
 </div>
 </div>
-</div>
-<div id="immune---immune-2" class="section level2">
-<h2>Immune -&gt; Immune</h2>
-<div id="gain.r2-1" class="section level3">
-<h3>Gain.R2</h3>
-<pre class="r"><code>mistyR::plot_improvement_stats(immune.immune.results, measure = &quot;gain.R2&quot;)</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-28-1.png" width="576" style="display: block; margin: auto;" /></p>
-</div>
 <div id="view-contributions-1" class="section level3">
 <h3>View Contributions</h3>
 <pre class="r"><code>mistyR::plot_view_contributions(immune.immune.results)</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-29-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-28-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-28-1">
+Past versions of unnamed-chunk-28-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-28-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-28-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="importances-1" class="section level3">
+<h3>Importances</h3>
+<p>Intraview:</p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(immune.immune.results, view = &quot;intra&quot;, 
+                                 clean = TRUE)</code></pre>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-29-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-1">
 Past versions of unnamed-chunk-29-1.png
@@ -1885,6 +2110,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-29-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-29-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -1898,12 +2134,9 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="importances-1" class="section level3">
-<h3>Importances</h3>
-<p>Intraview:</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(immune.immune.results, view = &quot;intra&quot;, 
-                                 clean = TRUE)</code></pre>
+<p>Paraview:</p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(immune.immune.results, view = &quot;i.para.120&quot;,
+                                 clean = TRUE, cutoff = .8)</code></pre>
 <p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-30-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-1">
@@ -1929,6 +2162,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-30-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/42bc887871436d851efbe4abbd070bc7bf09bd56/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-30-1.png" target="_blank">42bc887</a>
 </td>
 <td>
@@ -1942,10 +2186,6 @@ schae211
 </table>
 </div>
 </div>
-<p>Paraview:</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(immune.immune.results, view = &quot;i.para.120&quot;,
-                                 clean = TRUE, cutoff = .8)</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-31-1.png" width="768" style="display: block; margin: auto;" /></p>
 </div>
 <div id="signatures-1" class="section level3">
 <h3>Signatures</h3>
@@ -1958,13 +2198,50 @@ immune.immune.perf.pca &lt;- stats::prcomp(immune.immune.perf.sig %&gt;%
   geom_point(aes(x=immune.immune.perf.pca$x[,1], 
                  y=immune.immune.perf.pca$x[,2],
                  col=factor(meta.smp$GRADE)))</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>fviz_pca_var(immune.immune.perf.pca, col.var=&quot;contrib&quot;,
              gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
              repel = TRUE)
 Warning: ggrepel: 26 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-33-1">
+Past versions of unnamed-chunk-33-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-33-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-33-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Importances:</p>
 <pre class="r"><code>immune.immune.imp.sig &lt;- mistyR::extract_signature(immune.immune.results,
                                                     &quot;importance&quot;)
@@ -1974,13 +2251,50 @@ immune.immune.imp.pca &lt;- stats::prcomp(immune.immune.imp.sig %&gt;%
   geom_point(aes(x=immune.immune.imp.pca$x[,1], 
                  y=immune.immune.imp.pca$x[,2],
                  col=factor(meta.smp$GRADE)))</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>fviz_pca_var(immune.immune.imp.pca, col.var=&quot;contrib&quot;,
              gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
              repel = TRUE)
 Warning: ggrepel: 556 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps</code></pre>
-<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MISTy_Stratification.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-1">
+Past versions of unnamed-chunk-36-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-36-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/98a7eb6e3c5124066fa57f567f4459e3ae7e90f9/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-36-1.png" target="_blank">98a7eb6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2012,6 +2326,7 @@ other attached packages:
  [1] factoextra_1.0.7 forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7     
  [5] purrr_0.3.4      readr_2.0.2      tidyr_1.1.4      tibble_3.1.5    
  [9] ggplot2_3.3.5    tidyverse_1.3.1  future_1.22.1    mistyR_1.1.10   
+[13] workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
  [1] nlme_3.1-152       fs_1.5.0           lubridate_1.8.0    RColorBrewer_1.1-2
@@ -2036,7 +2351,7 @@ loaded via a namespace (and not attached):
 [77] modelr_0.1.8       vctrs_0.3.8        tzdb_0.1.2         httpuv_1.6.3      
 [81] cellranger_1.1.0   gtable_0.3.0       assertthat_0.2.1   openxlsx_4.2.4    
 [85] xfun_0.26          broom_0.7.9        rstatix_0.7.0      later_1.3.0       
-[89] workflowr_1.6.2    globals_0.14.0     ellipsis_0.3.2    </code></pre>
+[89] viridisLite_0.4.0  globals_0.14.0     ellipsis_0.3.2    </code></pre>
 </div>
 </div>
 </div>
