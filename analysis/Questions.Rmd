@@ -17,3 +17,7 @@ the sample-to-sample heterogenity?
 - Metabolic activity / proliferation: Ki-67, pS6
 - Immunoregulatory proteins: PD-1, PD-L1, LAG3, IDO
 -
+
+
+
+3. What other datasets are the to test MISTy on?
