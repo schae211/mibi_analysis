@@ -25,3 +25,10 @@ trophoblast invasion and vascular remodeling in the first half of human pregnanc
 
 4. Can I simply take the mean p-values when looking whether the gain in 
 variance is significant for a given target?
+- Or is this rather stupid because the p-values can have a high variability
+between the samples
+
+5. Do we even have enough markers to discover cell-cell interaction?
+- As I understand it most markers were chosen to distinguish between different
+cell types, but we get little information about the cell states (meaning, 
+what is actually going on in those cells).

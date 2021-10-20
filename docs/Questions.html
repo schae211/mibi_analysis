@@ -372,7 +372,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -381,7 +381,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -393,7 +393,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-10-20
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -409,28 +409,28 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree6d9c4a617cd14517c94bb0e83aeffbfe5a312490targetblank6d9c4a6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/6d9c4a617cd14517c94bb0e83aeffbfe5a312490" target="_blank">6d9c4a6</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreec5545a8ba1e1528dcc5ae853b644dd4d29be3dddtargetblankc5545a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/c5545a8ba1e1528dcc5ae853b644dd4d29be3ddd" target="_blank">c5545a8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree6d9c4a617cd14517c94bb0e83aeffbfe5a312490targetblank6d9c4a6a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreec5545a8ba1e1528dcc5ae853b644dd4d29be3dddtargetblankc5545a8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/6d9c4a617cd14517c94bb0e83aeffbfe5a312490" target="_blank">6d9c4a6</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/c5545a8ba1e1528dcc5ae853b644dd4d29be3ddd" target="_blank">c5545a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -498,6 +498,9 @@ Ignored files:
     Ignored:    data/sample_meta.RDS
     Ignored:    old_files/
 
+Unstaged changes:
+    Modified:   analysis/Questions.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -535,6 +538,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c5545a8ba1e1528dcc5ae853b644dd4d29be3ddd/analysis/Questions.Rmd" target="_blank">c5545a8</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+<td>
+investigating tumor-immune relationship
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/35c3b3675b452fdcc5cbf2c3a80534179e2c2b01/docs/Questions.html" target="_blank">35c3b36</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-20
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -579,18 +616,34 @@ added questions
 <div id="questions" class="section level1">
 <h1>Questions</h1>
 <ol style="list-style-type: decimal">
-<li><p>How does the site where the sample is taken from the solid tumor influence the sample-to-sample heterogenity?</p></li>
+<li><p>How does the site/location in the solid tumor where the sample is taken from influence the sample-to-sample heterogeneity?</p></li>
 <li><p>What are the different markers indicative of?</p></li>
 </ol>
 <ul>
-<li>Tumor-related: EGFR, p53</li>
+<li>Tumor-related: EGFR, p53, (also CD138 neoplastic cells?)</li>
 <li>Metabolic activity / proliferation: Ki-67, pS6</li>
 <li>Immunoregulatory proteins: PD-1, PD-L1, LAG3, IDO</li>
-<li></li>
+<li>Plasma cells: CD138</li>
+<li>Macrophages: CD209, CD11c,</li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
-<li>What other datasets are the to test MISTy on?</li>
+<li>On which other MIBI datasets could we test MISTy on?</li>
 </ol>
+<ul>
+<li>Spatio-temporal coordination at the maternal-fetal interface promotes trophoblast invasion and vascular remodeling in the first half of human pregnancy</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Can I simply take the mean p-values when looking whether the gain in variance is significant for a given target?</li>
+</ol>
+<ul>
+<li>Or is this rather stupid because the p-values can have a high variability between the samples</li>
+</ul>
+<ol start="5" style="list-style-type: decimal">
+<li>Do we even have enough markers to discover cell-cell interaction?</li>
+</ol>
+<ul>
+<li>As I understand it most markers were chosen to distinguish between different cell types, but we get little information about the cell states (meaning, what is actually going on in those cells).</li>
+</ul>
 </div>
 
 
