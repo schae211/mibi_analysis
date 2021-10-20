@@ -311,11 +311,18 @@ contacts to other immune cells. The contacts are determined by
 Delaunay Triangulation and cells are only considered to be neighbors
 if the distance between them is below 40.
 
+Importantly this mixing score is higher if there are more tumor cells
+than immune cells (as seen by the filling color of the barplot below).
+
 ```{r}
 # Setting the distance threshold for what is considered a neighbor in the DT.
 neighbor.thr <- 40
 
-coord.type.smp <- unique(meta$SampleID) %>%
+if ("tumor.immune.contacts.RDS" %in% list.files("data")) {
+  contacts.smp <- readRDS("data/tumor.immune.contacts.RDS")
+} else {
+  
+  coord.type.smp <- unique(meta$SampleID) %>%
   set_names(paste0("s", .)) %>%
   map(function(id) {
     meta %>%
@@ -327,15 +334,15 @@ coord.type.smp <- unique(meta$SampleID) %>%
       mutate(id = seq_len(nrow(.)))
   })
 
-# helper function for getting direct neighbors
-get_neighbors <- function(ddobj, id) {
-  dplyr::union(
-    ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
-    ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
-  )
-}
+  # helper function for getting direct neighbors
+  get_neighbors <- function(ddobj, id) {
+    dplyr::union(
+      ddobj$delsgs$ind1[which(ddobj$delsgs$ind2 == id)],
+      ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
+    )
+  }
 
-contacts.smp <- coord.type.smp %>%
+  contacts.smp <- coord.type.smp %>%
   set_names() %>%
   map_dfr(function(smp) {
     
@@ -355,24 +362,33 @@ contacts.smp <- coord.type.smp %>%
       unlist %>%
       table
   })
+}
 
-contacts.smp %>%
-  mutate(sample = factor(names(coord.type.smp), 
-                         levels = names(coord.type.smp))) %>%
-  mutate(ratio.tumor.immune = Tumor/Immune * 100) %>%
+meta %>%
+  group_by(SampleID) %>%
+  count(Group) %>% 
+  pivot_wider(names_from = Group, values_from=n, names_prefix = "Count.") %>%
+  cbind(contacts.smp) %>%
+  mutate(ratio.tumor.immune = as.vector(Tumor/Immune * 100)) %>%
+  rename("Count.Keratin.positive.Tumor" = "Count.Keratin-positive tumor") %>%
+  replace(is.na(.), 0) %>%
+  mutate(Count.Tumor.Total = Count.Keratin.positive.Tumor + Count.Tumor) %>%
+  mutate(ratio.count.tumor.immune = Count.Tumor.Total / Count.Immune) %>%
   ggplot() +
-  geom_bar(aes(x=reorder(sample, -ratio.tumor.immune), 
-               y=ratio.tumor.immune), 
+  geom_bar(aes(x=reorder(SampleID, -ratio.tumor.immune), 
+               y=ratio.tumor.immune,
+               fill=ratio.count.tumor.immune), 
            stat="identity") +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  labs(x = "Sample", y = "Mixing Score")
+  labs(x = "Sample", y = "Mixing Score") +
+  scale_fill_viridis_c()
 ```
 
 Looking at the samples with the top mixing score, namely 15, 18, 22, 24.
 
-```{r fig.width=12, fig.height=4}
+```{r fig.width=12, fig.height=6}
 meta %>%
-  filter(SampleID %in% c(15, 18, 22, 24)) %>%
+  filter(SampleID %in% c(15, 18, 22, 24, 31, 25, 21, 26)) %>%
   ggplot() +
   geom_point(aes(x = row, y = col, col = Group), size = .1) +
   facet_wrap(~ SampleID, ncol = 4) + 
@@ -381,9 +397,9 @@ meta %>%
 
 Looking at the samples with the lowest mixing score, namely 35, 28, 16, 37.
 
-```{r fig.width=12, fig.height=4}
+```{r fig.width=12, fig.height=6}
 meta %>%
-  filter(SampleID %in% c(35, 28, 16, 37)) %>%
+  filter(SampleID %in% c(35, 28, 16, 37, 4, 40, 41, 5)) %>%
   ggplot() +
   geom_point(aes(x = row, y = col, col = Group), size = .1) +
   facet_wrap(~ SampleID, ncol = 4) + 
