@@ -84,7 +84,8 @@ if ("earth.results.RDS" %in% list.files("data")) {
     misty.views.smp, names(misty.views.smp), function(smp, name) {
       
       smp %>% run_misty(results.folder = paste0("analysis/results/earth_", name),
-                        cv.folds = cv.folds, method = "bag", learner = "earth")
+                        cv.folds = cv.folds, method = "bag", learner = "earth",
+                        n.learners = 100)
     })
   earth.results <- collect_results(earth.results.folders)
   saveRDS(earth.results, "data/earth.results.RDS")
@@ -95,16 +96,41 @@ if ("earth.results.RDS" %in% list.files("data")) {
 mistyR::plot_improvement_stats(earth.results)
 ```
 
+## Linear Bagged Model
+
+```{r}
+plan("multisession", workers = 8)
+if ("lmbag.results.RDS" %in% list.files("data")) {
+  lmbag.results <- readRDS("data/lmbag.results.RDS")
+} else {
+  cv.folds = 10
+  lmbag.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/lmbag_", name),
+                        cv.folds = cv.folds, method = "bag", learner = "lm",
+                        n.learners = 200)
+    })
+  lmbag.results <- collect_results(lmbag.results.folders)
+  saveRDS(lmbag.results, "data/lmbag.results.RDS")
+}
+```
+
+```{r}
+mistyR::plot_improvement_stats(lmbag.results)
+```
+
 # Comparing the results
 
 ## Improvements
 
-```{r fig.width=10, fig.height=14}
-colors <- c("earth" = "forestgreen", "ranger" = "blue1")
+```{r fig.width=12, fig.height=14}
+colors <- c("earth" = "forestgreen", "ranger" = "blue1", "lm" = "red4")
 
 all.improvements <- rbind(
   ranger.results$improvements %>% mutate(method = "ranger"),
-  earth.results$improvements %>% mutate(method = "earth")
+  earth.results$improvements %>% mutate(method = "earth"),
+  lmbag.results$improvements %>% mutate(method = "lm")
 )
 
 all.improvements %>%
@@ -128,7 +154,7 @@ Random Forest (ranger):
 mistyR::plot_view_contributions(ranger.results)
 ```
 
-Also looking at the variability.
+Boxplot to look at the variability
 
 ```{r fig.width=6, fig.height=6}
 ranger.results$contributions %>%
@@ -139,14 +165,33 @@ ranger.results$contributions %>%
   facet_wrap(~ view, ncol = 1)
 ```
 
-MARS (earth):
+Bagged MARS (earth):
 
 ```{r}
 mistyR::plot_view_contributions(earth.results)
 ```
 
+Boxplot to look at the variability
+
 ```{r fig.width=6, fig.height=6}
 earth.results$contributions %>%
+  filter(!str_starts(view, "p\\."), view != "intercept") %>%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ view, ncol = 1)
+```
+
+Bagged Linear Model
+
+```{r}
+mistyR::plot_view_contributions(lmbag.results)
+```
+
+Boxplot to look at the variability
+
+```{r fig.width=6, fig.height=6}
+lmbag.results$contributions %>%
   filter(!str_starts(view, "p\\."), view != "intercept") %>%
   ggplot() +
   geom_boxplot(aes(x = target, y = value)) +
@@ -164,7 +209,7 @@ mistyR::plot_interaction_heatmap(ranger.results, view = "juxta.40", clean = TRUE
 mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
 ```
 
-MARS
+Bagged MARS
 
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(earth.results, view = "intra", clean = TRUE)
@@ -172,3 +217,10 @@ mistyR::plot_interaction_heatmap(earth.results, view = "juxta.40", clean = TRUE)
 mistyR::plot_interaction_heatmap(earth.results, view = "para.120", clean = TRUE)
 ```
 
+Bagged Linear Model
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_interaction_heatmap(lmbag.results, view = "intra", clean = TRUE)
+mistyR::plot_interaction_heatmap(lmbag.results, view = "juxta.40", clean = TRUE)
+mistyR::plot_interaction_heatmap(lmbag.results, view = "para.120", clean = TRUE)
+```

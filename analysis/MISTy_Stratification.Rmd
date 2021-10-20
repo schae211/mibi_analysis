@@ -23,13 +23,14 @@ library(mistyR)
 library(future)
 plan("multisession", workers=14)
 library(tidyverse)
+library(factoextra)
 ```
 
 Loading data generated in MIBI_Analysis.Rmd
 
 ```{r}
-meta <- readRDS("data/meta_data.RDS")
 all.expr <- readRDS("data/expression.RDS")
+meta <- (meta, "data/meta_data.RDS")
 meta.smp <- readRDS("data/sample_meta.RDS")
 ```
 
@@ -45,9 +46,9 @@ single cells) for example by running MISTy only on immune cells and using
 only cancer cells to create the paraview. This way we could try to find out
 which tumor markers influence the immune cell/response.
 
-# Compute the views
+# Computing MISTy views
 
-Parameters
+## General Parameters
 
 ```{r}
 cv.folds <- 10
@@ -159,7 +160,7 @@ misty.views <- create_initial_view(intra.df) %>%
 
 Check whether we can run MISTy.
 
-```{r}
+```{r include=FALSE, eval=FALSE}
 x <- run_misty(misty.views) %>%
   collect_results()
 plot_improvement_stats(x)
@@ -214,10 +215,6 @@ if ("cancer.immune.views.RDS" %in% list.files("data")) {
     names(target.unique[target.unique > cv.folds])
     )
   
-  view <- create_view(paste0("cancer.paraview.", l),
-              view.df,
-              paste0("c.para.", l))
-  
   # Sanity Check for intra.df
   # 1. Check for zero variance (otherwise MISTy throws an error)
   intra.df <- expr[immune.ids,]
@@ -253,9 +250,90 @@ if ("cancer.immune.views.RDS" %in% list.files("data")) {
 }
 ```
 
-# Run MISTy
+## Immune -> Immune
 
-## Running
+```{r}
+if ("immune.immune.views.RDS" %in% list.files("data")) {
+  immune.immune.views <- readRDS("data/immune.immune.views.RDS")
+} else {
+  
+  # Set parameters
+  l <- 120
+  zoi <- 40
+  family <- "gaussian"
+
+  # Map over all samples and compute the cancer -> immune view
+  immune.immune.views <- furrr::future_map(unique(meta$SampleID), function(id) {
+    
+  # Get expression, positions, and types for a sample
+  expr <- all.expr[meta$SampleID == id, ] %>% select(11:47)
+  pos <- meta %>% filter(SampleID == id) %>% select(row, col)
+  types <- meta %>% filter(SampleID == id) %>% pull(Group)
+  
+  # Get the ids of immune cells
+  immune.ids <- which(types == "Immune")
+  
+  # Get the distances between all cells
+  dists <- distances::distances(as.data.frame(pos))
+  
+  view.df <- map_dfr(immune.ids, function(i) {
+    weights <- get_weight(family, dists[i, ], l, zoi)
+    weighted.sum <- colSums(expr[immune.ids, ] * weights[immune.ids])
+    data.frame(t(weighted.sum))
+  })
+  
+  # Sanity Check for view.df
+  # 1. Check for zero variance (otherwise MISTy throws an error)
+  target.var <- apply(view.df, 2, stats::sd, na.rm = TRUE)
+  view.df <- view.df %>% select(-names(which(target.var == 0)))
+  
+  # 2. Check for how many unique values
+  target.unique <- colnames(view.df) %>%
+    purrr::set_names() %>%
+    purrr::map_int(~ length(unique(view.df %>% pull(.x))))
+  
+  view.df <- view.df %>% select(
+    names(target.unique[target.unique > cv.folds])
+    )
+  
+  # Sanity Check for intra.df
+  # 1. Check for zero variance (otherwise MISTy throws an error)
+  intra.df <- expr[immune.ids,]
+  target.var <- apply(intra.df, 2, stats::sd, na.rm = TRUE)
+  intra.df <- intra.df %>% select(-names(which(target.var == 0)))
+  
+  # 2. Check for how many unique values
+  target.unique <- colnames(intra.df) %>%
+    purrr::set_names() %>%
+    purrr::map_int(~ length(unique(intra.df %>% pull(.x))))
+  
+  intra.df <- intra.df %>% select(
+    names(target.unique[target.unique > cv.folds])
+    )
+  
+  # Make correct colnames
+  colnames(intra.df) <- make.names(colnames(intra.df))
+  colnames(view.df) <- make.names(colnames(view.df))
+  
+  # Create custom "paraview"
+  view <- create_view(paste0("immune.paraview.", l),
+              view.df,
+              paste0("i.para.", l))
+  
+  # Add all in return.views
+  return.views <- create_initial_view(intra.df) %>%
+    add_views(view)
+
+  return.views
+  })
+  names(immune.immune.views) <- names(expr.smp)
+  saveRDS(immune.immune.views, "data/immune.immune.views.RDS")
+}
+```
+
+# Running MISTy
+
+## Tumor -> Immune
 
 ```{r}
 if ("cancer.immune.results.RDS" %in% list.files("data")) {
@@ -275,26 +353,176 @@ if ("cancer.immune.results.RDS" %in% list.files("data")) {
 }
 ```
 
+## Immune -> Immune
+
+```{r}
+if ("immune.immune.results.RDS" %in% list.files("data")) {
+  immune.immune.results <- readRDS("data/immune.immune.results.RDS")
+} else {
+  cv.folds = 10
+  immune.immune.folders <- map2(
+    immune.immune.views, names(immune.immune.views), function(smp, name) {
+      
+      smp %>% run_misty(
+        results.folder = paste0("analysis/cell.specific.results/immune.immune_",
+                                name),
+                        cv.folds = cv.folds)
+    })
+  immune.immune.results <- collect_results(immune.immune.folders)
+  saveRDS(immune.immune.results, "data/immune.immune.results.RDS")
+}
+```
+
 ## Results
+
+## Tumore -> Immune
+
+### Gain.R2
 
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.R2")
 ```
 
-```{r fig.width=6, fig.height=6}
-mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.RMSE")
-```
+### View Contributions
 
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_view_contributions(cancer.immune.results)
 ```
+
+### Importances
+
+Intraview:
 
 ```{r fig.width=8, fig.height=8}
 mistyR::plot_interaction_heatmap(cancer.immune.results, view = "intra", 
                                  clean = TRUE)
 ```
 
+Paraview:
+
 ```{r fig.width=8, fig.height=8}
 mistyR::plot_interaction_heatmap(cancer.immune.results, view = "c.para.120",
                                  clean = TRUE, cutoff = .5)
+```
+
+### Signatures
+
+Performance
+
+```{r}
+cancer.immune.perf.sig <- mistyR::extract_signature(cancer.immune.results,
+                                                    "performance")
+cancer.immune.perf.pca <- stats::prcomp(cancer.immune.perf.sig %>%
+                                          select(-sample))
+```
+
+```{r}
+ggplot() +
+  geom_point(aes(x=cancer.immune.perf.pca$x[,1], 
+                 y=cancer.immune.perf.pca$x[,2],
+                 col=factor(meta.smp$GRADE)))
+```
+
+```{r}
+fviz_pca_var(cancer.immune.perf.pca, col.var="contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
+```
+
+Importances:
+
+```{r}
+cancer.immune.imp.sig <- mistyR::extract_signature(cancer.immune.results,
+                                                    "importance")
+cancer.immune.imp.pca <- stats::prcomp(cancer.immune.imp.sig %>%
+                                          select(-sample))
+```
+
+```{r}
+ggplot() +
+  geom_point(aes(x=cancer.immune.imp.pca$x[,1], 
+                 y=cancer.immune.imp.pca$x[,2],
+                 col=factor(meta.smp$GRADE)))
+```
+
+```{r}
+fviz_pca_var(cancer.immune.imp.pca, col.var="contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
+```
+
+## Immune -> Immune
+
+### Gain.R2
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_improvement_stats(immune.immune.results, measure = "gain.R2")
+```
+
+### View Contributions
+
+```{r fig.width=6, fig.height=6}
+mistyR::plot_view_contributions(immune.immune.results)
+```
+
+### Importances
+
+Intraview:
+
+```{r fig.width=8, fig.height=8}
+mistyR::plot_interaction_heatmap(immune.immune.results, view = "intra", 
+                                 clean = TRUE)
+```
+
+Paraview:
+
+```{r fig.width=8, fig.height=8}
+mistyR::plot_interaction_heatmap(immune.immune.results, view = "i.para.120",
+                                 clean = TRUE, cutoff = .5)
+```
+
+### Signatures
+
+Performance
+
+```{r}
+immune.immune.perf.sig <- mistyR::extract_signature(immune.immune.results,
+                                                    "performance")
+immune.immune.perf.pca <- stats::prcomp(immune.immune.perf.sig %>%
+                                          select(-sample))
+```
+
+```{r}
+ggplot() +
+  geom_point(aes(x=immune.immune.perf.pca$x[,1], 
+                 y=immune.immune.perf.pca$x[,2],
+                 col=factor(meta.smp$GRADE)))
+```
+
+```{r}
+fviz_pca_var(immune.immune.perf.pca, col.var="contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
+```
+
+Importances:
+
+```{r}
+immune.immune.imp.sig <- mistyR::extract_signature(immune.immune.results,
+                                                    "importance")
+immune.immune.imp.pca <- stats::prcomp(immune.immune.imp.sig %>%
+                                          select(-sample))
+```
+
+```{r}
+ggplot() +
+  geom_point(aes(x=immune.immune.imp.pca$x[,1], 
+                 y=immune.immune.imp.pca$x[,2],
+                 col=factor(meta.smp$GRADE)))
+```
+
+```{r}
+fviz_pca_var(immune.immune.imp.pca, col.var="contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
 ```

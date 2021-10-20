@@ -11,6 +11,8 @@ navbar:
     href: MISTy_Stratification.html
   - text: Model Comparison
     href: Model_Comparison.html
+  - text: Presentation
+    href: Presentation.html
   right:
   - icon: fa-github
     text: Source code
