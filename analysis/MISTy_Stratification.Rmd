@@ -30,7 +30,7 @@ Loading data generated in MIBI_Analysis.Rmd
 
 ```{r}
 all.expr <- readRDS("data/expression.RDS")
-meta <- (meta, "data/meta_data.RDS")
+meta <- readRDS("data/meta_data.RDS")
 meta.smp <- readRDS("data/sample_meta.RDS")
 ```
 
