@@ -521,7 +521,7 @@ ggplot() +
 
 Here are the corresponding IDs for comparison to the meta data.
 
-```{r}
+```{r fig.height=8, fig.width=10}
 ggplot(labels.40) +
   geom_label(aes(x = row, y = col, label = value), size = 2.5)
 ```
@@ -562,7 +562,7 @@ sample.meta <- patient.info %>%
 sample.meta %>% slice_head(n=6)
 ```
 
-# Run MISTy on all samples
+# Running MISTy
 
 ## Preparation
 
@@ -826,6 +826,13 @@ ggplot() +
   geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
                  col=factor(sample.meta$Classification)))
 ```
+
+Looking at the variable loadings one can see that the importances are often 
+similar for different views and that the importances are reciprocal, e.g.
+- CD45 & HLA_Class_1 (= MHC1)
+- CD63 & CD68 (macrophages)
+- CD16 & CD11c (natural killer cells, neutrophils, monocytes, and macrophages)
+- CD16 & CD45
 
 ```{r}
 fviz_pca_var(ranger.imp.pca, col.var="contrib",

@@ -1,0 +1,19 @@
+---
+title: "Presentation"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+---
+
+# Questions
+
+1. How does the site where the sample is taken from the solid tumor influence
+the sample-to-sample heterogenity?
+
+2. What are the different markers indicative of?
+- Tumor-related: EGFR, p53
+- Metabolic activity / proliferation: Ki-67, pS6
+- Immunoregulatory proteins: PD-1, PD-L1, LAG3, IDO
+-

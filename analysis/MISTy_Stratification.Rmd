@@ -373,9 +373,9 @@ if ("immune.immune.results.RDS" %in% list.files("data")) {
 }
 ```
 
-## Results
+# MISTy Results
 
-## Tumore -> Immune
+## Tumor -> Immune
 
 ### Gain.R2
 
@@ -402,7 +402,7 @@ Paraview:
 
 ```{r fig.width=8, fig.height=8}
 mistyR::plot_interaction_heatmap(cancer.immune.results, view = "c.para.120",
-                                 clean = TRUE, cutoff = .5)
+                                 clean = TRUE, cutoff = .8)
 ```
 
 ### Signatures
@@ -478,7 +478,7 @@ Paraview:
 
 ```{r fig.width=8, fig.height=8}
 mistyR::plot_interaction_heatmap(immune.immune.results, view = "i.para.120",
-                                 clean = TRUE, cutoff = .5)
+                                 clean = TRUE, cutoff = .8)
 ```
 
 ### Signatures

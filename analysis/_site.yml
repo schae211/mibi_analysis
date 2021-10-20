@@ -10,7 +10,9 @@ navbar:
   - text: Cell Type Specific Analysis
     href: MISTy_Stratification.html
   - text: Model Comparison
-    href: Model_Comparison.html
+    href: Model_Comparison.wflow_html
+  - text: Questions
+    href: Questions.html
   - text: Presentation
     href: Presentation.html
   right:
