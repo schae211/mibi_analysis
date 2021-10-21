@@ -11,6 +11,11 @@ output:
 
 1. How does the site/location in the solid tumor where the sample is taken from
 influence the sample-to-sample heterogeneity?
+- See discussion of the paper: Emerging cohorts, in which several regions are 
+profiled for each patient, are needed to investigate the intra-patient 
+heterogeneity in the composition and architecture of the tumor-immune 
+microenvironment and its relationship to the molecular attributes of the tumor.
+- 
 
 2. What are the different markers indicative of?
 - Tumor-related: EGFR, p53, (also CD138 neoplastic cells?)

@@ -243,6 +243,8 @@ How were the "counts" normalized?
 
 According to the readme.rtf the markers were normalized by dividing the 
 counts by the cell size and transforming with arcsinh (inverse hyperbolic sine).
+Furthermore in the paper it is stated that after arcsinh transformation the
+markers were standard normalized.
 
 ```{r fig.height=12, fig.width=18}
 expr %>%
@@ -309,10 +311,13 @@ Calculating the mixing score by counting for all immune cells in each
 sample how many contacts to they have to cancer cells divided by the 
 contacts to other immune cells. The contacts are determined by
 Delaunay Triangulation and cells are only considered to be neighbors
-if the distance between them is below 40.
+if the distance between them is below 40. 
 
 Importantly this mixing score is higher if there are more tumor cells
 than immune cells (as seen by the filling color of the barplot below).
+
+(Remark: The authors of the paper used Haralick’s gray-level co-occurrence
+matrix to determine direct neighbors of each cell)
 
 ```{r}
 # Setting the distance threshold for what is considered a neighbor in the DT.
@@ -384,7 +389,8 @@ meta %>%
   scale_fill_viridis_c()
 ```
 
-Looking at the samples with the top mixing score, namely 15, 18, 22, 24.
+Looking at the samples with the top mixing score, namely 15, 18, 22, 24, 31, 
+25, 21, 26
 
 ```{r fig.width=12, fig.height=6}
 meta %>%
@@ -395,7 +401,8 @@ meta %>%
   guides(colour = guide_legend(override.aes = list(size = 4)))
 ```
 
-Looking at the samples with the lowest mixing score, namely 35, 28, 16, 37.
+Looking at the samples with the lowest mixing score, namely 35, 28, 16, 37, 
+4, 40, 41, 5.
 
 ```{r fig.width=12, fig.height=6}
 meta %>%
@@ -632,8 +639,7 @@ sum(map_int(names(coord.smp$s40), ~ sum(is.na(coord.smp$s40[.x]))))
 nrow(expr.smp$s40) == nrow(coord.smp$s40)
 ```
 
-Looking at the pairwise distances to get a feeling for which numbers to 
-plug in for generating the juxtaview and paraview.
+Helper function to calculate distances to the neighbors.
 
 ```{r}
 # helper function for nearest neighbors
@@ -651,7 +657,13 @@ get_neighbors <- function(ddobj, id) {
     ddobj$delsgs$ind2[which(ddobj$delsgs$ind1 == id)]
   )
 }
+```
 
+First we will look at the distribution of the  mean distances to the direct 
+neighbors (as determined by the delauney triangulation) to get a feeling for 
+which cutoff value should be used for the generation of the juxtaview.
+
+```{r}
 # mean distance to the direct neighbors for each cell
 mean.dists.direct.neighbors <- map(coord.smp, function(smp) {
   delaunay <- deldir::deldir(as.data.frame(smp))
@@ -667,11 +679,19 @@ ggplot(data.frame(dist = mean.dists.direct.neighbors)) +
   geom_histogram(aes(dist), bins = 100) +
   lims(x = c(0,100)) +
   geom_vline(xintercept = 40, col = "blue")
+```
 
-# summary
+Summary statistics:
+
+```{r}
 summary(mean.dists.direct.neighbors)
+```
 
-# mean distances to the 5, 10, 15, 20 nearest neighbors
+Furthermore we will look at the distribution of the mean distances to the
+10 clostest, 20 closest, 40 clostest, or 80 clostest cells to get a feeling
+for which cutoff will be used to generate the paraview.
+
+```{r}
 neighbor.dists <- map_dfr(coord.smp, function(smp) {
   c(10, 20, 40, 80) %>%
     set_names() %>%
@@ -681,18 +701,22 @@ neighbor.dists <- map_dfr(coord.smp, function(smp) {
   set_names(paste0("dist_to_", c("10", "20", "40", "80")))
 })
 
-# summary
-summary(neighbor.dists)
-
-# visualize distribution
 neighbor.dists %>%
   pivot_longer(cols = everything()) %>%
-  mutate(name = factor(name, levels = paste0("dist_to_", c("10", "20", "40", "80")))) %>%
+  mutate(name = factor(name, 
+                       levels = paste0("dist_to_", c("10", "20", "40", "80")))) %>%
   ggplot() +
   geom_histogram(aes(value), bins = 100) +
   facet_wrap(~ name) +
   lims(x = c(0, 200)) +
-  geom_vline(xintercept = 120, col = "blue")
+  geom_vline(xintercept = 120, col = "blue")+
+  labs(subtitle = "Distribution of the mean distances to the 10, 20, 40, or 80 closest neighbours.")
+```
+
+Summary statistics:
+
+```{r}
+summary(neighbor.dists)
 ```
 
 ## Generating the MISTy views
@@ -737,9 +761,180 @@ if ("ranger.results.RDS" %in% list.files("data")) {
 }
 ```
 
+# MISTy Results
+
+## Gain R2
+
+We can see that there is quite some gain in variance when taking the 
+expression of neighboring cells into account. However, looking at the
+errorbars we can also see that there is a large variability between the samples.
+
 ```{r}
 mistyR::plot_improvement_stats(ranger.results)
 ```
+
+Let's take the 12 targets (1/3 of all targets) for which the mean gain.R2 is the largest and
+investigate the differences between the samples.
+
+```{r}
+top.targets <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>%
+  group_by(target) %>%
+  summarise(mean.gain.R2 = mean(value), .groups = "drop") %>%
+  slice_max(mean.gain.R2, n=12) %>%
+  pull(target)
+top.targets
+```
+
+How should the summarise the gained explained variance per sample? Sum it up, 
+take the mean, median?
+
+```{r fig.width=8, fig.height=8}
+plots <- map2(c(mean, median, sum), c("Mean", "Median", "Sum"), function(func, name) {
+  ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  filter(target %in% top.targets) %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  group_by(sample) %>%
+  summarise(stat = func(value), .groups = "keep") %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(sample, -stat), y = stat), 
+           stat = "identity") +
+  labs(title = name)
+})
+
+do.call(gridExtra::grid.arrange, c(plots, ncol=1))
+```
+
+Let's look at the correlation of those metrics with the mixing score. The
+correlation of the sum of the gain.R2 is driven by only 3 samples, so I am not
+quite sure whether one could consider this important.
+
+```{r fig.height=4, fig.width=10}
+ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  filter(target %in% c("CD138", "CD209", "phospho.S6", "IDO", "EGFR")) %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  group_by(sample) %>%
+  summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
+            median.gain.R2 = median(value), .groups = "drop") %>%
+  left_join(sample.meta, by = c("sample" = "SampleID")) %>%
+  pivot_longer(cols = c(sum.gain.R2, mean.gain.R2, median.gain.R2), 
+               names_to = "stat") %>%
+  ggplot() +
+  geom_point(aes(x = ratio.tumor.immune, y = value)) +
+  geom_smooth(aes(x = ratio.tumor.immune, y = value),
+              formula = y ~ x, method = "lm") +
+  facet_wrap(~ stat, ncol=3)
+```
+
+What else could it be correlated with?
+
+- Count of immune cells
+- Count of tumor cells
+- Grade of the tumor (appearance of cancer tissue)
+- Stage of the tumor (size of primary tumor, metastasis)
+
+```{r fig.height=16, fig.width=10}
+plots <- map(c("Count.Immune", "Count.Tumor", "Count.Endothelial", "Count.Mesenchymal.like"),
+              function(test.var) {
+  ranger.results$improvements %>%
+    filter(measure == "gain.R2") %>% 
+    filter(target %in% c("CD138", "CD209", "phospho.S6", "IDO", "EGFR")) %>%
+    mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+    group_by(sample) %>%
+    summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
+              median.gain.R2 = median(value), .groups = "drop") %>%
+    left_join(sample.meta %>%
+                rename("Count.Keratin.positive.Tumor" = "Count.Keratin-positive tumor",
+                       "Count.Mesenchymal.like" = "Count.Mesenchymal-like") %>%
+                mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor),
+              by = c("sample" = "SampleID")) %>%
+    pivot_longer(cols = c(sum.gain.R2, mean.gain.R2, median.gain.R2), 
+                 names_to = "stat") %>%
+    ggplot() +
+    geom_point(aes(x = !!sym(test.var), y = value)) +
+    geom_smooth(aes(x = !!sym(test.var), y = value),
+                formula = y ~ x, method = "lm") +
+    facet_wrap(~ stat, ncol=3, scales="free_y") +
+    labs(title = test.var)
+})
+
+do.call(gridExtra::grid.arrange, c(plots, ncol=1))
+```
+
+
+
+Now taking the top 10 and the bottom 10 samples and comparing their features.
+Features being the mixing score, the R2 of the intraview for the chosen targets
+
+```{r}
+top.10 <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  filter(target %in% top.targets) %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  group_by(sample) %>%
+  summarise(mean.gain.R2 = sum(value), .groups = "drop") %>%
+  slice_max(mean.gain.R2, n = 10) %>%
+  pull(sample)
+
+bottom.10 <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  filter(target %in% top.targets) %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  group_by(sample) %>%
+  summarise(mean.gain.R2 = sum(value), .groups = "drop") %>%
+  slice_min(mean.gain.R2, n = 10) %>%
+  pull(sample)
+```
+
+Looking at the mixing score (ratio of immune-tumor contacts divided by the 
+number of immune-immune contacts). And we can kinda see that the 
+
+```{r}
+sample.meta %>%
+  mutate(group.tmp = case_when(
+    SampleID %in% top.10 ~ "top",
+    SampleID %in% bottom.10 ~ "bottom",
+    TRUE ~ "middle",
+  )) %>%
+  mutate(group.tmp = factor(group.tmp, levels = c("top", "middle", "bottom"))) %>%
+  ggplot() +
+  geom_boxplot(aes(x=group.tmp, y=ratio.tumor.immune))
+```
+
+Looking at the correlation as is. We can basically see that the trend is
+rather driven by 3 samples.
+
+```{r fig.height=4, fig.width=8}
+p1 <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  filter(target %in% c("CD138", "CD209", "phospho.S6", "IDO", "EGFR")) %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  group_by(sample) %>%
+  summarise(sum.gain.R2 = sum(value), .groups = "drop") %>%
+  left_join(sample.meta, by = c("sample" = "SampleID")) %>%
+  ggplot() +
+  geom_point(aes(x = ratio.tumor.immune, y = sum.gain.R2)) +
+  geom_smooth(aes(x = ratio.tumor.immune, y = sum.gain.R2),
+              formula = y ~ x, method = "lm")
+
+p2 <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  filter(target %in% c("CD138", "CD209", "phospho.S6", "IDO", "EGFR")) %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  group_by(sample) %>%
+  summarise(sum.gain.R2 = sum(value), .groups = "drop") %>%
+  left_join(sample.meta, by = c("sample" = "SampleID")) %>%
+  filter(ratio.tumor.immune < 300) %>%
+  ggplot() +
+  geom_point(aes(x = ratio.tumor.immune, y = sum.gain.R2)) +
+  geom_smooth(aes(x = ratio.tumor.immune, y = sum.gain.R2),
+              formula = y ~ x, method = "lm")
+
+gridExtra::grid.arrange(p1, p2, ncol = 2)
+```
+
 
 ## View Contributions
 
