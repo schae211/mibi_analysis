@@ -37,3 +37,9 @@ between the samples
 - As I understand it most markers were chosen to distinguish between different
 cell types, but we get little information about the cell states (meaning, 
 what is actually going on in those cells).
+
+6. What factors could explain that we can sometimes explain more or less 
+variance for certain target in certain samples? What drives the performance
+of MISTy?
+
+
