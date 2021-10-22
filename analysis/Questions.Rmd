@@ -42,4 +42,8 @@ what is actually going on in those cells).
 variance for certain target in certain samples? What drives the performance
 of MISTy?
 
+7. Shouldn't one first checkout in which samples MISTy can explain the
+overall variance best? One we combine the multiview R2 and the gain R2 
+stats to learn something about the samples?
+
 

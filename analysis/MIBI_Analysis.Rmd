@@ -788,12 +788,10 @@ errorbars we can also see that there is a large variability between the samples.
 mistyR::plot_improvement_stats(ranger.results)
 ```
 
-How is the gain.R2 dependend on the Sample and the target. How could I 
+How is the gain.R2 dependend on the sample and the target. How could I 
 decompose those effects? 
 
 Let's look at a heatmap first, visualizing the gain.R2 for each sample and target.
-
-The observed hierachical clustering is basically a signature of the samples.
 
 ```{r fig.width=8, fig.height=7}
 ranger.results$improvements %>% 
@@ -813,9 +811,10 @@ ranger.results$improvements %>%
 # https://www.datacamp.com/community/tutorials/hierarchical-clustering-R
 ```
 
+Let's classify the samples based on the hierachical clustering of the 
+"gain.R2" signature as shown in the heatmap.
 
-Let's cluster the samples based on the "gain.R2 signature" and see what is
-different between them.
+We will take 10 clusters but remove all clusters that have only one sample in them.
 
 ```{r}
 k = 10
@@ -836,8 +835,7 @@ plot(hc)
 rect.hclust(hc , k = k, border = 2:6)
 ```
 
-Now visualize the heatmap again with the chosen cluster "depth". However, first
-we will remove all clusters with only one sample.
+Removing clusters with only 1 sample in them.
 
 ```{r}
 hc.clusters <- cutree(hc, k = k)
@@ -847,10 +845,11 @@ n <- unique(hc.clusters) %>%
   map_int(function(i) {
     s <- sum(hc.clusters == i)
   })
-n
 keep <- names(n)[which(n > 1)]
+n
 ```
 
+Now visualize the heatmap again with the clusters.
 
 ```{r fig.width=8, fig.height=7}
 col.annotation <- data.frame(cluster = factor(hc.clusters))
@@ -873,7 +872,19 @@ ranger.results$improvements %>%
 
 Now what differentiates the clusters?
 
-```{r}
+We could for example look at:
+- ratio.tumor.immune
+- Count.Immune
+- Count.Tumor, 
+- Count.Endothelial
+- Count.Mesenchymal.like
+- Count.Total
+
+One can immediately see that cluster 2 has a higher ration of tumor-immune to
+immune-immune contact, though this effect seems to be mainly driven by the
+cold tumors (low number of immune cells).
+
+```{r fig.height=5, fig.width=8}
 sample.meta %>%
   left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
             by = c("SampleID" = "sample")) %>%
@@ -885,15 +896,127 @@ sample.meta %>%
                         Count.Endothelial, Count.Mesenchymal.like, Count.Total),
                names_to = "statistic", values_to = "value") %>%
   ggplot() +
-  geom_boxplot(aes(x = cluster, y = value)) +
-  facet_wrap(~ statistic, scales = "free", ncol = 3)
+  geom_boxplot(aes(x = cluster, y = value), outlier.shape=NA) +
+  geom_jitter(aes(x = cluster, y = value, col = Classification), size=.8, width=.3) +
+  facet_wrap(~ statistic, scales = "free", ncol = 3) +
+  theme(legend.position="top") +
+  scale_color_manual(values = c("mixed" = "indianred", 
+                               "compartimentalized" = "forestgreen",
+                               "cold" = "royalblue"))
 ```
 
+Though it may be more informative to actually look at the cell ratios, or 
+proportions. 
+
+Now we may like to investigate the proportion of the classification in more
+detail across the clusters.
+
+```{r fig.height=4, fig.width=8}
+p1 <- sample.meta %>%
+  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
+            by = c("SampleID" = "sample")) %>%
+  filter(cluster %in% keep) %>%
+  rename("Count.Keratin.positive.Tumor" = "Count.Keratin-positive tumor",
+                       "Count.Mesenchymal.like" = "Count.Mesenchymal-like") %>%
+  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %>%
+  group_by(cluster) %>%
+  summarise(n = n(), 
+         n.mixed = sum(Classification == "mixed"),
+         n.comp = sum(Classification == "compartimentalized"),
+         n.cold = sum(Classification == "cold")) %>%
+  mutate(fraction.mixed = n.mixed/n,
+         fraction.comp = n.comp/n,
+         fraction.cold = n.cold/n) %>%
+  pivot_longer(cols = starts_with("frac")) %>%
+  ggplot() +
+  geom_col(aes(x = cluster, y = value, fill = name)) +
+  geom_text(aes(x = cluster, y = 0.99, label = n), vjust = -0.5) +
+  scale_fill_manual(values = c("fraction.mixed" = "indianred", 
+                               "fraction.comp" = "forestgreen",
+                               "fraction.cold" = "royalblue")) +
+  labs(title = "Fractions")
+
+p2 <- sample.meta %>%
+  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
+            by = c("SampleID" = "sample")) %>%
+  filter(cluster %in% keep) %>%
+  rename("Count.Keratin.positive.Tumor" = "Count.Keratin-positive tumor",
+                       "Count.Mesenchymal.like" = "Count.Mesenchymal-like") %>%
+  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %>%
+  group_by(cluster) %>%
+  summarise(n = n(), 
+         n.mixed = sum(Classification == "mixed"),
+         n.comp = sum(Classification == "compartimentalized"),
+         n.cold = sum(Classification == "cold")) %>%
+  pivot_longer(cols = starts_with("n.")) %>%
+  ggplot() +
+  geom_col(aes(x = cluster, y = value, fill = name)) +
+  scale_fill_manual(values = c("n.mixed" = "indianred", 
+                               "n.comp" = "forestgreen",
+                               "n.cold" = "royalblue")) +
+  labs(title = "Absolute Numbers")
+
+gridExtra::grid.arrange(p1, p2, ncol = 2)
+```
+
+Now could it be that the the intraview R2 could somehow explain the clustering
+we see in the gain.R2. Meaning samples in which the intraview R2s are
+rather low and samples in which it is rather high?
+
+First, we one can note that for the targets there seem to be three
+distinct clusters. On the left the intra R2 is rather high, in the
+middle the intra R2 is rather low, and on the right the intra R2 
+values are mixed across the samples.
+
+Regarding the question, the clusters seem to be somewhat preserved, so the
+intraview R2 probably has something to do with the observed clusterin in gain R2
+(the intraview basically determines the potential of gaining explained variance).
+
+```{r fig.width=8, fig.height=7}
+ranger.results$improvements %>% 
+  filter(measure == "intra.R2") %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+            by = "sample") %>%
+  filter(cluster %in% keep) %>%
+  select(-c(measure, cluster)) %>% 
+  pivot_wider(names_from = target) %>%
+  replace(is.na(.), 0) %>%
+  as.data.frame() %>%
+  column_to_rownames(var = "sample") %>%
+  as.matrix() %>%
+  pheatmap::pheatmap(., annotation_row = col.annotation)
+```
+
+How does the multiview R2 heatmap look like?
+
+Regarding the sample clusters one can see quite clearly that the clusters
+from the gain.R2 statistic are not fully preserved. For a given sample
+the neighboring samples often belong to the same cluster, but the clusters
+seem to be broken into several smaller subsets (e.g. look at clusters 2 and 4).
+
+```{r fig.width=8, fig.height=7}
+ranger.results$improvements %>% 
+  filter(measure == "multi.R2") %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+            by = "sample") %>%
+  filter(cluster %in% keep) %>%
+  select(-c(measure, cluster)) %>% 
+  pivot_wider(names_from = target) %>%
+  replace(is.na(.), 0) %>%
+  as.data.frame() %>%
+  column_to_rownames(var = "sample") %>%
+  as.matrix() %>%
+  pheatmap::pheatmap(., annotation_row = col.annotation)
+```
+
+Another way to go about this investigation may be to select the top targets
+in terms of gain R2 and then check what this gain R2 is correlated with
+The details can be found below.
 
 <details>
-<summary>Another Perspective</summary>
-
-From another perspective we could bascially only look at the top targets and summarize things.
+<summary>Click Here</summary>
 
 Let's take the 12 targets (1/3 of all targets) for which the mean gain.R2 is the largest and
 investigate the differences between the samples.
