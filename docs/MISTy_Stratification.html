@@ -33,8 +33,11 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
@@ -230,6 +233,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -362,6 +368,14 @@ div.tocify {
 </div><!--/.navbar -->
 
 <div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
 
@@ -505,16 +519,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7fd2c3672fe813dbc8ef70c8a596205dc5c92df4targetblank7fd2c36a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/7fd2c3672fe813dbc8ef70c8a596205dc5c92df4" target="_blank">7fd2c36</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree59278435f01b8f60936a963738d5ccbf617abea0targetblank5927843a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/59278435f01b8f60936a963738d5ccbf617abea0" target="_blank">5927843</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7fd2c3672fe813dbc8ef70c8a596205dc5c92df4targetblank7fd2c36a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree59278435f01b8f60936a963738d5ccbf617abea0targetblank5927843a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/7fd2c3672fe813dbc8ef70c8a596205dc5c92df4" target="_blank">7fd2c36</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/59278435f01b8f60936a963738d5ccbf617abea0" target="_blank">5927843</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -620,6 +634,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/59278435f01b8f60936a963738d5ccbf617abea0/analysis/MISTy_Stratification.Rmd" target="_blank">5927843</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+<td>
+hiding code
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/4df87c61f10c239f0b239092910f582f0fd25957/docs/MISTy_Stratification.html" target="_blank">4df87c6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1547,18 +1595,12 @@ schae211
   group_by(target, Classification, measure) %&gt;%
   summarise(mean.measure = round(mean(value, na.rm=TRUE),2),
             .groups=&quot;keep&quot;) %&gt;%
-  pivot_wider(names_from = measure, values_from = mean.measure)
-# A tibble: 6 × 10
-# Groups:   target, Classification [6]
-  target Classification     gain.R2 gain.RMSE intra.R2 intra.RMSE multi.R2
-  &lt;chr&gt;  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 IDO    compartimentalized    3.42      2.44     0.25       0.62     0.29
-2 IDO    mixed                 3.27      1.88     0.16       0.45     0.2 
-3 PD.L1  compartimentalized    2.69      2.4      0.28       0.42     0.31
-4 PD.L1  mixed                 2.13      1.44     0.17       0.57     0.2 
-5 PD1    compartimentalized    2.04      1.5      0.17       0.78     0.19
-6 PD1    mixed                 1.82      1.31     0.21       1.12     0.23
-# … with 3 more variables: multi.RMSE &lt;dbl&gt;, p.R2 &lt;dbl&gt;, p.RMSE &lt;dbl&gt;</code></pre>
+  pivot_wider(names_from = measure, values_from = mean.measure)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["target"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Classification"],"name":[2],"type":["chr"],"align":["left"]},{"label":["gain.R2"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gain.RMSE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["intra.R2"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["intra.RMSE"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["multi.R2"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["multi.RMSE"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["p.R2"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["p.RMSE"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"IDO","2":"compartimentalized","3":"3.42","4":"2.44","5":"0.25","6":"0.62","7":"0.29","8":"0.59","9":"0.26","10":"0.34"},{"1":"IDO","2":"mixed","3":"3.27","4":"1.88","5":"0.16","6":"0.45","7":"0.20","8":"0.43","9":"0.30","10":"0.40"},{"1":"PD.L1","2":"compartimentalized","3":"2.69","4":"2.40","5":"0.28","6":"0.42","7":"0.31","8":"0.41","9":"0.23","10":"0.36"},{"1":"PD.L1","2":"mixed","3":"2.13","4":"1.44","5":"0.17","6":"0.57","7":"0.20","8":"0.56","9":"0.32","10":"0.41"},{"1":"PD1","2":"compartimentalized","3":"2.04","4":"1.50","5":"0.17","6":"0.78","7":"0.19","8":"0.76","9":"0.32","10":"0.42"},{"1":"PD1","2":"mixed","3":"1.82","4":"1.31","5":"0.21","6":"1.12","7":"0.23","8":"1.10","9":"0.35","10":"0.44"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <p>And then the median.</p>
 <pre class="r"><code>cancer.immune.results$improvements %&gt;%
   mutate(SampleID = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
@@ -1568,18 +1610,12 @@ schae211
   group_by(target, Classification, measure) %&gt;%
   summarise(mean.measure = round(median(value, na.rm=TRUE), 2),
             .groups=&quot;keep&quot;) %&gt;%
-  pivot_wider(names_from = measure, values_from = mean.measure)
-# A tibble: 6 × 10
-# Groups:   target, Classification [6]
-  target Classification     gain.R2 gain.RMSE intra.R2 intra.RMSE multi.R2
-  &lt;chr&gt;  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 IDO    compartimentalized    3.11      2.77     0.25       0.65     0.29
-2 IDO    mixed                 0.96      1.15     0.17       0.45     0.2 
-3 PD.L1  compartimentalized    2.9       2.58     0.21       0.33     0.25
-4 PD.L1  mixed                 1.57      1.24     0.17       0.54     0.17
-5 PD1    compartimentalized    1.56      1.16     0.18       0.72     0.2 
-6 PD1    mixed                 1.16      0.83     0.18       1.01     0.23
-# … with 3 more variables: multi.RMSE &lt;dbl&gt;, p.R2 &lt;dbl&gt;, p.RMSE &lt;dbl&gt;</code></pre>
+  pivot_wider(names_from = measure, values_from = mean.measure)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["target"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Classification"],"name":[2],"type":["chr"],"align":["left"]},{"label":["gain.R2"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["gain.RMSE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["intra.R2"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["intra.RMSE"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["multi.R2"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["multi.RMSE"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["p.R2"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["p.RMSE"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"IDO","2":"compartimentalized","3":"3.11","4":"2.77","5":"0.25","6":"0.65","7":"0.29","8":"0.65","9":"0.28","10":"0.37"},{"1":"IDO","2":"mixed","3":"0.96","4":"1.15","5":"0.17","6":"0.45","7":"0.20","8":"0.45","9":"0.21","10":"0.47"},{"1":"PD.L1","2":"compartimentalized","3":"2.90","4":"2.58","5":"0.21","6":"0.33","7":"0.25","8":"0.32","9":"0.21","10":"0.42"},{"1":"PD.L1","2":"mixed","3":"1.57","4":"1.24","5":"0.17","6":"0.54","7":"0.17","8":"0.54","9":"0.34","10":"0.45"},{"1":"PD1","2":"compartimentalized","3":"1.56","4":"1.16","5":"0.18","6":"0.72","7":"0.20","8":"0.70","9":"0.34","10":"0.44"},{"1":"PD1","2":"mixed","3":"1.16","4":"0.83","5":"0.18","6":"1.01","7":"0.23","8":"0.99","9":"0.39","10":"0.48"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 <p>Also interestingly the gain in variance explained is negatively correlated with the mixing score, meaning the more contact there is between immune and tumor cells the less variance can be explained for IDO.</p>
 <pre class="r"><code>cor(x = cancer.immune.results$improvements %&gt;%
     mutate(SampleID = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
@@ -2126,6 +2162,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-26-1.png" target="_blank">4df87c6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/8cb127da7ac02437189484ceca9b48c35af55e39/docs/figure/MISTy_Stratification.Rmd/unnamed-chunk-26-1.png" target="_blank">8cb127d</a>
@@ -2761,6 +2808,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {
