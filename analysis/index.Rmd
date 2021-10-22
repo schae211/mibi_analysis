@@ -1,11 +1,6 @@
 ---
 title: "Home"
 site: workflowr::wflow_site
-output:
-  html_document:
-    toc: false
-    toc_float: false
-    theme: united
 ---
 
 # Data Description
