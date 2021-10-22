@@ -435,16 +435,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree59278435f01b8f60936a963738d5ccbf617abea0targetblank5927843a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/59278435f01b8f60936a963738d5ccbf617abea0" target="_blank">5927843</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree35c39a8dc74d03ea7ad9344915a54573f20c61aatargetblank35c39a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/35c39a8dc74d03ea7ad9344915a54573f20c61aa" target="_blank">35c39a8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree59278435f01b8f60936a963738d5ccbf617abea0targetblank5927843a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree35c39a8dc74d03ea7ad9344915a54573f20c61aatargetblank35c39a8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/59278435f01b8f60936a963738d5ccbf617abea0" target="_blank">5927843</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/35c39a8dc74d03ea7ad9344915a54573f20c61aa" target="_blank">35c39a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -513,6 +513,9 @@ Ignored files:
     Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
 
+Untracked files:
+    Untracked:  analysis/Composition.Rmd
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -550,6 +553,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/35c39a8dc74d03ea7ad9344915a54573f20c61aa/analysis/Questions.Rmd" target="_blank">35c39a8</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+<td>
+refactored the eda markdown
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/65157102734db5e04526bba184f5eab29ef3aa12/docs/Questions.html" target="_blank">6515710</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -852,6 +889,7 @@ added questions
 <ol start="6" style="list-style-type: decimal">
 <li><p>What factors could explain that we can sometimes explain more or less variance for certain target in certain samples? What drives the performance of MISTy?</p></li>
 <li><p>Shouldn’t one first checkout in which samples MISTy can explain the overall variance best? One we combine the multiview R2 and the gain R2 stats to learn something about the samples?</p></li>
+<li><p>Is it fair to use the same distance threshold for calculating the juxta and paraview for all the samples, or should the specific threshold depend on some properties of the sample? For example for the juxtaview the median of the following stat: “mean distance to the neighboring cells for each cell i”</p></li>
 </ol>
 </div>
 
