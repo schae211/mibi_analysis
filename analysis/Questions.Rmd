@@ -41,4 +41,9 @@ of MISTy?
 overall variance best? One we combine the multiview R2 and the gain R2 
 stats to learn something about the samples?
 
+8. Is it fair to use the same distance threshold for calculating the 
+juxta and paraview for all the samples, or should the specific threshold
+depend on some properties of the sample? For example for the
+juxtaview the median of the following stat: "mean distance to the neighboring 
+cells for each cell i"
 

@@ -14,11 +14,11 @@ knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
 Loaded Packages.
 
 ```{r}
-library(mistyR)
-library(future)
+suppressPackageStartupMessages(library(mistyR))
+suppressPackageStartupMessages(library(future))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(factoextra))
 plan("multisession", workers=14)
-library(tidyverse)
-library("factoextra")
 ```
 
 # Loading and Processing Data
@@ -27,7 +27,7 @@ The columns Group and ImmuneGroup in the cell metadata are translated from
 numbers to their actual meaning.
 
 ```{r}
-input <- read_csv("data/cellData.csv")
+input <- read_csv("data/cellData.csv", show_col_types=FALSE)
 
 # See description in Readme
 group.trans <- c("1" = "Unidentified", "2" = "Immune", "3" = "Endothelial", 
@@ -44,10 +44,10 @@ raw_data <- input %>%
   mutate(Group = group.trans[as.character(Group)]) %>%
   mutate(immuneGroup = immune.group.trans[as.character(immuneGroup)])
   
-raw_data %>% slice_head(n=6) %>% knitr::kable(digits = 2)
+raw_data %>% slice_head(n=6)
 ```
 
-Add coordinates of the cells.
+Next we add the coordinates of the cells.
 
 Doing it in R takes quite some time but offers more control than the 
 [center of mass function in scipy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.center_of_mass.html).
@@ -84,7 +84,7 @@ if ("coord.RDS" %in% list.files("data")) {
 }
 ```
 
-Join the coordinates with the meta data.
+Then, join the coordinates with the meta data.
 
 ```{r}
 data <- raw_data %>%
@@ -93,9 +93,11 @@ data <- raw_data %>%
   rename(row = x.center, col = y.center)
 ```
 
-Diving into sample 40. Let's check which cell IDs where in the tiff 
-but not in the meta data. Maybe those spots turned out not be cells 
-in the end (segmentation errors?).
+However, we have some coordiantes for cell IDs which are not in the meta data.
+For sample 40 there are for example 572 of those cell IDs which can be 
+found in the tiff but not in the meta data. Maybe those spots turned out not 
+be cells in the end (segmentation errors?). Or these are the cells with low 
+expression across all markers (sum < 0.1).
 
 ```{r}
 dplyr::setdiff(
@@ -105,23 +107,21 @@ dplyr::setdiff(
   length()
 ```
 
-Before proceeding with the analysis, check whether we have any NAs.
-
-```{r}
+```{r echo=FALSE}
+# Before proceeding with the analysis, check whether we have any NAs.
 stopifnot(sum(map_int(colnames(data), ~ sum(is.na(data[[.x]])))) == 0)
 ```
-
 
 Split the data into expression matrix and meta data.
 
 ```{r}
 meta <- data %>%
   select(c(1:3, 53:59))
-meta %>% slice_head(n=6) %>% knitr::kable(digits = 2)
+meta %>% slice_head(n=6)
 
 expr <- data %>%
   select(4:52)
-expr %>% slice_head(n=6) %>% knitr::kable(digits = 2)
+expr %>% slice_head(n=6)
 ```
 
 # Meta Data
@@ -163,7 +163,8 @@ Patient data provided with the raw data.
 
 ```{r}
 patient.info <- read_csv("data/patient_class.csv",
-                         col_names = c("SampleID", "Classification"))
+                         col_names = c("SampleID", "Classification"),
+                         show_col_types=FALSE)
 patient.info %>% slice_head(n=6)
 ```
 
@@ -171,31 +172,36 @@ patient.info %>% slice_head(n=6)
 patient.info.paper <- readxl::read_xlsx("data/mmc2.xlsx", 
                                         skip = 1, col_names = TRUE)
 
-patient.info.paper %>% slice_head(n=6) %>% knitr::kable(digits = 2)
+patient.info.paper %>% slice_head(n=6)
 ```
 
 ## Cell Annotation
 
-How were the cells actually annotated?
+How were the cells actually annotated? In the paper they used hierachical
+clustering (FlowSOM). Here we will only look at the first two principal 
+components.
 
 When looking at the first two principal components, we see quite a clear
 distinction between tumor and immune cells.
 (Random subsetting used to reduce overplotting).
 
-```{r}
+```{r fig.height=4, fig.width=12}
 pca <- stats::prcomp(expr)
 subs <- sample(nrow(pca$x), .05*nrow(pca$x))
-ggplot() +
+p1 <- ggplot() +
   geom_point(aes(x=seq_len(length(pca$sdev)), y = pca$sdev^2))
-ggplot() +
+p2 <- ggplot() +
   geom_point(aes(x=pca$x[subs,1], pca$x[subs,2], 
                  color = meta$Group[subs]), size = 0.1) +
   guides(colour = guide_legend(override.aes = list(size = 2)))
+gridExtra::grid.arrange(p1, p2, ncol=2)
 ```
 
-Clustering the cells using the Louvain algorithm.
+Also for the sake of it the will cluster the cells using the louvain
+algorithm (graph-based). See the heatmap of the marker distribution accross
+the clusters below.
 
-```{r}
+```{r fig.width=6, fig.height=6}
 if ("graph.clusters.RDS" %in% list.files("data")) {
   graph.clusters <- readRDS("data/graph.clusters.RDS")
 } else {
@@ -205,11 +211,7 @@ if ("graph.clusters.RDS" %in% list.files("data")) {
   graph.clusters <- igraph::cluster_louvain(snn)$membership
   saveRDS(graph.clusters, "data/graph.clusters.RDS")
 }
-```
 
-How are the marker distributed in the clusters?
-
-```{r fig.width=6, fig.height=6}
 # Making Psuedobulks per cluster
 expr.matrix <- as.matrix(
   expr %>%
@@ -277,9 +279,7 @@ tibble(marker = colnames(expr), mean.expression = colMeans(expr)) %>%
 
 ## General
 
-What is the scale?
-
-1 Pixel corresponds to about 390 nm.
+What is the scale? - 1 Pixel corresponds to about 390 nm.
 
 We will first look at the spatial data from all samples in one plot. The
 cell types are annotated according to the information the authors of the 
@@ -288,8 +288,8 @@ original study provided.
 As pointed out in their publication, one can see that there is a continuum 
 between mixing of immune cells (yellow) and cancer tissue (green and blue).
 Either we can see a clear interface between both populations or they are
-totally mixed. This is actually associated with the clinical outcome.
-Below this observation is quanitified by calculating a similar mixing score
+totally mixed. This is actually associated with survival (see paper).
+Below this observation is quantified by calculating a similar mixing score
 as they did in the original publication.
 
 ```{r fig.height=12, fig.width=18}
@@ -309,7 +309,9 @@ Delaunay Triangulation and cells are only considered to be neighbors
 if the distance between them is below 40. 
 
 Importantly this mixing score is higher if there are more tumor cells
-than immune cells (as seen by the filling color of the barplot below).
+than immune cells (as seen by the filling color of the barplot below,
+`ratio.count.tumor.immune` refers to the number of tumor cells 
+divided by the number of immune cells).
 
 (Remark: The authors of the paper used Haralick’s gray-level co-occurrence
 matrix to determine direct neighbors of each cell)
@@ -425,7 +427,7 @@ meta %>%
   guides(colour = guide_legend(override.aes = list(size = 2)))
 ```
 
-And furthermore, we will look at the tiff to.
+Furthermore, we will look at the tiff.
 
 ```{r fig.height=6, fig.width=8}
 library(tiff)
@@ -437,7 +439,7 @@ tiff <- readTIFF(paste0("data/raw_tiffs/p",
 First, the binary tiff, meaning all values that there not 0 or 1 (i.e. a
 cell was detected).
 
-```{r}
+```{r fig.height=6, fig.width=7}
 # get coordinates for where there was a cell detected (=: binary)
 binary <- apply(tiff, c(1,2), function(n) !(n %in% c(0,1)))
 binary.df <- as.data.frame(binary)
@@ -468,7 +470,7 @@ df %>%
 Second, we will visualize the tiff and the labeled center of mass together.
 And on this scale the result actually looks quite nice.
 
-```{r fig.height=8, fig.width=10}
+```{r fig.height=6, fig.width=8}
 s.40 <- meta %>%
   filter(SampleID == 40)
 
@@ -539,12 +541,14 @@ ggplot() +
 
 Here are the corresponding IDs for comparison to the meta data.
 
-```{r fig.height=8, fig.width=10}
+```{r fig.height=7, fig.width=8}
 ggplot(labels.40) +
   geom_label(aes(x = row, y = col, label = value), size = 2.5)
 ```
 
 # Merging Metadata
+
+Merging the meta data with the mixing score and some other measures.
 
 ```{r}
 # Generating Sample Meta Data
@@ -591,7 +595,7 @@ exclude the marker if the variance is 0. The same is true for markers
 whose number of unique values is lower than the desired number of cv
 folds (here 10).
 
-```{r}
+```{r collapse=TRUE}
 cv.folds = 10
 expr.smp <- unique(meta$SampleID) %>%
   set_names(paste0("s", .)) %>%
@@ -656,7 +660,9 @@ get_neighbors <- function(ddobj, id) {
 
 First we will look at the distribution of the  mean distances to the direct 
 neighbors (as determined by the delauney triangulation) to get a feeling for 
-which cutoff value should be used for the generation of the juxtaview.
+which cutoff value should be used for the generation of the juxtaview. The
+corresponding distribution is shown below.
+(in blue the cutoff - 40 pixels (15.6 microns) - which was used in the end).
 
 ```{r}
 # mean distance to the direct neighbors for each cell
@@ -667,10 +673,16 @@ mean.dists.direct.neighbors <- map(coord.smp, function(smp) {
     nn <- get_neighbors(delaunay, id)
     mean(dists[nn, id])
   })
-}) %>% unlist
+}) 
+
+stat.per.sample <- map2_dfr(mean.dists.direct.neighbors,
+                            seq_len(length(mean.dists.direct.neighbors)),
+                            function(list, smp) {
+            data.frame(sample = smp, value = list)
+          })
 
 # histogram
-ggplot(data.frame(dist = mean.dists.direct.neighbors)) +
+ggplot(data.frame(dist = mean.dists.direct.neighbors %>% unlist)) +
   geom_histogram(aes(dist), bins = 100) +
   lims(x = c(0,100)) +
   geom_vline(xintercept = 40, col = "blue")
@@ -679,19 +691,33 @@ ggplot(data.frame(dist = mean.dists.direct.neighbors)) +
 Summary statistics:
 
 ```{r}
-data.frame(value = mean.dists.direct.neighbors) %>%
+data.frame(value = mean.dists.direct.neighbors %>% unlist) %>%
   summarise(mean = mean(value), 
             median = median(value), 
             q25 = quantile(value, 0.25),
             q75 = quantile(value, 0.75),
             min = min(value),
-            max = max(value)) %>%
-  knitr::kable(digits = 2)
+            max = max(value))
+```
+
+However, a more detailed look across the sample (boxplot) shows that the
+cutoff may be too low for certain samples. It may be good to increase this
+threshold to 50.
+
+```{r}
+# boxplot
+stat.per.sample %>%
+  mutate(sample = factor(sample)) %>%
+  ggplot() +
+  geom_boxplot(aes(x=sample, y=value)) +
+  geom_hline(yintercept = 40, col="blue") +
+  lims(y = c(0, 200))
 ```
 
 Furthermore we will look at the distribution of the mean distances to the
-10 clostest, 20 closest, 40 clostest, or 80 clostest cells to get a feeling
-for which cutoff will be used to generate the paraview.
+10 -, 20 -, 40 -, and 80 closest cells to get a feeling
+for which cutoff will be used to generate the paraview 
+(in blue the cutoff - 120 pixels (46.8 microns) - which was used in the end).
 
 ```{r}
 neighbor.dists <- map_dfr(coord.smp, function(smp) {
@@ -725,15 +751,15 @@ neighbor.dists %>%
             q25 = quantile(value, 0.25),
             q75 = quantile(value, 0.75),
             min = min(value),
-            max = max(value)) %>%
-  knitr::kable(digits = 2)
+            max = max(value))
 ```
 
 ## Generating the MISTy views
 
-Based on the data above, I am going to use a neighbor threshold of 40 for
-the juxtaview and a cutoff of 120 for the paraview (plus the zone of
-indifference which will conclusively be 40).
+Based on the data above, the following parameters (thresholds) were used 
+to run MISTy: 
+- Juxtaview: threshold 40,
+- Paraview: theshold 120, zone of indifference: 40
 
 ```{r}
 if ("misty_views_smp.RDS" %in% list.files("data")) {
@@ -753,7 +779,7 @@ if ("misty_views_smp.RDS" %in% list.files("data")) {
 
 ## Random Forest Implementation
 
-Running with RF as ML algorithm to build the view-specific models.
+Running with random forest as ML algorithm to build the view-specific models. 
 
 ```{r}
 if ("ranger.results.RDS" %in% list.files("data")) {
@@ -783,10 +809,8 @@ errorbars we can also see that there is a large variability between the samples.
 mistyR::plot_improvement_stats(ranger.results)
 ```
 
-How is the gain.R2 dependend on the sample and the target. How could I 
-decompose those effects? 
-
-Let's look at a heatmap first, visualizing the gain.R2 for each sample and target.
+Let's look at a heatmap first to see how the gain.R2 stat is distributed across
+the samples and targets.
 
 ```{r fig.width=8, fig.height=7}
 ranger.results$improvements %>% 
@@ -806,10 +830,13 @@ ranger.results$improvements %>%
 # https://www.datacamp.com/community/tutorials/hierarchical-clustering-R
 ```
 
-Let's classify the samples based on the hierachical clustering of the 
-"gain.R2" signature as shown in the heatmap.
+We can see in the dendogram that there is some structure in the samples 
+regarding their gain.R2 signature. But what is driving this structure?
+In the following we are going to classify the cells based on the 
+hierachical clustering and compare the properties of these clusters.
 
 We will take 10 clusters but remove all clusters that have only one sample in them.
+This results in 7 clusters overall.
 
 ```{r}
 k = 10
@@ -865,19 +892,24 @@ ranger.results$improvements %>%
   pheatmap::pheatmap(., annotation_row = col.annotation)
 ```
 
-Now what differentiates the clusters?
+### What differentiates the clusters? {.tabset}
 
-We could for example look at:
-- ratio.tumor.immune
-- Count.Immune
-- Count.Tumor, 
-- Count.Endothelial
-- Count.Mesenchymal.like
-- Count.Total
+#### Cell Counts and Mixing Score
+
+Could these quantitaive properties explain the differences:
+* ratio.tumor.immune
+* Count.Immune
+* Count.Tumor
+* Count.Endothelial
+* Count.Mesenchymal.like
+* Count.Total
 
 One can immediately see that cluster 2 has a higher ration of tumor-immune to
 immune-immune contact, though this effect seems to be mainly driven by the
 cold tumors (low number of immune cells).
+
+In general cluster 2 contains the samples with low total cell numbers and
+with a high number of tumor cells compared to immune cells.
 
 ```{r fig.height=5, fig.width=8}
 sample.meta %>%
@@ -903,8 +935,28 @@ sample.meta %>%
 Though it may be more informative to actually look at the cell ratios, or 
 proportions. 
 
-Now we may like to investigate the proportion of the classification in more
-detail across the clusters.
+#### Spatial Distribution
+
+What about the spatial distribution of the cells? Could it be a contributing 
+factor? Let's look at the mean distances to the neighboring cells 
+(as determined by Delaunay Triangulation) for each cell in a given cluster. 
+And it seems like the distances are larger cluster 2 compared to the rest.
+
+```{r}
+stat.per.sample %>%
+  mutate(sample = as.character(sample)) %>%
+  inner_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
+            by = "sample") %>%
+  filter(cluster %in% keep) %>%
+  ggplot() +
+  geom_boxplot(aes(x=cluster, y=value)) +
+  lims(y = c(0, 100))
+```
+
+#### Classification
+
+What about the proportion of the classification 
+(referring to mixed, compartmentalized, or cold) accross the clusters?
 
 ```{r fig.height=4, fig.width=8}
 p1 <- sample.meta %>%
@@ -954,7 +1006,9 @@ p2 <- sample.meta %>%
 gridExtra::grid.arrange(p1, p2, ncol = 2)
 ```
 
-Now could it be that the the intraview R2 could somehow explain the clustering
+#### Intra and Multiview
+
+Could it also be possible that the the intraview R2 somehow explains the clustering
 we see in the gain.R2. Meaning samples in which the intraview R2s are
 rather low and samples in which it is rather high?
 
@@ -1010,8 +1064,7 @@ Another way to go about this investigation may be to select the top targets
 in terms of gain R2 and then check what this gain R2 is correlated with
 The details can be found below.
 
-<details>
-<summary>Click Here</summary>
+#### From the Targets
 
 Let's take the 12 targets (1/3 of all targets) for which the mean gain.R2 is the largest and
 investigate the differences between the samples.
@@ -1134,16 +1187,6 @@ walk(c("sum.gain.R2", "mean.gain.R2", "median.gain.R2"), function(test.var) {
 })
 ```
 
-Qualitative Predictors
-
-- Grade of the tumor (appearance of cancer tissue)
-- Stage of the tumor (size of primary tumor, metastasis)
-
-```{r}
-
-```
-
-
 Now taking the top 10 and the bottom 10 samples and comparing their features.
 Features being the mixing score, the R2 of the intraview for the chosen targets
 
@@ -1182,8 +1225,6 @@ sample.meta %>%
   geom_boxplot(aes(x=group.tmp, y=ratio.tumor.immune))
 ```
 
-</details>
-
 ## View Contributions
 
 ```{r}
@@ -1218,41 +1259,32 @@ ranger.perf.sig <- mistyR::extract_signature(ranger.results, "performance")
 ranger.perf.pca <- stats::prcomp(ranger.perf.sig %>% select(-sample))
 ```
 
-Color by Grade.
-
-```{r}
-ggplot() +
+```{r fig.width=16, fig.height=10}
+p1 <- ggplot() +
   geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
-                 col=factor(sample.meta$GRADE)))
-```
+                 col=factor(sample.meta$GRADE))) +
+  labs(title = "Grade")
 
-Color by Classification.
-
-```{r}
-ggplot() +
+p2 <- ggplot() +
   geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
-                 col=factor(sample.meta$Classification)))
-```
+                 col=factor(sample.meta$Classification))) +
+  labs(title = "Classification")
 
-Color by the log of the tumor.immune ration (see calculation above). This is
-basically a measurement of the mixing score (number of immune-tumor interactions divided by the number of immune-immune interactions).
-
-```{r}
-ggplot() +
+p3 <- ggplot() +
   geom_point(aes(x=ranger.perf.pca$x[,1], 
                  y=ranger.perf.pca$x[,2],
                  col=log10(sample.meta$ratio.tumor.immune))) +
-  scale_color_viridis_c()
-```
+  scale_color_viridis_c() +
+  labs(title = "Mixing Score")
 
-Color by total counts.
-
-```{r}
-ggplot() +
+p4 <- ggplot() +
   geom_point(aes(x=ranger.perf.pca$x[,1], 
                  y=ranger.perf.pca$x[,2],
                  col=sample.meta$Count.Total)) +
-  scale_color_viridis_c()
+  scale_color_viridis_c() +
+  labs(title = "Total Cell Counts")
+
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)
 ```
 
 Which factors drive the variance in the results?
@@ -1272,18 +1304,18 @@ ranger.imp.pca <- stats::prcomp(ranger.imp.sig %>% select(-sample))
 
 Color by Grade.
 
-```{r}
-ggplot() +
+```{r fig.width=16, fig.height=5}
+p1 <- ggplot() +
   geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
-                 col=factor(sample.meta$GRADE)))
-```
+                 col=factor(sample.meta$GRADE))) +
+  labs(title = "Grade")
 
-Color by Classification.
-
-```{r}
-ggplot() +
+p2 <- ggplot() +
   geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
-                 col=factor(sample.meta$Classification)))
+                 col=factor(sample.meta$Classification))) +
+  labs(title = "Classification")
+
+gridExtra::grid.arrange(p1, p2, ncol=2)
 ```
 
 Looking at the variable loadings one can see that the importances are often 
