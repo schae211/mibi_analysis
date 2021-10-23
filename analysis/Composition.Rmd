@@ -2,11 +2,6 @@
 title: "Neighborhood Composition Analaysis"
 ---
 
-TODO
-
-- Check out pull request from local api branch to upstream devel to see what
-kind of things are still different. (did I mess up the merge?)
-
 # Set up
 
 ```{r setup}
@@ -202,7 +197,7 @@ pos.smp <- pos.smp[samples.keep]
 map_int(expr.smp, ~ ncol(.x))
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 misty.views.smp <- map2(expr.smp, pos.smp, function(expr, pos) {
   expr %>%
     create_initial_view() %>%
@@ -210,7 +205,7 @@ misty.views.smp <- map2(expr.smp, pos.smp, function(expr, pos) {
 })
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 result.folders <- map2(misty.views.smp, 
                       names(misty.views.smp), 
                       function(misty.views, i) {
@@ -226,15 +221,35 @@ result.folders <- map2(misty.views.smp,
 misty.results <- collect_results(result.folders)
 ```
 
+# MISTy Results
+
+## Performance
+
+Intra R2:
+
 ```{r}
 plot_improvement_stats(misty.results, "intra.R2")
+```
+
+Multi R2:
+
+```{r}
 plot_improvement_stats(misty.results, "multi.R2")
+```
+
+Gain R2:
+
+```{r}
 plot_improvement_stats(misty.results, "gain.R2")
 ```
+
+## Contributions
 
 ```{r}
 plot_view_contributions(misty.results)
 ```
+
+## Importances
 
 ```{r}
 misty.results$importances %>%

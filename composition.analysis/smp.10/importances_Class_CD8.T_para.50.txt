@@ -1,0 +1,7 @@
+target,imp
+Class_CD4.T,30.953499918893627
+Class_Macrophages,56.06588147961537
+Class_Mesenchymal,23.16783280909564
+Class_Mono.Neu,40.74568816892656
+Class_Other.immune,32.28255347886241
+Class_Tumor,58.96936724048206
