@@ -4,21 +4,19 @@ title: "Cell Type-specific Analysis"
 
 # Set up
 
-Messages will be hidden and the output collapsed to make the Rmd more clear.
-
 ```{r setup}
-knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
 ```
 
 Loaded packages.
 
 ```{r}
-library(mistyR)
-library(future)
+suppressPackageStartupMessages(library(mistyR))
+suppressPackageStartupMessages(library(future))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(factoextra))
 plan("multisession", workers=14)
-library(tidyverse)
-library(factoextra)
 ```
 
 Loading data generated in MIBI_Analysis.Rmd

@@ -1,0 +1,252 @@
+---
+title: "Neighborhood Composition Analaysis"
+---
+
+TODO
+
+- Check out pull request from local api branch to upstream devel to see what
+kind of things are still different. (did I mess up the merge?)
+
+# Set up
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+```
+
+Loaded packages.
+
+```{r}
+suppressPackageStartupMessages(library(mistyR))
+suppressPackageStartupMessages(library(future))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(factoextra))
+plan("multisession", workers=14)
+```
+
+Loading data generated in MIBI_Analysis.Rmd
+
+```{r}
+meta <- readRDS("data/meta_data.RDS")
+all.expr <- readRDS("data/expression.RDS")
+meta.smp <- readRDS("data/sample_meta.RDS")
+```
+
+# Introduction
+
+To understand how the identity of a given cell is determined by the
+neighboring cell types we will use MISTy to try to explain the 
+cell type of a given cell by taking the cell types in the environment
+into account.
+
+# Generating MISTy Views
+
+First repair the classes and select the relevant columns.
+
+```{r}
+data <- meta %>%
+  filter(Group != "Unidentified") %>%
+  mutate(Class = case_when(
+    Group %in% c("Keratin-positive tumor", "Tumor") ~ "Tumor",
+    Group == "Mesenchymal-like" ~ "Mesenchymal",
+    Group == "Immune" ~ immuneGroup,
+    TRUE ~ Group
+  )) %>% select(SampleID, Class, row, col) %>%
+  mutate(Class = factor(Class))
+
+data %>% slice_head(n=6)
+```
+
+Next up, one-hot encoding.
+
+```{r}
+expr <- mltools::one_hot(data.table::as.data.table(data)) %>%
+  select(-c(row, col)) %>%
+  rename_all(make.names)
+```
+
+```{r include=FALSE, eval=FALSE}
+# Get Expression Values and Postions
+raw.expr.smp <- unique(data$SampleID) %>%
+  set_names() %>%
+  map(function(smp) {
+    expr %>%
+      filter(SampleID == smp) %>%
+      select(-SampleID)
+  })
+raw.expr.smp$`1` %>%
+  slice_head(n=6)
+
+pos.smp <- unique(data$SampleID) %>%
+  set_names() %>%
+  map(function(smp) {
+    data %>%
+      filter(SampleID == smp) %>%
+      select(c(row, col))
+  })
+pos.smp$`1` %>%
+  slice_head(n=6)
+
+# Compute the views
+misty.views.smp <- map2(raw.expr.smp, pos.smp, function(expr, pos) {
+  expr %>%
+    create_initial_view() %>%
+    add_paraview(positions = pos, l = 50, zoi = 0, family = "constant")
+})
+
+# Running MISTy
+result.folders <- map2(misty.views.smp, 
+                      names(misty.views.smp), 
+                      function(misty.views, i) {
+  print(i)                      
+  
+  # Check for zero variance in both views and remove if necessary
+  vars <- apply(misty.views$intraview$data, MARGIN = 2, FUN = var)
+  names.null <- names(vars[which(vars == 0)])
+  misty.views$intraview$data <- misty.views$intraview$data %>%
+    select(-all_of(names.null))
+  
+  vars <- apply(misty.views$paraview.50$data, MARGIN = 2, FUN = var)
+  names.null <- names(vars[which(vars == 0)])
+  print(names.null)
+  misty.views$paraview.50$data <- misty.views$paraview.50$data %>%
+    select(-all_of(names.null))
+  
+  misty.views %>%
+    run_misty(results.folder = paste0("test/run_", i), bypass.intra = TRUE,
+              cv.folds = 10)
+})
+
+misty.results <- collect_results(result.folders)
+
+plot_improvement_stats(misty.results, "intra.R2")
+plot_improvement_stats(misty.results, "multi.R2")
+plot_improvement_stats(misty.results, "gain.R2")
+
+# I get the error in this sample
+misty.views <- misty.views.smp[[5]]
+views <- misty.views
+cv.folds <- 10
+method <- "bag"
+learner <- "ranger"
+n.vars <- NULL
+n.learners <- 100
+bypass.intra <- TRUE
+seed <- 42
+cached <- FALSE
+ellipsis.args.text <- NULL
+... <- NULL
+results.folder <- "results"
+append <- FALSE
+target.subset <- NULL
+
+# I get the error with this class!
+target <- "Class_NK"
+views <- misty.views
+
+views$intraview$data %>% pull(target) %>% sum
+
+# Problematically if there is only 1 outcome true out of several thousand
+# cells, then the coefficient will simply be 0 and the predictions are all 0.
+# 
+# Now in the folds that happen not to contain that single true outcome
+# we basically compare vectors on length n which contain only 0's and 
+# caret::R2 return NaN which caused the bug!
+
+n.cells <- 4000
+cv.folds <- 10
+prediction <- rep(n.cells/cv.folds, n.cells)
+outcome <- rep(n.cells/cv.folds, n.cells)
+caret::R2(prediction, outcome, formula = "traditional")
+```
+
+Get Positions.
+
+```{r}
+pos.smp <- unique(data$SampleID) %>%
+  set_names() %>%
+  map(function(smp) {
+    data %>%
+      filter(SampleID == smp) %>%
+      select(c(row, col))
+  })
+pos.smp$`1` %>%
+  slice_head(n=6)
+```
+
+To fix that I will remove all the cell types from the tables that have fewer than
+100 cells. Furthermore, I will remove all samples that have fewer than 4 cell types
+left.
+
+```{r}
+expr.smp.raw <- unique(data$SampleID) %>%
+  set_names() %>%
+  map(function(smp) {
+    ret.expr <- expr %>%
+      filter(SampleID == smp) %>%
+      select(-SampleID)
+    
+    c.sums <- colSums(ret.expr)
+    remove.classes <- names(c.sums)[which(c.sums < 100)]
+    
+    return(ret.expr %>% select(-remove.classes))
+  })
+
+# which sample to keep
+n.cells <- map_int(expr.smp.raw, ~ ncol(.x))
+samples.keep <- names(n.cells[which(n.cells > 3)])
+expr.smp <- expr.smp.raw[samples.keep]
+pos.smp <- pos.smp[samples.keep]
+
+# last check
+map_int(expr.smp, ~ ncol(.x))
+```
+
+```{r}
+misty.views.smp <- map2(expr.smp, pos.smp, function(expr, pos) {
+  expr %>%
+    create_initial_view() %>%
+    add_paraview(positions = pos, l = 50, zoi = 0, family = "constant")
+})
+```
+
+```{r}
+result.folders <- map2(misty.views.smp, 
+                      names(misty.views.smp), 
+                      function(misty.views, i) {
+  
+  misty.views %>%
+    run_misty(results.folder = paste0("composition.analysis/smp.", i), 
+              bypass.intra = TRUE,
+              cv.folds = 10)
+})
+```
+
+```{r}
+misty.results <- collect_results(result.folders)
+```
+
+```{r}
+plot_improvement_stats(misty.results, "intra.R2")
+plot_improvement_stats(misty.results, "multi.R2")
+plot_improvement_stats(misty.results, "gain.R2")
+```
+
+```{r}
+plot_view_contributions(misty.results)
+```
+
+```{r}
+misty.results$importances %>%
+  filter(Importance > 0) %>%
+  filter(view == "para.50") %>%
+  group_by(Predictor, Target) %>%
+  summarise(imp = mean(Importance)) %>%
+  mutate(Predictor = paste0("P.", Predictor),
+         Target = paste0("T.", Target)) %>%
+  pivot_wider(names_from = Target, values_from = imp) %>%
+  column_to_rownames(var = "Predictor") %>%
+  as.matrix() %>%
+  pheatmap::pheatmap()
+```
+
