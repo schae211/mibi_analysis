@@ -348,6 +348,9 @@ div.tocify {
   <a href="Model_Comparison.html">Model Comparison</a>
 </li>
 <li>
+  <a href="Composition.html">Composition Analysis</a>
+</li>
+<li>
   <a href="Questions.html">Questions</a>
 </li>
 <li>
@@ -404,7 +407,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-22
+<strong>Last updated:</strong> 2021-10-23
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -519,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree35c39a8dc74d03ea7ad9344915a54573f20c61aatargetblank35c39a8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/35c39a8dc74d03ea7ad9344915a54573f20c61aa" target="_blank">35c39a8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7a5242c375347b101846d7252ccf11ec51ba1b9dtargetblank7a5242ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/7a5242c375347b101846d7252ccf11ec51ba1b9d" target="_blank">7a5242c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree35c39a8dc74d03ea7ad9344915a54573f20c61aatargetblank35c39a8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree7a5242c375347b101846d7252ccf11ec51ba1b9dtargetblank7a5242ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/35c39a8dc74d03ea7ad9344915a54573f20c61aa" target="_blank">35c39a8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/7a5242c375347b101846d7252ccf11ec51ba1b9d" target="_blank">7a5242c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -576,6 +579,7 @@ Ignored files:
     Ignored:    analysis/cell.specific.results/immune.immune_s8/
     Ignored:    analysis/cell.specific.results/immune.immune_s9/
     Ignored:    analysis/results/
+    Ignored:    analysis/test/
     Ignored:    data/cancer.immune.results.RDS
     Ignored:    data/cancer.immune.views.RDS
     Ignored:    data/cellData.csv
@@ -634,6 +638,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/7a5242c375347b101846d7252ccf11ec51ba1b9d/analysis/Model_Comparison.Rmd" target="_blank">7a5242c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+<td>
+added neighborhood composition analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/b9bdcf8f021a839a46025300954a049d839d2772/docs/Model_Comparison.html" target="_blank">b9bdcf8</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -864,14 +902,14 @@ created file for comparing different models
 </div>
 <div id="set-up" class="section level1">
 <h1>Set up</h1>
-<p>Messages will be hidden and the output collapsed to make the Rmd more clear.</p>
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = &quot;~/Saez/workflowr_projects/mibi_analysis/&quot;)</code></pre>
 <p>Loaded packages.</p>
-<pre class="r"><code>library(mistyR)
-library(future)
-plan(&quot;multisession&quot;, workers=14)
-library(tidyverse)</code></pre>
+<pre class="r"><code>suppressPackageStartupMessages(library(mistyR))
+suppressPackageStartupMessages(library(future))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(factoextra))
+plan(&quot;multisession&quot;, workers=14)</code></pre>
 <p>Loading data generated in MIBI_Analysis.Rmd</p>
 <pre class="r"><code>meta &lt;- readRDS(&quot;data/meta_data.RDS&quot;)
 all.expr &lt;- readRDS(&quot;data/expression.RDS&quot;)
@@ -1809,8 +1847,8 @@ schae211
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<pre class="r"><code>sessionInfo()
-R version 4.1.1 (2021-08-10)
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.1 (2021-08-10)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Ubuntu 20.04.3 LTS
 
@@ -1830,29 +1868,30 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7     purrr_0.3.4    
- [5] readr_2.0.2     tidyr_1.1.4     tibble_3.1.5    ggplot2_3.3.5  
- [9] tidyverse_1.3.1 future_1.22.1   mistyR_1.1.10   workflowr_1.6.2
+ [1] factoextra_1.0.7 forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7     
+ [5] purrr_0.3.4      readr_2.0.2      tidyr_1.1.4      tibble_3.1.5    
+ [9] ggplot2_3.3.5    tidyverse_1.3.1  future_1.22.1    mistyR_1.1.13   
+[13] workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.7         lubridate_1.8.0    listenv_0.8.0      assertthat_0.2.1  
- [5] rprojroot_2.0.2    digest_0.6.28      utf8_1.2.2         parallelly_1.28.1 
- [9] cellranger_1.1.0   R6_2.5.1           backports_1.2.1    reprex_2.0.1      
-[13] evaluate_0.14      httr_1.4.2         highr_0.9          pillar_1.6.3      
-[17] rlang_0.4.11       readxl_1.3.1       rstudioapi_0.13    whisker_0.4       
-[21] jquerylib_0.1.4    rmarkdown_2.11     labeling_0.4.2     munsell_0.5.0     
-[25] broom_0.7.9        compiler_4.1.1     httpuv_1.6.3       modelr_0.1.8      
-[29] xfun_0.26          pkgconfig_2.0.3    globals_0.14.0     htmltools_0.5.2   
-[33] tidyselect_1.1.1   codetools_0.2-18   fansi_0.5.0        withr_2.4.2       
-[37] tzdb_0.1.2         crayon_1.4.1       dbplyr_2.1.1       later_1.3.0       
-[41] grid_4.1.1         jsonlite_1.7.2     gtable_0.3.0       lifecycle_1.0.1   
-[45] DBI_1.1.1          git2r_0.28.0       magrittr_2.0.1     scales_1.1.1      
-[49] cli_3.0.1          stringi_1.7.5      farver_2.1.0       fs_1.5.0          
-[53] promises_1.2.0.1   xml2_1.3.2         bslib_0.3.1        ellipsis_0.3.2    
-[57] generics_0.1.0     vctrs_0.3.8        RColorBrewer_1.1-2 tools_4.1.1       
-[61] glue_1.4.2         hms_1.1.1          parallel_4.1.1     fastmap_1.1.0     
-[65] yaml_2.2.1         colorspace_2.0-2   rvest_1.0.1        knitr_1.36        
-[69] haven_2.4.3        sass_0.4.0        </code></pre>
+ [1] ggrepel_0.9.1      Rcpp_1.0.7         lubridate_1.8.0    listenv_0.8.0     
+ [5] assertthat_0.2.1   rprojroot_2.0.2    digest_0.6.28      utf8_1.2.2        
+ [9] parallelly_1.28.1  cellranger_1.1.0   R6_2.5.1           backports_1.2.1   
+[13] reprex_2.0.1       evaluate_0.14      httr_1.4.2         highr_0.9         
+[17] pillar_1.6.3       rlang_0.4.11       readxl_1.3.1       rstudioapi_0.13   
+[21] whisker_0.4        jquerylib_0.1.4    rmarkdown_2.11     labeling_0.4.2    
+[25] munsell_0.5.0      broom_0.7.9        compiler_4.1.1     httpuv_1.6.3      
+[29] modelr_0.1.8       xfun_0.26          pkgconfig_2.0.3    globals_0.14.0    
+[33] htmltools_0.5.2    tidyselect_1.1.1   codetools_0.2-18   fansi_0.5.0       
+[37] withr_2.4.2        tzdb_0.1.2         crayon_1.4.1       dbplyr_2.1.1      
+[41] later_1.3.0        grid_4.1.1         jsonlite_1.7.2     gtable_0.3.0      
+[45] lifecycle_1.0.1    DBI_1.1.1          git2r_0.28.0       magrittr_2.0.1    
+[49] scales_1.1.1       cli_3.0.1          stringi_1.7.5      farver_2.1.0      
+[53] fs_1.5.0           promises_1.2.0.1   xml2_1.3.2         bslib_0.3.1       
+[57] ellipsis_0.3.2     generics_0.1.0     vctrs_0.3.8        RColorBrewer_1.1-2
+[61] tools_4.1.1        glue_1.4.2         hms_1.1.1          parallel_4.1.1    
+[65] fastmap_1.1.0      yaml_2.2.1         colorspace_2.0-2   rvest_1.0.1       
+[69] knitr_1.36         haven_2.4.3        sass_0.4.0        </code></pre>
 </div>
 </div>
 </div>
