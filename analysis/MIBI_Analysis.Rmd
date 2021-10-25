@@ -1381,7 +1381,7 @@ samples there are more DCs (see DC + CD/Mono).
 ```{r}
 meta %>%
   mutate(SampleID = as.character(SampleID)) %>%
-  left_join(meta.smp, by="SampleID") %>%
+  left_join(sample.meta, by="SampleID") %>%
   filter(Classification != "cold") %>%
   group_by(Classification, SampleID) %>%
   count(immuneGroup) %>%
