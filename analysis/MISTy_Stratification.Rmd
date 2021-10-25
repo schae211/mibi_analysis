@@ -375,7 +375,7 @@ if ("immune.immune.results.RDS" %in% list.files("data")) {
 We see quite some gain in variance explained for IDO which is an immunoregulatory
 protein. The same is true for PD-L1
 
-```{r fig.width=6, fig.height=6}
+```{r fig.width=6, fig.height=}
 mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.R2")
 ```
 
@@ -485,14 +485,14 @@ mistyR::plot_view_contributions(cancer.immune.results)
 
 Intraview:
 
-```{r fig.width=8, fig.height=8}
+```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(cancer.immune.results, view = "intra", 
                                  clean = TRUE)
 ```
 
 Paraview:
 
-```{r fig.width=8, fig.height=8}
+```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(cancer.immune.results, view = "c.para.120",
                                  clean = TRUE, cutoff = .8)
 ```
@@ -547,7 +547,7 @@ fviz_pca_var(cancer.immune.imp.pca, col.var="contrib",
 
 ### Gain.R2
 
-```{r fig.width=6, fig.height=6}
+```{r fig.width=6, fig.height=4}
 mistyR::plot_improvement_stats(immune.immune.results, measure = "gain.R2")
 ```
 
@@ -561,14 +561,14 @@ mistyR::plot_view_contributions(immune.immune.results)
 
 Intraview:
 
-```{r fig.width=8, fig.height=8}
+```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(immune.immune.results, view = "intra", 
                                  clean = TRUE)
 ```
 
 Paraview:
 
-```{r fig.width=8, fig.height=8}
+```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(immune.immune.results, view = "i.para.120",
                                  clean = TRUE, cutoff = .8)
 ```
