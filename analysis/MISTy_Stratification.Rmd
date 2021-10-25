@@ -379,26 +379,30 @@ protein. The same is true for PD-L1
 mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.R2")
 ```
 
-However, the mean p-values are rather high because there is such a large
-variability between the samples.
+However, we variance is quite high between the different samples. The table
+below contains the proportion of significant p-values per sample (descending
+order).
 
 ```{r}
 cancer.immune.results$improvements %>% 
   group_by(target, measure) %>%
-  summarise(mean = round(mean(value), 2), median = round(median(value), 2),
-            .groups = "keep") %>% 
-  pivot_longer(cols = c(mean, median), names_to = "summary") %>%
-  pivot_wider(names_from = measure, values_from = value) %>%
-  select(c(target, summary, gain.R2, gain.RMSE, p.R2, p.RMSE)) %>%
-  filter(target %in% c("CD138", "CD209", "CD11c", "CD20", "IDO", "PD.L1", "PD1")) %>%
-  knitr::kable()
+  filter(measure == "p.R2") %>%
+  mutate(significant = value < 0.05) %>%
+  count(significant) %>%
+  pivot_wider(names_from = significant, values_from = n, names_prefix = "significant.") %>%
+  replace(is.na(.), 0) %>%
+  mutate(proportion.siginificant = round(100*significant.TRUE/
+                                           (significant.TRUE + significant.FALSE), 2)) %>%
+  ungroup() %>%
+  select(c(target, significant.TRUE, significant.FALSE, proportion.siginificant)) %>%
+  arrange(desc(proportion.siginificant))
 ```
 
 So what happens if we actually stratify the samples here based on the 
 classification (e.g. hoping to find a much stronger PD-L1 signal in the
 compartimentalized samples).
 
-And in fact it is true that the gain in variance is higher for those
+And in fact it is true that the gain in variance is somewhat higher for those
 immunoregulatory proteins in compartimentalized tumors.
 
 ```{r fig.height=4, fig.width=8}
@@ -412,71 +416,47 @@ cancer.immune.results$improvements %>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-Checking the values for immunoregulatory proteins.
+Checking the the proportion of signficant p-values is higher in the 
+compartimentalized samples.
 
-First by summarizing using the mean.
+So for PD.L1 and PD1 this is true, but now for IDO (where there is no real 
+difference).
 
 ```{r}
-cancer.immune.results$improvements %>%
+cancer.immune.results$improvements %>% 
   mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
   left_join(meta.smp, by = "SampleID") %>%
   filter(Classification != "cold") %>%
+  group_by(Classification, target, measure) %>%
+  filter(measure == "p.R2") %>%
+  mutate(significant = value < 0.05) %>%
+  count(significant) %>%
+  pivot_wider(names_from = significant, values_from = n, names_prefix = "significant.") %>%
+  replace(is.na(.), 0) %>%
+  mutate(proportion.siginificant = round(100*significant.TRUE/
+                                           (significant.TRUE + significant.FALSE), 2)) %>%
   filter(target %in% c("IDO", "PD.L1", "PD1")) %>%
-  group_by(target, Classification, measure) %>%
-  summarise(mean.measure = round(mean(value, na.rm=TRUE),2),
-            .groups="keep") %>%
-  pivot_wider(names_from = measure, values_from = mean.measure)
+  ungroup() %>%
+  select(c(Classification, target, significant.TRUE, significant.FALSE, proportion.siginificant))
 ```
 
-And then the median.
+#### Heatmap
 
-```{r}
-cancer.immune.results$improvements %>%
-  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
-  left_join(meta.smp, by = "SampleID") %>%
-  filter(Classification != "cold") %>%
-  filter(target %in% c("IDO", "PD.L1", "PD1")) %>%
-  group_by(target, Classification, measure) %>%
-  summarise(mean.measure = round(median(value, na.rm=TRUE), 2),
-            .groups="keep") %>%
-  pivot_wider(names_from = measure, values_from = mean.measure)
-```
-
-Also interestingly the gain in variance explained is negatively correlated
-with the mixing score, meaning the more contact there is between immune and
-tumor cells the less variance can be explained for IDO.
-
-```{r}
-cor(x = cancer.immune.results$improvements %>%
-    mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
-    left_join(meta.smp, by = "SampleID") %>%
-    filter(Classification != "cold") %>%
-    filter(target == "IDO") %>%
-    filter(measure == "gain.R2") %>%
-    filter(ratio.tumor.immune < 300) %>%
-    pull(value),
-    y = cancer.immune.results$improvements %>%
-        mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
-        left_join(meta.smp, by = "SampleID") %>%
-        filter(Classification != "cold") %>%
-        filter(target == "IDO") %>%
-        filter(measure == "gain.R2") %>%
-        filter(ratio.tumor.immune < 300) %>%
-        pull(ratio.tumor.immune))
-
-cancer.immune.results$improvements %>%
-  mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
-  left_join(meta.smp, by = "SampleID") %>%
-  filter(Classification != "cold") %>%
-  filter(target == "IDO") %>%
+```{r fig.width=7, fig.height=7}
+cancer.immune.results$improvements %>% 
   filter(measure == "gain.R2") %>%
-  filter(ratio.tumor.immune < 300) %>%
-  ggplot() +
-  geom_point(aes(x=ratio.tumor.immune, y=value)) +
-  geom_smooth(aes(x=ratio.tumor.immune, y=value), method="lm", formula = y ~ x)
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  select(-measure) %>% 
+  pivot_wider(names_from = target) %>%
+  as.data.frame() %>%
+  column_to_rownames(var = "sample") %>%
+  as.matrix() %>%
+  pheatmap::pheatmap(cluster_rows = FALSE, cluster_cols = FALSE)
 ```
 
-What about the other targets? There are positive and negative correlations
+#### Correlation between gain.R2 and mixing score
+
+There are positive and negative correlations
 of the gain in variance explained and the tumor-immune mixing score.
 
 ```{r}
@@ -497,7 +477,7 @@ cancer.immune.results$improvements %>%
 
 ### View Contributions
 
-```{r fig.width=6, fig.height=6}
+```{r fig.width=6, fig.height=4}
 mistyR::plot_view_contributions(cancer.immune.results)
 ```
 
@@ -573,7 +553,7 @@ mistyR::plot_improvement_stats(immune.immune.results, measure = "gain.R2")
 
 ### View Contributions
 
-```{r fig.width=6, fig.height=6}
+```{r fig.width=6, fig.height=4}
 mistyR::plot_view_contributions(immune.immune.results)
 ```
 

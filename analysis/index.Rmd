@@ -29,8 +29,16 @@ another subset for the calculation of the paraview.
 
 ## Model Comparison
 
-Internal Benchmark
+Internal Benchmark of different ML algorithms to build view-specific models.
+
+## Composition Analysis
+
+Using MISTy to predict the identity of a cell using the neighboring cells.
+
+## Question
+
+Some questions that came up during the analysis and remain unresolved.
 
 ## Presentation
 
-TODO
+Contains (or will contain) some of the interesting results.

@@ -29,4 +29,18 @@ meta.smp <- readRDS("data/sample_meta.RDS")
 misty.views.smp <- readRDS("data/misty_views_smp.RDS")
 ```
 
-TODO
+# What to include?
+
+ * Predicting the identify of tumor and B cells works much better in 
+compartimentalized (structured) tumor microenvironments (TMEs).
+
+ * Predicting the expression of immuno-regulatory proteins on immune cells using
+the epxression of neighboring tumor cells also works better in 
+compartimentalized TMEs.
+
+ *
+
+
+
+
+

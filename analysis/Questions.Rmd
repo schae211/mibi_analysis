@@ -10,7 +10,6 @@ influence the sample-to-sample heterogeneity?
 profiled for each patient, are needed to investigate the intra-patient 
 heterogeneity in the composition and architecture of the tumor-immune 
 microenvironment and its relationship to the molecular attributes of the tumor.
-- 
 
 2. What are the different markers indicative of?
 - Tumor-related: EGFR, p53, (also CD138 neoplastic cells?)
@@ -24,25 +23,16 @@ microenvironment and its relationship to the molecular attributes of the tumor.
 - Spatio-temporal coordination at the maternal-fetal interface promotes 
 trophoblast invasion and vascular remodeling in the first half of human pregnancy
 
-4. Can I simply take the mean p-values when looking whether the gain in 
-variance is significant for a given target?
-- Or is this rather stupid because the p-values can have a high variability
-between the samples
-
-5. Do we even have enough markers to discover cell-cell interaction?
+4. Do we even have enough markers to discover cell-cell interaction?
 - As I understand it most markers were chosen to distinguish between different
 cell types, but we get little information about the cell states (meaning, 
 what is actually going on in those cells).
 
-6. What factors could explain that we can sometimes explain more or less 
+5. What factors could explain that we can sometimes explain more or less 
 variance for certain target in certain samples? What drives the performance
 of MISTy?
 
-7. Shouldn't one first checkout in which samples MISTy can explain the
-overall variance best? One we combine the multiview R2 and the gain R2 
-stats to learn something about the samples?
-
-8. Is it fair to use the same distance threshold for calculating the 
+6. Is it fair to use the same distance threshold for calculating the 
 juxta and paraview for all the samples, or should the specific threshold
 depend on some properties of the sample? For example for the
 juxtaview the median of the following stat: "mean distance to the neighboring 

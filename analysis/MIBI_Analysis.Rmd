@@ -758,8 +758,8 @@ neighbor.dists %>%
 
 Based on the data above, the following parameters (thresholds) were used 
 to run MISTy: 
-- Juxtaview: threshold 40,
-- Paraview: theshold 120, zone of indifference: 40
+ * Juxtaview: threshold 40,
+ * Paraview: theshold 120, zone of indifference: 40
 
 ```{r}
 if ("misty_views_smp.RDS" %in% list.files("data")) {
@@ -810,7 +810,10 @@ mistyR::plot_improvement_stats(ranger.results)
 ```
 
 Let's look at a heatmap first to see how the gain.R2 stat is distributed across
-the samples and targets.
+the samples and targets. 
+
+Keep in mind that I replaced all NA values for the gain.R2 with 0 so the 
+clustering is actually possible (we need to be able to compute distances!).
 
 ```{r fig.width=8, fig.height=7}
 ranger.results$improvements %>% 
@@ -892,24 +895,75 @@ ranger.results$improvements %>%
   pheatmap::pheatmap(., annotation_row = col.annotation)
 ```
 
-### What differentiates the clusters? {.tabset}
+What is actually the difference in gain R2 across the different clusters? For
+which targets does a certain cluster show better performance compared to
+other clusters? Let's collapse the clusters from the above heatmap, using the
+mean gain in R2 for each target.
+
+```{r fig.height=4, fig.width=6}
+ranger.results$improvements %>% 
+  filter(measure == "gain.R2") %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+            by = "sample") %>%
+  filter(cluster %in% keep) %>%
+  group_by(cluster, target) %>%
+  summarise(m.gain.R2 = mean(value), .groups = "keep") %>%
+  pivot_wider(names_from=target, values_from=m.gain.R2) %>%
+  column_to_rownames(var="cluster") %>%
+  as.matrix() %>%
+  pheatmap::pheatmap(cluster_rows = FALSE, cluster_cols = FALSE)
+```
+
+  * Cluster 6: Strong gain for pS6 and CD138, and especially some 
+ exclusive (not seen in other samples) gain in R2 for HLA.DR. Mild gains
+ for CD20, EGFR, and IDO.
+ 
+  * Cluster 2: Almost no gain in explained variance except for CD138.
+ 
+  * Cluster 3: Almost no gain in explained variance except for CD11c, CD209,
+  and PD1. Interestingly the only cluster where I see much gain for PD1 and
+  CD209 (shared with cluster 1). Also one of the only clusters without gain R2
+  for CD138 (shared with cluster 5).
+  
+  * Cluster 4: Gain in R2 for CD11c, CD138, CD20, and also mild gains for
+  IDO and pS6.
+  
+  * Cluster 1: Gain in R2 for CD138, CD20, CD209, IDO, and Keratin 17. Only
+  cluster with interesting gain in R2 for CD63 (marker for basophils?)
+  
+  * Cluster 5: Strongest gain in R2 for IDO and EGFR across all clusters. Only
+  cluster with interesting gain in R2 for p53 and Pan.Keratin. Apart from that
+  also some gain in R2 for CD11c.
+  
+  * Cluster 9: Only cluster with interesting gain in R2 for Ki67
+  (marker for proliferation?) and HLA_Class_1. 
+  Furthermore gains for pS6, Keratin17, EGFR, and CD138.
+
+### What differentiates the samples in one cluster from another? {.tabset}
 
 #### Cell Counts and Mixing Score
 
 Could these quantitaive properties explain the differences:
-* ratio.tumor.immune
-* Count.Immune
-* Count.Tumor
-* Count.Endothelial
-* Count.Mesenchymal.like
-* Count.Total
+ * ratio.tumor.immune
+ * Count.Immune
+ * Count.Tumor
+ * Count.Endothelial
+ * Count.Mesenchymal.like
+ * Count.Total
 
 One can immediately see that cluster 2 has a higher ration of tumor-immune to
 immune-immune contact, though this effect seems to be mainly driven by the
 cold tumors (low number of immune cells).
 
 In general cluster 2 contains the samples with low total cell numbers and
-with a high number of tumor cells compared to immune cells.
+with a high number of tumor cells compared to immune cells, leading to 
+the classification being either cold or mixed.
+
+It kind of fits that we have a relatively high number of tumor cells in cluster
+9, and that we saw a gain in explained variance for pS6 and Ki67.
+
+
 
 ```{r fig.height=5, fig.width=8}
 sample.meta %>%
@@ -1244,9 +1298,30 @@ ranger.results$contributions %>%
 
 ## Importances
 
+Intra:
+
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(ranger.results, view = "intra", clean = TRUE)
+```
+
+Juxtaview:
+
+```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(ranger.results, view = "juxta.40", clean = TRUE)
+```
+
+Paraview:
+
+I think it is quite interesting that Beta-catenin seems to be important to
+predict Pan.Keratin, Keratin.6, and EGFR expression. The other way it also
+true, meaning that Keratin6 and Pan.Keratin are useful in predicting
+Beta-catenin expression. This probably only shows that those proteins are
+coexpressed in cancer.
+
+Though, if they are only co-expressed wouldn't we expect to actually see
+the same relationship in the intraview (which we do not!).
+
+```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
 ```
 
@@ -1293,6 +1368,27 @@ Which factors drive the variance in the results?
 fviz_pca_var(ranger.perf.pca, col.var="contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE)
+```
+
+We kind of see that the gain in R2 for CD11c differentiates mixed and 
+compartimentalized tumors. Since CD11c is a marker for dendritic cells (DCs) 
+what does this mean? That DCs is only present in comparitmentalized
+tumors and thus we can only gain explained variance for CD11c here?
+
+And looking at the boxplot below, this is the case. In the compartimentalized
+samples there are more DCs (see DC + CD/Mono).
+
+```{r}
+meta %>%
+  mutate(SampleID = as.character(SampleID)) %>%
+  left_join(meta.smp, by="SampleID") %>%
+  filter(Classification != "cold") %>%
+  group_by(Classification, SampleID) %>%
+  count(immuneGroup) %>%
+  ggplot() +
+  geom_boxplot(aes(x=immuneGroup, y=n, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_y_log10()
 ```
 
 ### Importance

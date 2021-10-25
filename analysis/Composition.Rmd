@@ -380,7 +380,7 @@ misty.results$importances %>%
   filter(Importance > 0) %>%
   filter(view == "para.50") %>%
   group_by(Predictor, Target) %>%
-  summarise(imp = mean(Importance, na.rm=TRUE)) %>%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
   mutate(Predictor = paste0("P.", Predictor),
          Target = paste0("T.", Target)) %>%
   pivot_wider(names_from = Target, values_from = imp) %>%
