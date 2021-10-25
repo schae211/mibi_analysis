@@ -407,10 +407,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-23
+<strong>Last updated:</strong> 2021-10-25
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -426,12 +426,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -522,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree6ac65aad3ce51f7ac94f5da38c956a9986de0459targetblank6ac65aaa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/6ac65aad3ce51f7ac94f5da38c956a9986de0459" target="_blank">6ac65aa</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree3839c0df9634b52e12c12f4a346ceff8c68d9847targetblank3839c0da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/3839c0df9634b52e12c12f4a346ceff8c68d9847" target="_blank">3839c0d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree6ac65aad3ce51f7ac94f5da38c956a9986de0459targetblank6ac65aaa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree3839c0df9634b52e12c12f4a346ceff8c68d9847targetblank3839c0da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/6ac65aad3ce51f7ac94f5da38c956a9986de0459" target="_blank">6ac65aa</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/3839c0df9634b52e12c12f4a346ceff8c68d9847" target="_blank">3839c0d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -602,10 +602,326 @@ Ignored files:
     Ignored:    old_files/
 
 Untracked files:
-    Untracked:  composition.analysis/
+    Untracked:  composition.analysis/smp.10/importances_Class_CD3.T_intra.txt
+    Untracked:  composition.analysis/smp.10/importances_Class_CD3.T_para.50.txt
+    Untracked:  composition.analysis/smp.10/importances_Class_DC.Mono_intra.txt
+    Untracked:  composition.analysis/smp.10/importances_Class_DC.Mono_para.50.txt
+    Untracked:  composition.analysis/smp.10/importances_Class_Neutrophils_intra.txt
+    Untracked:  composition.analysis/smp.10/importances_Class_Neutrophils_para.50.txt
+    Untracked:  composition.analysis/smp.12/importances_Class_B_intra.txt
+    Untracked:  composition.analysis/smp.12/importances_Class_B_para.50.txt
+    Untracked:  composition.analysis/smp.12/importances_Class_CD3.T_intra.txt
+    Untracked:  composition.analysis/smp.12/importances_Class_CD3.T_para.50.txt
+    Untracked:  composition.analysis/smp.12/importances_Class_Other.immune_intra.txt
+    Untracked:  composition.analysis/smp.12/importances_Class_Other.immune_para.50.txt
+    Untracked:  composition.analysis/smp.13/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.13/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.13/importances_Class_Neutrophils_intra.txt
+    Untracked:  composition.analysis/smp.13/importances_Class_Neutrophils_para.50.txt
+    Untracked:  composition.analysis/smp.14/
+    Untracked:  composition.analysis/smp.16/importances_Class_Neutrophils_intra.txt
+    Untracked:  composition.analysis/smp.16/importances_Class_Neutrophils_para.50.txt
+    Untracked:  composition.analysis/smp.17/importances_Class_Mesenchymal_intra.txt
+    Untracked:  composition.analysis/smp.17/importances_Class_Mesenchymal_para.50.txt
+    Untracked:  composition.analysis/smp.17/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.17/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.17/importances_Class_Other.immune_intra.txt
+    Untracked:  composition.analysis/smp.17/importances_Class_Other.immune_para.50.txt
+    Untracked:  composition.analysis/smp.2/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.2/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.20/importances_Class_CD3.T_intra.txt
+    Untracked:  composition.analysis/smp.20/importances_Class_CD3.T_para.50.txt
+    Untracked:  composition.analysis/smp.20/importances_Class_Other.immune_intra.txt
+    Untracked:  composition.analysis/smp.20/importances_Class_Other.immune_para.50.txt
+    Untracked:  composition.analysis/smp.21/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.21/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.21/importances_Class_Other.immune_intra.txt
+    Untracked:  composition.analysis/smp.21/importances_Class_Other.immune_para.50.txt
+    Untracked:  composition.analysis/smp.23/importances_Class_CD8.T_intra.txt
+    Untracked:  composition.analysis/smp.23/importances_Class_CD8.T_para.50.txt
+    Untracked:  composition.analysis/smp.27/importances_Class_Other.immune_intra.txt
+    Untracked:  composition.analysis/smp.27/importances_Class_Other.immune_para.50.txt
+    Untracked:  composition.analysis/smp.28/importances_Class_DC_intra.txt
+    Untracked:  composition.analysis/smp.28/importances_Class_DC_para.50.txt
+    Untracked:  composition.analysis/smp.28/importances_Class_Endothelial_intra.txt
+    Untracked:  composition.analysis/smp.28/importances_Class_Endothelial_para.50.txt
+    Untracked:  composition.analysis/smp.28/importances_Class_Neutrophils_intra.txt
+    Untracked:  composition.analysis/smp.28/importances_Class_Neutrophils_para.50.txt
+    Untracked:  composition.analysis/smp.29/importances_Class_CD3.T_intra.txt
+    Untracked:  composition.analysis/smp.29/importances_Class_CD3.T_para.50.txt
+    Untracked:  composition.analysis/smp.29/importances_Class_CD4.T_intra.txt
+    Untracked:  composition.analysis/smp.29/importances_Class_CD4.T_para.50.txt
+    Untracked:  composition.analysis/smp.29/importances_Class_Other.immune_intra.txt
+    Untracked:  composition.analysis/smp.29/importances_Class_Other.immune_para.50.txt
+    Untracked:  composition.analysis/smp.31/
+    Untracked:  composition.analysis/smp.32/importances_Class_CD3.T_intra.txt
+    Untracked:  composition.analysis/smp.32/importances_Class_CD3.T_para.50.txt
+    Untracked:  composition.analysis/smp.32/importances_Class_NK_intra.txt
+    Untracked:  composition.analysis/smp.32/importances_Class_NK_para.50.txt
+    Untracked:  composition.analysis/smp.32/importances_Class_Neutrophils_intra.txt
+    Untracked:  composition.analysis/smp.32/importances_Class_Neutrophils_para.50.txt
+    Untracked:  composition.analysis/smp.34/importances_Class_Mesenchymal_intra.txt
+    Untracked:  composition.analysis/smp.34/importances_Class_Mesenchymal_para.50.txt
+    Untracked:  composition.analysis/smp.35/importances_Class_Endothelial_intra.txt
+    Untracked:  composition.analysis/smp.35/importances_Class_Endothelial_para.50.txt
+    Untracked:  composition.analysis/smp.35/importances_Class_Mesenchymal_intra.txt
+    Untracked:  composition.analysis/smp.35/importances_Class_Mesenchymal_para.50.txt
+    Untracked:  composition.analysis/smp.36/importances_Class_CD3.T_intra.txt
+    Untracked:  composition.analysis/smp.36/importances_Class_CD3.T_para.50.txt
+    Untracked:  composition.analysis/smp.36/importances_Class_Endothelial_intra.txt
+    Untracked:  composition.analysis/smp.36/importances_Class_Endothelial_para.50.txt
+    Untracked:  composition.analysis/smp.36/importances_Class_Neutrophils_intra.txt
+    Untracked:  composition.analysis/smp.36/importances_Class_Neutrophils_para.50.txt
+    Untracked:  composition.analysis/smp.37/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.37/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.38/
+    Untracked:  composition.analysis/smp.39/importances_Class_CD4.T_intra.txt
+    Untracked:  composition.analysis/smp.39/importances_Class_CD4.T_para.50.txt
+    Untracked:  composition.analysis/smp.39/importances_Class_DC.Mono_intra.txt
+    Untracked:  composition.analysis/smp.39/importances_Class_DC.Mono_para.50.txt
+    Untracked:  composition.analysis/smp.39/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.39/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.4/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.4/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.40/importances_Class_CD3.T_intra.txt
+    Untracked:  composition.analysis/smp.40/importances_Class_CD3.T_para.50.txt
+    Untracked:  composition.analysis/smp.5/importances_Class_Neutrophils_intra.txt
+    Untracked:  composition.analysis/smp.5/importances_Class_Neutrophils_para.50.txt
+    Untracked:  composition.analysis/smp.8/importances_Class_CD8.T_intra.txt
+    Untracked:  composition.analysis/smp.8/importances_Class_CD8.T_para.50.txt
+    Untracked:  composition.analysis/smp.8/importances_Class_Mono.Neu_intra.txt
+    Untracked:  composition.analysis/smp.8/importances_Class_Mono.Neu_para.50.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_B_intra.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_B_para.50.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_DC_intra.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_DC_para.50.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_Endothelial_intra.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_Endothelial_para.50.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_Mesenchymal_intra.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_Mesenchymal_para.50.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_Tregs_intra.txt
+    Untracked:  composition.analysis/smp.9/importances_Class_Tregs_para.50.txt
 
 Unstaged changes:
-    Modified:   analysis/Composition.Rmd
+    Modified:   composition.analysis/smp.1/performance.txt
+    Modified:   composition.analysis/smp.10/coefficients.txt
+    Modified:   composition.analysis/smp.10/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.10/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.10/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.10/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.10/importances_Class_Mono.Neu_para.50.txt
+    Modified:   composition.analysis/smp.10/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.10/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.10/performance.txt
+    Modified:   composition.analysis/smp.11/coefficients.txt
+    Modified:   composition.analysis/smp.11/performance.txt
+    Modified:   composition.analysis/smp.12/coefficients.txt
+    Modified:   composition.analysis/smp.12/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.12/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.12/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.12/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.12/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.12/importances_Class_Tregs_para.50.txt
+    Modified:   composition.analysis/smp.12/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.12/performance.txt
+    Modified:   composition.analysis/smp.13/coefficients.txt
+    Modified:   composition.analysis/smp.13/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_Tregs_para.50.txt
+    Modified:   composition.analysis/smp.13/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.13/performance.txt
+    Modified:   composition.analysis/smp.16/coefficients.txt
+    Modified:   composition.analysis/smp.16/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_DC_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_NK_para.50.txt
+    Modified:   composition.analysis/smp.16/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.16/performance.txt
+    Modified:   composition.analysis/smp.17/coefficients.txt
+    Modified:   composition.analysis/smp.17/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_Tregs_para.50.txt
+    Modified:   composition.analysis/smp.17/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.17/performance.txt
+    Modified:   composition.analysis/smp.2/coefficients.txt
+    Modified:   composition.analysis/smp.2/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.2/importances_Class_Endothelial_para.50.txt
+    Modified:   composition.analysis/smp.2/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.2/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.2/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.2/performance.txt
+    Modified:   composition.analysis/smp.20/coefficients.txt
+    Modified:   composition.analysis/smp.20/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.20/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.20/importances_Class_Mono.Neu_para.50.txt
+    Modified:   composition.analysis/smp.20/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.20/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.20/performance.txt
+    Modified:   composition.analysis/smp.21/coefficients.txt
+    Modified:   composition.analysis/smp.21/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.21/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.21/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.21/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.21/performance.txt
+    Modified:   composition.analysis/smp.23/coefficients.txt
+    Modified:   composition.analysis/smp.23/importances_Class_Endothelial_para.50.txt
+    Modified:   composition.analysis/smp.23/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.23/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.23/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.23/performance.txt
+    Modified:   composition.analysis/smp.27/coefficients.txt
+    Modified:   composition.analysis/smp.27/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.27/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.27/importances_Class_Mono.Neu_para.50.txt
+    Modified:   composition.analysis/smp.27/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.27/performance.txt
+    Modified:   composition.analysis/smp.28/coefficients.txt
+    Modified:   composition.analysis/smp.28/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.28/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.28/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.28/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.28/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.28/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.28/importances_Class_NK_para.50.txt
+    Modified:   composition.analysis/smp.28/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.28/performance.txt
+    Modified:   composition.analysis/smp.29/coefficients.txt
+    Modified:   composition.analysis/smp.29/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.29/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.29/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.29/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.29/importances_Class_Mono.Neu_para.50.txt
+    Modified:   composition.analysis/smp.29/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.29/performance.txt
+    Modified:   composition.analysis/smp.3/coefficients.txt
+    Modified:   composition.analysis/smp.3/performance.txt
+    Modified:   composition.analysis/smp.32/coefficients.txt
+    Modified:   composition.analysis/smp.32/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.32/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.32/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.32/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.32/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.32/performance.txt
+    Modified:   composition.analysis/smp.34/coefficients.txt
+    Modified:   composition.analysis/smp.34/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.34/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.34/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.34/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.34/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.34/performance.txt
+    Modified:   composition.analysis/smp.35/coefficients.txt
+    Modified:   composition.analysis/smp.35/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.35/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.35/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.35/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.35/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.35/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.35/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.35/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.35/performance.txt
+    Modified:   composition.analysis/smp.36/coefficients.txt
+    Modified:   composition.analysis/smp.36/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.36/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.36/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.36/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.36/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.36/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.36/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.36/performance.txt
+    Modified:   composition.analysis/smp.37/coefficients.txt
+    Modified:   composition.analysis/smp.37/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_Endothelial_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.37/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.37/performance.txt
+    Modified:   composition.analysis/smp.39/coefficients.txt
+    Modified:   composition.analysis/smp.39/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.39/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.39/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.39/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.39/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.39/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.39/performance.txt
+    Modified:   composition.analysis/smp.4/coefficients.txt
+    Modified:   composition.analysis/smp.4/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_Endothelial_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_Tregs_para.50.txt
+    Modified:   composition.analysis/smp.4/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.4/performance.txt
+    Modified:   composition.analysis/smp.40/coefficients.txt
+    Modified:   composition.analysis/smp.40/importances_Class_B_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_DC_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_Endothelial_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.40/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.40/performance.txt
+    Modified:   composition.analysis/smp.41/coefficients.txt
+    Modified:   composition.analysis/smp.41/performance.txt
+    Modified:   composition.analysis/smp.5/coefficients.txt
+    Modified:   composition.analysis/smp.5/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_Endothelial_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_Mono.Neu_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.5/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.5/performance.txt
+    Modified:   composition.analysis/smp.6/coefficients.txt
+    Modified:   composition.analysis/smp.6/performance.txt
+    Modified:   composition.analysis/smp.8/coefficients.txt
+    Modified:   composition.analysis/smp.8/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.8/importances_Class_Mesenchymal_para.50.txt
+    Modified:   composition.analysis/smp.8/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.8/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.8/performance.txt
+    Modified:   composition.analysis/smp.9/coefficients.txt
+    Modified:   composition.analysis/smp.9/importances_Class_CD3.T_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_CD4.T_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_CD8.T_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_DC.Mono_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_Macrophages_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_Mono.Neu_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_Neutrophils_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_Other.immune_para.50.txt
+    Modified:   composition.analysis/smp.9/importances_Class_Tumor_para.50.txt
+    Modified:   composition.analysis/smp.9/performance.txt
 
 </code></pre>
 <p>
@@ -649,6 +965,57 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/3839c0df9634b52e12c12f4a346ceff8c68d9847/analysis/Composition.Rmd" target="_blank">3839c0d</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-25
+</td>
+<td>
+investigating results of composition analysis
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c3e2d41d4eab583dfae5b932aaf951d038ee518f/analysis/Composition.Rmd" target="_blank">c3e2d41</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+<td>
+see above
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/c3e2d41d4eab583dfae5b932aaf951d038ee518f/docs/Composition.html" target="_blank">c3e2d41</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+<td>
+see above
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/7a5242c375347b101846d7252ccf11ec51ba1b9d/analysis/Composition.Rmd" target="_blank">7a5242c</a>
 </td>
 <td>
@@ -685,11 +1052,12 @@ meta.smp &lt;- readRDS(&quot;data/sample_meta.RDS&quot;)</code></pre>
 </div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>To understand how the identity of a given cell is determined by the neighboring cell types we will use MISTy to try to explain the cell type of a given cell by taking the cell types in the environment into account.</p>
+<p>We will use MISTy to try to explain the identify of a given cell using the identify of the neighboring cells. Therefore, we one-hot encode the cell types, bypass modeling of the intraview, and only model the paraview consisting of the 50 nearest-neigbors.</p>
 </div>
 <div id="generating-misty-views" class="section level1">
 <h1>Generating MISTy Views</h1>
-<p>First repair the classes and select the relevant columns.</p>
+<p>Repair the class names and select the relevant columns. For the first 6 rows we get:</p>
+<p>TODO: Should we exclude “Other Imunne” class from the analysis?</p>
 <pre class="r"><code>data &lt;- meta %&gt;%
   filter(Group != &quot;Unidentified&quot;) %&gt;%
   mutate(Class = case_when(
@@ -706,11 +1074,17 @@ data %&gt;% slice_head(n=6)</code></pre>
 {"columns":[{"label":["SampleID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Class"],"name":[2],"type":["fct"],"align":["left"]},{"label":["row"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["col"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"Tumor","3":"159.3356","4":"33.85616"},{"1":"1","2":"CD3 T","3":"192.2941","4":"31.58824"},{"1":"1","2":"Tumor","3":"213.3256","4":"31.23256"},{"1":"1","2":"Tumor","3":"270.9858","4":"35.77251"},{"1":"1","2":"B","3":"382.1751","4":"36.34463"},{"1":"1","2":"CD3 T","3":"397.1824","4":"34.07547"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>Next up, one-hot encoding.</p>
+<p>Next up, one-hot encoding of the cell types. Again the first six rows.</p>
 <pre class="r"><code>expr &lt;- mltools::one_hot(data.table::as.data.table(data)) %&gt;%
   select(-c(row, col)) %&gt;%
-  rename_all(make.names)</code></pre>
-<p>Get Positions.</p>
+  rename_all(make.names)
+expr %&gt;% slice_head(n=6)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["SampleID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Class_B"],"name":[2],"type":["int"],"align":["right"]},{"label":["Class_CD3.T"],"name":[3],"type":["int"],"align":["right"]},{"label":["Class_CD4.T"],"name":[4],"type":["int"],"align":["right"]},{"label":["Class_CD8.T"],"name":[5],"type":["int"],"align":["right"]},{"label":["Class_DC"],"name":[6],"type":["int"],"align":["right"]},{"label":["Class_DC.Mono"],"name":[7],"type":["int"],"align":["right"]},{"label":["Class_Endothelial"],"name":[8],"type":["int"],"align":["right"]},{"label":["Class_Macrophages"],"name":[9],"type":["int"],"align":["right"]},{"label":["Class_Mesenchymal"],"name":[10],"type":["int"],"align":["right"]},{"label":["Class_Mono.Neu"],"name":[11],"type":["int"],"align":["right"]},{"label":["Class_Neutrophils"],"name":[12],"type":["int"],"align":["right"]},{"label":["Class_NK"],"name":[13],"type":["int"],"align":["right"]},{"label":["Class_Other.immune"],"name":[14],"type":["int"],"align":["right"]},{"label":["Class_Tregs"],"name":[15],"type":["int"],"align":["right"]},{"label":["Class_Tumor"],"name":[16],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"1"},{"1":"1","2":"0","3":"1","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0"},{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"1"},{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"1"},{"1":"1","2":"1","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0"},{"1":"1","2":"0","3":"1","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Select positions.</p>
 <pre class="r"><code>pos.smp &lt;- unique(data$SampleID) %&gt;%
   set_names() %&gt;%
   map(function(smp) {
@@ -725,7 +1099,7 @@ pos.smp$`1` %&gt;%
 {"columns":[{"label":["row"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["col"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"159.3356","2":"33.85616"},{"1":"192.2941","2":"31.58824"},{"1":"213.3256","2":"31.23256"},{"1":"270.9858","2":"35.77251"},{"1":"382.1751","2":"36.34463"},{"1":"397.1824","2":"34.07547"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
-<p>To fix that I will remove all the cell types from the tables that have fewer than 100 cells. Furthermore, I will remove all samples that have fewer than 4 cell types left.</p>
+<p>Removing all cell types in a given sample if there are fewer than 50 cells of this type. After that removing all samples that have fewer than 4 cell types left. See below which samples are left and how many unique cell types were retained.</p>
 <pre class="r"><code>expr.smp.raw &lt;- unique(data$SampleID) %&gt;%
   set_names() %&gt;%
   map(function(smp) {
@@ -734,15 +1108,12 @@ pos.smp$`1` %&gt;%
       select(-SampleID)
     
     c.sums &lt;- colSums(ret.expr)
-    remove.classes &lt;- names(c.sums)[which(c.sums &lt; 100)]
+    remove.classes &lt;- names(c.sums)[which(c.sums &lt; 50)]
     
-    return(ret.expr %&gt;% select(-remove.classes))
-  })</code></pre>
-<pre><code>Note: Using an external vector in selections is ambiguous.
-ℹ Use `all_of(remove.classes)` instead of `remove.classes` to silence this message.
-ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
-This message is displayed once per session.</code></pre>
-<pre class="r"><code># which sample to keep
+    return(ret.expr %&gt;% select(-all_of(remove.classes)))
+  })
+
+# which sample to keep
 n.cells &lt;- map_int(expr.smp.raw, ~ ncol(.x))
 samples.keep &lt;- names(n.cells[which(n.cells &gt; 3)])
 expr.smp &lt;- expr.smp.raw[samples.keep]
@@ -750,15 +1121,20 @@ pos.smp &lt;- pos.smp[samples.keep]
 
 # last check
 map_int(expr.smp, ~ ncol(.x))</code></pre>
-<pre><code> 1  2  3  4  5  6  7  8  9 10 11 12 13 16 17 20 21 23 27 28 29 32 34 35 36 37 
- 8  5 10 12 10 10  4  4  9  7  7  7 10  9  9  5  4  4  4  8  6  5  5  8  7 10 
-39 40 41 
- 6 10 11 </code></pre>
+<pre><code> 1  2  3  4  5  6  7  8  9 10 11 12 13 14 16 17 20 21 23 27 28 29 31 32 34 35 
+ 8  6 10 13 11 10  4  6 14 10  7 10 12  6 10 12  7  6  5  5 11  9  4  8  6 10 
+36 37 38 39 40 41 
+10 11  5  9 11 11 </code></pre>
+<p>Computing the MISTy views. In particulat a paraview consisting of the 50 nearest neigbors (<code>family = "constant"</code> and <code>l = 50</code>)</p>
 <pre class="r"><code>misty.views.smp &lt;- map2(expr.smp, pos.smp, function(expr, pos) {
   expr %&gt;%
     create_initial_view() %&gt;%
     add_paraview(positions = pos, l = 50, zoi = 0, family = &quot;constant&quot;)
 })</code></pre>
+</div>
+<div id="running-misty" class="section level1">
+<h1>Running MISTy</h1>
+<p>Run MISTy bypassing the intraview and using 10 CV folds. Per default random forest is used.</p>
 <pre class="r"><code>result.folders &lt;- map2(misty.views.smp, 
                       names(misty.views.smp), 
                       function(misty.views, i) {
@@ -768,16 +1144,9 @@ map_int(expr.smp, ~ ncol(.x))</code></pre>
               bypass.intra = TRUE,
               cv.folds = 10)
 })</code></pre>
+<p>Collectig the results.</p>
 <pre class="r"><code>misty.results &lt;- collect_results(result.folders)</code></pre>
-<pre><code>
-Collecting improvements</code></pre>
-<pre><code>
-Collecting contributions</code></pre>
-<pre><code>
-Collecting importances</code></pre>
-<pre><code>
-Aggregating</code></pre>
-<pre><code>Warning: Expected 2 pieces. Additional pieces discarded in 224 rows [1, 2, 3, 4,
+<pre><code>Warning: Expected 2 pieces. Additional pieces discarded in 234 rows [1, 2, 3, 4,
 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
 </div>
 <div id="misty-results" class="section level1">
@@ -787,33 +1156,283 @@ Aggregating</code></pre>
 <p>Intra R2:</p>
 <pre class="r"><code>plot_improvement_stats(misty.results, &quot;intra.R2&quot;)</code></pre>
 <p><img src="figure/Composition.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c3e2d41d4eab583dfae5b932aaf951d038ee518f/docs/figure/Composition.Rmd/unnamed-chunk-11-1.png" target="_blank">c3e2d41</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Multi R2:</p>
 <pre class="r"><code>plot_improvement_stats(misty.results, &quot;multi.R2&quot;)</code></pre>
 <p><img src="figure/Composition.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c3e2d41d4eab583dfae5b932aaf951d038ee518f/docs/figure/Composition.Rmd/unnamed-chunk-12-1.png" target="_blank">c3e2d41</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Gain R2:</p>
+<p>As expected the gain in explained variance equals the multiview explained variance (since we bypassed modeling of the intraview).</p>
 <pre class="r"><code>plot_improvement_stats(misty.results, &quot;gain.R2&quot;)</code></pre>
 <p><img src="figure/Composition.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c3e2d41d4eab583dfae5b932aaf951d038ee518f/docs/figure/Composition.Rmd/unnamed-chunk-13-1.png" target="_blank">c3e2d41</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Regarding the error bars let’s check for each cell type in how many samples it was retained after preprocessing. And we see that especially Tregs, dendritic cells (DC) and natural killer cells (NK) were only retained in frew samples.</p>
+<p>TODO: Would it make sense to exlcude those cell types which are present in fewer than 5 samples?</p>
+<pre class="r"><code>map(misty.views.smp, ~ colnames(.x$intraview$data)) %&gt;%
+  unlist %&gt;%
+  table %&gt;%
+  data.frame() %&gt;%
+  rename(&quot;Class&quot; = &quot;.&quot;) %&gt;%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat=&quot;identity&quot;) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c3e2d41d4eab583dfae5b932aaf951d038ee518f/docs/figure/Composition.Rmd/unnamed-chunk-14-1.png" target="_blank">c3e2d41</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Let’s look at the gain in R2 accross all samples and targets.</p>
+<pre class="r"><code>misty.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
+  select(-measure) %&gt;%
+  pivot_wider(names_from = target) %&gt;%
+  as.data.frame() %&gt;%
+  column_to_rownames(var = &quot;sample&quot;) %&gt;%
+  as.matrix() %&gt;%
+  # removing clustering so we can keep NAs
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-15-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/c3e2d41d4eab583dfae5b932aaf951d038ee518f/docs/figure/Composition.Rmd/unnamed-chunk-15-1.png" target="_blank">c3e2d41</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-23
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>What I find interesting is that, in samples 40, 35, 28, 16, 17, and 1, we have a pretty high gain in R2 both for B and for tumore cells. What do those samples have in common?</p>
+<p>Looking at their immages, these samples belong all to the class of rather compartimentalized TMEs.</p>
+<pre class="r"><code>meta %&gt;%
+  filter(SampleID %in% c(40, 35, 28, 16, 17, 1)) %&gt;%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size = .1) +
+  facet_wrap(~ SampleID, ncol=3) + 
+  guides(colour = guide_legend(override.aes = list(size = 4)))</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-16-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>We can also see this difference comparing the mixing score of those samples to the rest (excluding cold samples for this comparison).</p>
+<pre class="r"><code>meta.smp %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  mutate(Class = ifelse(SampleID %in% c(40, 35, 28, 16, 17, 1), &quot;In&quot;, &quot;Out&quot;)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=Class, y=ratio.tumor.immune)) +
+  lims(y= c(0, 150))</code></pre>
+<pre><code>Warning: Removed 2 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Let’s also have a look at the performance signature returned by MISTy. Since it actually only contains data for tumor and macrophages we do not even need to do a PCA.</p>
+<p>We can see that the gain in R2 for tumor cells is much higher in comparitmentalized samples and for macrophages it is somewhat the same except for the fact that one mixed sample has a much higher gain.</p>
+<pre class="r"><code>perf.sig &lt;- extract_signature(misty.results = misty.results, 
+                              type = &quot;performance&quot;) %&gt;%
+  mutate(SampleID = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
+  select(c(SampleID, ends_with(&quot;gain.R2&quot;)))
+
+ggplot(perf.sig) +
+geom_point(aes(x=Class_Macrophages_gain.R2, 
+               y=Class_Tumor_gain.R2,
+               col=perf.sig %&gt;% left_join(meta.smp, by=&quot;SampleID&quot;) %&gt;%
+                   pull(Classification))) +
+  labs(col = &quot;Class&quot;)</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="contributions" class="section level2">
 <h2>Contributions</h2>
+<p>Especially for predicting tumor cell identity the para view is useful, which fits to the high gain in R2 for tumor cells we have seen before across many samples.</p>
 <pre class="r"><code>plot_view_contributions(misty.results)</code></pre>
-<p><img src="figure/Composition.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="importances" class="section level2">
 <h2>Importances</h2>
+<p>Somehow there is a bug here and although the view <code>para.50</code> exist, we cannot plot the importances.</p>
+<pre class="r"><code>misty.results$importances$view %&gt;% unique</code></pre>
+<pre><code>[1] &quot;intra&quot;   &quot;para.50&quot;</code></pre>
+<p>Here the plot we get.</p>
+<pre class="r"><code>plot_interaction_heatmap(misty.results, &quot;para.50&quot;)</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Plotting it using <code>pheatmap</code> and adding P or T for predictor and target to the cell type names. So on the bottom we have the targets and on the right side the predictors.</p>
 <pre class="r"><code>misty.results$importances %&gt;%
   filter(Importance &gt; 0) %&gt;%
   filter(view == &quot;para.50&quot;) %&gt;%
   group_by(Predictor, Target) %&gt;%
-  summarise(imp = mean(Importance)) %&gt;%
+  summarise(imp = mean(Importance, na.rm=TRUE)) %&gt;%
   mutate(Predictor = paste0(&quot;P.&quot;, Predictor),
          Target = paste0(&quot;T.&quot;, Target)) %&gt;%
   pivot_wider(names_from = Target, values_from = imp) %&gt;%
   column_to_rownames(var = &quot;Predictor&quot;) %&gt;%
-  as.matrix() %&gt;%
-  pheatmap::pheatmap()</code></pre>
+  as.matrix() %&gt;% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)</code></pre>
 <pre><code>`summarise()` has grouped output by &#39;Predictor&#39;. You can override using the `.groups` argument.</code></pre>
-<p><img src="figure/Composition.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We can see that dendritic cells are associated with tumor cells.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -845,6 +1464,7 @@ other attached packages:
  [1] factoextra_1.0.7 forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7     
  [5] purrr_0.3.4      readr_2.0.2      tidyr_1.1.4      tibble_3.1.5    
  [9] ggplot2_3.3.5    tidyverse_1.3.1  future_1.22.1    mistyR_1.1.13   
+[13] workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
  [1] fs_1.5.0           lubridate_1.8.0    RColorBrewer_1.1-2 filelock_1.0.2    
@@ -867,7 +1487,7 @@ loaded via a namespace (and not attached):
 [69] data.table_1.14.2  modelr_0.1.8       vctrs_0.3.8        tzdb_0.1.2        
 [73] httpuv_1.6.3       cellranger_1.1.0   gtable_0.3.0       assertthat_0.2.1  
 [77] xfun_0.26          broom_0.7.9        later_1.3.0        pheatmap_1.0.12   
-[81] mltools_0.3.5      workflowr_1.6.2    globals_0.14.0     ellipsis_0.3.2    </code></pre>
+[81] mltools_0.3.5      globals_0.14.0     ellipsis_0.3.2    </code></pre>
 </div>
 </div>
 </div>
