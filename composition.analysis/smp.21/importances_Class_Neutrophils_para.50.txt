@@ -1,4 +1,0 @@
-target,imp
-Class_Macrophages,5.8016114842426365
-Class_Mesenchymal,7.153842566212587
-Class_Tumor,12.824130069611956

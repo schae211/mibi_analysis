@@ -1,6 +1,0 @@
-target,imp
-Class_CD3.T,39.24877103886511
-Class_Macrophages,72.12875666836042
-Class_Neutrophils,19.84860282858739
-Class_Other.immune,56.59356550772086
-Class_Tumor,85.53213732365651

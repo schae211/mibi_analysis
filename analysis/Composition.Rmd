@@ -226,7 +226,7 @@ result.folders <- map2(misty.views.smp,
                       function(misty.views, i) {
   
   misty.views %>%
-    run_misty(results.folder = paste0("composition.analysis/smp.", i), 
+    run_misty(results.folder = paste0("analysis/composition.analysis/smp.", i), 
               bypass.intra = TRUE,
               cv.folds = 10)
 })

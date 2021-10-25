@@ -1,4 +1,0 @@
-target,imp
-Class_Macrophages,69.15424309525905
-Class_Mesenchymal,80.55647898284282
-Class_Neutrophils,33.96064238715488

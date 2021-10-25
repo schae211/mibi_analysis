@@ -1,4 +1,0 @@
-target,imp
-Class_Macrophages,7.659707683223566
-Class_Neutrophils,7.510399089735066
-Class_Tumor,11.138594933439208

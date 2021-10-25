@@ -11,6 +11,7 @@ analysis/*_cache
 analysis/site_libs
 analysis/results
 analysis/cell.specific.results
+analysis/composition.analysis
 data/*.RDS
 data/*.csv
 data/raw_tiffs/*.tiff

@@ -1,5 +1,0 @@
-target,imp
-Class_Endothelial,21.237927427693855
-Class_Macrophages,32.860454775463474
-Class_Mesenchymal,24.71758940716994
-Class_Tumor,38.734688327553805

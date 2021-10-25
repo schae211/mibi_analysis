@@ -1,4 +1,0 @@
-target,imp
-Class_Macrophages,22.20252792569193
-Class_Other.immune,20.16382487340184
-Class_Tumor,35.08310167776488

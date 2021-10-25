@@ -1,4 +1,0 @@
-target,imp
-Class_Mesenchymal,24.611239087008595
-Class_Mono.Neu,31.546665211228888
-Class_Tumor,66.43435533305964
