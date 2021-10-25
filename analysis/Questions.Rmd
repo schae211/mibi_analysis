@@ -16,8 +16,9 @@ microenvironment and its relationship to the molecular attributes of the tumor.
 - Tumor-related: EGFR, p53, (also CD138 neoplastic cells?)
 - Metabolic activity / proliferation: Ki-67, pS6
 - Immunoregulatory proteins: PD-1, PD-L1, LAG3, IDO
-- Plasma cells: CD138
-- Macrophages: CD209, CD11c, 
+- Plasma cells: CD138,
+- Macrophages: CD209, 
+- Dendritic Cells (DC): CD11c,
 
 3. On which other MIBI datasets could we test MISTy on?
 - Spatio-temporal coordination at the maternal-fetal interface promotes 

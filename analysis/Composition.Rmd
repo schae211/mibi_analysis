@@ -29,14 +29,17 @@ meta.smp <- readRDS("data/sample_meta.RDS")
 
 # Introduction
 
-To understand how the identity of a given cell is determined by the
-neighboring cell types we will use MISTy to try to explain the 
-cell type of a given cell by taking the cell types in the environment
-into account.
+We will use MISTy to try to explain the identify of a given cell using the
+identify of the neighboring cells. Therefore, we one-hot encode the cell types,
+bypass modeling of the intraview, and only model the paraview consisting of
+the 50 nearest-neigbors.
 
 # Generating MISTy Views
 
-First repair the classes and select the relevant columns.
+Repair the class names and select the relevant columns. For the first 6
+rows we get:
+
+TODO: Should we exclude "Other Imunne" class from the analysis?
 
 ```{r}
 data <- meta %>%
@@ -52,15 +55,18 @@ data <- meta %>%
 data %>% slice_head(n=6)
 ```
 
-Next up, one-hot encoding.
+Next up, one-hot encoding of the cell types. Again the first six rows.
 
 ```{r}
 expr <- mltools::one_hot(data.table::as.data.table(data)) %>%
   select(-c(row, col)) %>%
   rename_all(make.names)
+expr %>% slice_head(n=6)
 ```
 
 ```{r include=FALSE, eval=FALSE}
+# This code chunk is used to show a certain bug.
+
 # Get Expression Values and Postions
 raw.expr.smp <- unique(data$SampleID) %>%
   set_names() %>%
@@ -155,7 +161,7 @@ outcome <- rep(n.cells/cv.folds, n.cells)
 caret::R2(prediction, outcome, formula = "traditional")
 ```
 
-Get Positions.
+Select positions.
 
 ```{r}
 pos.smp <- unique(data$SampleID) %>%
@@ -169,9 +175,10 @@ pos.smp$`1` %>%
   slice_head(n=6)
 ```
 
-To fix that I will remove all the cell types from the tables that have fewer than
-100 cells. Furthermore, I will remove all samples that have fewer than 4 cell types
-left.
+Removing all cell types in a given sample if there are fewer than 50 cells of
+this type. After that removing all samples that have fewer than 4 cell types 
+left. See below which samples are left and how many unique cell types were
+retained.
 
 ```{r}
 expr.smp.raw <- unique(data$SampleID) %>%
@@ -182,9 +189,9 @@ expr.smp.raw <- unique(data$SampleID) %>%
       select(-SampleID)
     
     c.sums <- colSums(ret.expr)
-    remove.classes <- names(c.sums)[which(c.sums < 100)]
+    remove.classes <- names(c.sums)[which(c.sums < 50)]
     
-    return(ret.expr %>% select(-remove.classes))
+    return(ret.expr %>% select(-all_of(remove.classes)))
   })
 
 # which sample to keep
@@ -197,13 +204,21 @@ pos.smp <- pos.smp[samples.keep]
 map_int(expr.smp, ~ ncol(.x))
 ```
 
-```{r message=FALSE, warning=FALSE}
+Computing the MISTy views. In particulat a paraview consisting of the 50
+nearest neigbors (`family = "constant"` and `l = 50`)
+
+```{r message=FALSE}
 misty.views.smp <- map2(expr.smp, pos.smp, function(expr, pos) {
   expr %>%
     create_initial_view() %>%
     add_paraview(positions = pos, l = 50, zoi = 0, family = "constant")
 })
 ```
+
+# Running MISTy
+
+Run MISTy bypassing the intraview and using 10 CV folds. Per default random
+forest is used.
 
 ```{r message=FALSE, warning=FALSE}
 result.folders <- map2(misty.views.smp, 
@@ -217,7 +232,9 @@ result.folders <- map2(misty.views.smp,
 })
 ```
 
-```{r}
+Collectig the results.
+
+```{r message=FALSE}
 misty.results <- collect_results(result.folders)
 ```
 
@@ -239,11 +256,101 @@ plot_improvement_stats(misty.results, "multi.R2")
 
 Gain R2:
 
+As expected the gain in explained variance equals the multiview explained
+variance (since we bypassed modeling of the intraview).
+
 ```{r}
 plot_improvement_stats(misty.results, "gain.R2")
 ```
 
+Regarding the error bars let's check for each cell type in how many samples
+it was retained after preprocessing. And we see that especially Tregs, dendritic
+cells (DC) and natural killer cells (NK) were only retained in frew samples.
+
+TODO: Would it make sense to exlcude those cell types which are present in 
+fewer than 5 samples?
+
+```{r}
+map(misty.views.smp, ~ colnames(.x$intraview$data)) %>%
+  unlist %>%
+  table %>%
+  data.frame() %>%
+  rename("Class" = ".") %>%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat="identity") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Let's look at the gain in R2 accross all samples and targets.
+
+```{r fig.width=8, fig.height=8}
+misty.results$improvements %>%
+  filter(measure == "gain.R2") %>%
+  mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
+  select(-measure) %>%
+  pivot_wider(names_from = target) %>%
+  as.data.frame() %>%
+  column_to_rownames(var = "sample") %>%
+  as.matrix() %>%
+  # removing clustering so we can keep NAs
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)
+```
+
+What I find interesting is that, in samples 40, 35, 28, 16, 17, and 1, we 
+have a pretty high gain in R2 both for B and for tumore cells. What do those 
+samples have in common?
+
+Looking at their immages, these samples belong all to the class of rather
+compartimentalized TMEs.
+
+```{r fig.width=10, fig.height=6}
+meta %>%
+  filter(SampleID %in% c(40, 35, 28, 16, 17, 1)) %>%
+  ggplot() +
+  geom_point(aes(x = row, y = col, col = Group), size = .1) +
+  facet_wrap(~ SampleID, ncol=3) + 
+  guides(colour = guide_legend(override.aes = list(size = 4)))
+```
+
+We can also see this difference comparing the mixing score of those samples
+to the rest (excluding cold samples for this comparison).
+
+```{r}
+meta.smp %>%
+  filter(Classification != "cold") %>%
+  mutate(Class = ifelse(SampleID %in% c(40, 35, 28, 16, 17, 1), "In", "Out")) %>%
+  ggplot() +
+  geom_boxplot(aes(x=Class, y=ratio.tumor.immune)) +
+  lims(y= c(0, 150))
+```
+
+Let's also have a look at the performance signature returned by MISTy. Since
+it actually only contains data for tumor and macrophages we do not even
+need to do a PCA.
+
+We can see that the gain in R2 for tumor cells is much higher in comparitmentalized
+samples and for macrophages it is somewhat the same except for the fact
+that one mixed sample has a much higher gain.
+
+```{r}
+perf.sig <- extract_signature(misty.results = misty.results, 
+                              type = "performance") %>%
+  mutate(SampleID = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
+  select(c(SampleID, ends_with("gain.R2")))
+
+ggplot(perf.sig) +
+geom_point(aes(x=Class_Macrophages_gain.R2, 
+               y=Class_Tumor_gain.R2,
+               col=perf.sig %>% left_join(meta.smp, by="SampleID") %>%
+                   pull(Classification))) +
+  labs(col = "Class")
+```
+
 ## Contributions
+
+Especially for predicting tumor cell identity the para view is useful, which
+fits to the high gain in R2 for tumor cells we have seen before across many
+samples.
 
 ```{r}
 plot_view_contributions(misty.results)
@@ -251,17 +358,35 @@ plot_view_contributions(misty.results)
 
 ## Importances
 
+Somehow there is a bug here and although the view `para.50` exist, we cannot
+plot the importances.
+
+```{r}
+misty.results$importances$view %>% unique
+```
+
+Here the plot we get.
+
+```{r}
+plot_interaction_heatmap(misty.results, "para.50")
+```
+
+Plotting it using `pheatmap` and adding P or T for predictor and target
+to the cell type names. So on the bottom we have the targets and on the right
+side the predictors.
+
 ```{r}
 misty.results$importances %>%
   filter(Importance > 0) %>%
   filter(view == "para.50") %>%
   group_by(Predictor, Target) %>%
-  summarise(imp = mean(Importance)) %>%
+  summarise(imp = mean(Importance, na.rm=TRUE)) %>%
   mutate(Predictor = paste0("P.", Predictor),
          Target = paste0("T.", Target)) %>%
   pivot_wider(names_from = Target, values_from = imp) %>%
   column_to_rownames(var = "Predictor") %>%
-  as.matrix() %>%
-  pheatmap::pheatmap()
+  as.matrix() %>% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)
 ```
 
+We can see that dendritic cells are associated with tumor cells. 
