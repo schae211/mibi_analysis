@@ -410,7 +410,7 @@ div.tocify {
 <strong>Last updated:</strong> 2021-10-26
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -426,12 +426,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -522,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree3732f8d30856fc0a8336c6923ceb0338a46cd253targetblank3732f8da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/3732f8d30856fc0a8336c6923ceb0338a46cd253" target="_blank">3732f8d</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreed097ba88d87c292428140f340fb05eebcfc25234targetblankd097ba8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/d097ba88d87c292428140f340fb05eebcfc25234" target="_blank">d097ba8</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree3732f8d30856fc0a8336c6923ceb0338a46cd253targetblank3732f8da" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreed097ba88d87c292428140f340fb05eebcfc25234targetblankd097ba8a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/3732f8d30856fc0a8336c6923ceb0338a46cd253" target="_blank">3732f8d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/d097ba88d87c292428140f340fb05eebcfc25234" target="_blank">d097ba8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -604,9 +604,6 @@ Ignored files:
     Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
 
-Unstaged changes:
-    Modified:   analysis/MIBI_Analysis.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -644,6 +641,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/d097ba88d87c292428140f340fb05eebcfc25234/analysis/MIBI_Analysis.Rmd" target="_blank">d097ba8</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-26
+</td>
+<td>
+workflowr::wflow_publish(all = TRUE, republish = TRUE)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/d06675cec0a8e277ea9fd819ab8a900ea82ea886/docs/MIBI_Analysis.html" target="_blank">d06675c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-26
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -3631,7 +3662,7 @@ schae211
 </div>
 </div>
 <p>Let’s look at a heatmap first to see how the gain.R2 stat is distributed across the samples and targets.</p>
-<p>Keep in mind that I replaced all NA values for the gain.R2 with 0 so the clustering is actually possible (we need to be able to compute distances!).</p>
+<p>Keep in mind that I replaced all NA values for the gain.R2 with 0 so the clustering is actually possible (we need to be able to compute distances!). I think this is fair since the marker basically absent and there can be no gain in R2.</p>
 <pre class="r"><code>ranger.results$improvements %&gt;% 
   filter(measure == &quot;gain.R2&quot;) %&gt;%
   mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
@@ -3879,8 +3910,10 @@ schae211
 </table>
 </div>
 </div>
-<p>Removing clusters with only 1 sample in them.</p>
+<p>Merging cluster for sample 19 and 21 and removing cluster for sample 26 from the analysis.</p>
 <pre class="r"><code>hc.clusters &lt;- cutree(hc, k = k)
+
+hc.clusters[&quot;21&quot;] &lt;- hc.clusters[&quot;19&quot;]
 
 n &lt;- unique(hc.clusters) %&gt;%
   set_names() %&gt;%
@@ -3889,8 +3922,8 @@ n &lt;- unique(hc.clusters) %&gt;%
   })
 keep &lt;- names(n)[which(n &gt; 1)]
 n</code></pre>
-<pre><code> 1  2  3  4  5  6  7  8  9 10 
- 5 10  4 10  2  2  1  1  4  1 </code></pre>
+<pre><code> 1  2  3  4  5  6  7  9 10 
+ 5 10  4 10  2  2  2  4  1 </code></pre>
 <p>Now visualize the heatmap again with the clusters.</p>
 <pre class="r"><code>col.annotation &lt;- data.frame(cluster = factor(hc.clusters))
 rownames(col.annotation) &lt;- names(hc.clusters)
@@ -4001,20 +4034,26 @@ schae211
 </table>
 </div>
 </div>
-<p>What is actually the difference in gain R2 across the different clusters? For which targets does a certain cluster show better performance compared to other clusters? Let’s collapse the clusters from the above heatmap, using the mean gain in R2 for each target.</p>
-<pre class="r"><code>ranger.results$improvements %&gt;% 
+<p>Do these clusters still make sense if we do not replace NA by 0?</p>
+<p>It looks ok, though we see that for cluster 2 there are simply many missing data points. The reason being that these samples contain very few immune cells and thus miss certain markers.</p>
+<pre class="r"><code>tmp &lt;- ranger.results$improvements %&gt;% 
   filter(measure == &quot;gain.R2&quot;) %&gt;%
   mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
   left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
             by = &quot;sample&quot;) %&gt;%
   filter(cluster %in% keep) %&gt;%
-  group_by(cluster, target) %&gt;%
-  summarise(m.gain.R2 = mean(value), .groups = &quot;keep&quot;) %&gt;%
-  pivot_wider(names_from=target, values_from=m.gain.R2) %&gt;%
-  column_to_rownames(var=&quot;cluster&quot;) %&gt;%
-  as.matrix() %&gt;%
-  pheatmap::pheatmap(cluster_rows = FALSE, cluster_cols = FALSE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-44-1.png" width="576" style="display: block; margin: auto;" /></p>
+  select(-c(measure, cluster)) %&gt;% 
+  pivot_wider(names_from = target) %&gt;%
+  as.data.frame() %&gt;%
+  column_to_rownames(var = &quot;sample&quot;) %&gt;%
+  as.matrix()
+
+# order based on annotation
+ordered &lt;- tmp[names(hc.clusters[hc.clusters %in% keep] %&gt;% sort), ]
+
+pheatmap::pheatmap(ordered, annotation_row = col.annotation,
+                     cluster_rows = FALSE, cluster_cols = FALSE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-44-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-44-1">
 Past versions of unnamed-chunk-44-1.png
@@ -4107,52 +4146,20 @@ schae211
 </table>
 </div>
 </div>
-<ul>
-<li><p>Cluster 6: Strong gain for pS6 and CD138, and especially some exclusive (not seen in other samples) gain in R2 for HLA.DR. Mild gains for CD20, EGFR, and IDO.</p></li>
-<li><p>Cluster 2: Almost no gain in explained variance except for CD138.</p></li>
-<li><p>Cluster 3: Almost no gain in explained variance except for CD11c, CD209, and PD1. Interestingly the only cluster where I see much gain for PD1 and CD209 (shared with cluster 1). Also one of the only clusters without gain R2 for CD138 (shared with cluster 5).</p></li>
-<li><p>Cluster 4: Gain in R2 for CD11c, CD138, CD20, and also mild gains for IDO and pS6.</p></li>
-<li><p>Cluster 1: Gain in R2 for CD138, CD20, CD209, IDO, and Keratin 17. Only cluster with interesting gain in R2 for CD63 (marker for basophils?)</p></li>
-<li><p>Cluster 5: Strongest gain in R2 for IDO and EGFR across all clusters. Only cluster with interesting gain in R2 for p53 and Pan.Keratin. Apart from that also some gain in R2 for CD11c.</p></li>
-<li><p>Cluster 9: Only cluster with interesting gain in R2 for Ki67 (marker for proliferation?) and HLA_Class_1. Furthermore gains for pS6, Keratin17, EGFR, and CD138.</p></li>
-</ul>
-<div id="what-differentiates-the-samples-in-one-cluster-from-another" class="section level3 tabset">
-<h3 class="tabset">What differentiates the samples in one cluster from another?</h3>
-<div id="cell-counts-and-mixing-score" class="section level4">
-<h4>Cell Counts and Mixing Score</h4>
-<p>Could these quantitaive properties explain the differences:</p>
-<ul>
-<li><p>ratio.tumor.immune</p></li>
-<li><p>Count.Immune</p></li>
-<li><p>Count.Tumor</p></li>
-<li><p>Count.Endothelial</p></li>
-<li><p>Count.Mesenchymal.like</p></li>
-<li><p>Count.Total</p></li>
-</ul>
-<p>One can immediately see that cluster 2 has a higher ration of tumor-immune to immune-immune contact, though this effect seems to be mainly driven by the cold tumors (low number of immune cells).</p>
-<p>In general cluster 2 contains the samples with low total cell numbers and with a high number of tumor cells compared to immune cells, leading to the classification being either cold or mixed.</p>
-<p>It kind of fits that we have a relatively high number of tumor cells in cluster 9, and that we saw a gain in explained variance for pS6 and Ki67.</p>
-<pre class="r"><code>sample.meta %&gt;%
-  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
-            by = c(&quot;SampleID&quot; = &quot;sample&quot;)) %&gt;%
+<p>What is actually the difference in gain R2 across the different clusters? For which targets does a certain cluster show better performance compared to other clusters? Let’s collapse the clusters from the above heatmap, using the mean gain in R2 for each target.</p>
+<pre class="r"><code>ranger.results$improvements %&gt;% 
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+            by = &quot;sample&quot;) %&gt;%
   filter(cluster %in% keep) %&gt;%
-  rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
-                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
-  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %&gt;%
-  pivot_longer(cols = c(ratio.tumor.immune, Count.Immune, Count.Tumor, 
-                        Count.Endothelial, Count.Mesenchymal.like, Count.Total),
-               names_to = &quot;statistic&quot;, values_to = &quot;value&quot;) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x = cluster, y = value), outlier.shape=NA) +
-  geom_jitter(aes(x = cluster, y = value, col = Classification), size=.8, width=.3) +
-  facet_wrap(~ statistic, scales = &quot;free&quot;, ncol = 3) +
-  theme(legend.position=&quot;top&quot;) +
-  scale_color_manual(values = c(&quot;mixed&quot; = &quot;indianred&quot;, 
-                               &quot;compartimentalized&quot; = &quot;forestgreen&quot;,
-                               &quot;cold&quot; = &quot;royalblue&quot;))</code></pre>
-<pre><code>Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
-<pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-45-1.png" width="768" style="display: block; margin: auto;" /></p>
+  group_by(cluster, target) %&gt;%
+  summarise(m.gain.R2 = mean(value), .groups = &quot;keep&quot;) %&gt;%
+  pivot_wider(names_from=target, values_from=m.gain.R2) %&gt;%
+  column_to_rownames(var=&quot;cluster&quot;) %&gt;%
+  as.matrix() %&gt;%
+  pheatmap::pheatmap(cluster_rows = FALSE, cluster_cols = FALSE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-45-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-45-1">
 Past versions of unnamed-chunk-45-1.png
@@ -4278,21 +4285,53 @@ schae211
 </table>
 </div>
 </div>
-<p>Though it may be more informative to actually look at the cell ratios, or proportions.</p>
-</div>
-<div id="spatial-distribution" class="section level4">
-<h4>Spatial Distribution</h4>
-<p>What about the spatial distribution of the cells? Could it be a contributing factor? Let’s look at the mean distances to the neighboring cells (as determined by Delaunay Triangulation) for each cell in a given cluster. And it seems like the distances are larger cluster 2 compared to the rest.</p>
-<pre class="r"><code>stat.per.sample %&gt;%
-  mutate(sample = as.character(sample)) %&gt;%
-  inner_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
-            by = &quot;sample&quot;) %&gt;%
+<ul>
+<li><p>Cluster 6: Strong gain for pS6 and CD138, and especially some exclusive (not seen in other samples) gain in R2 for HLA.DR. Mild gains for CD20, EGFR, and IDO.</p></li>
+<li><p>Cluster 2: Almost no gain in explained variance except for CD138.</p></li>
+<li><p>Cluster 3: Almost no gain in explained variance except for CD11c, CD209, and PD1. Interestingly the only cluster where I see much gain for PD1 and CD209 (shared with cluster 1). Also one of the only clusters without gain R2 for CD138 (shared with cluster 5).</p></li>
+<li><p>Cluster 4: Gain in R2 for CD11c, CD138, CD20, and also mild gains for IDO and pS6.</p></li>
+<li><p>Cluster 1: Gain in R2 for CD138, CD20, CD209, IDO, and Keratin 17. Only cluster with interesting gain in R2 for CD63 (marker for basophils?)</p></li>
+<li><p>Cluster 5: Strongest gain in R2 for IDO and EGFR across all clusters. Only cluster with interesting gain in R2 for p53 and Pan.Keratin. Apart from that also some gain in R2 for CD11c.</p></li>
+<li><p>Cluster 9: Only cluster with interesting gain in R2 for Ki67 (marker for proliferation?) and HLA_Class_1. Furthermore gains for pS6, Keratin17, EGFR, and CD138.</p></li>
+<li><p>Cluster 7: Only cluster with interesting gain in R2 for CD56 (marker for NK).</p></li>
+</ul>
+<div id="what-differentiates-the-samples-in-one-cluster-from-another" class="section level3 tabset">
+<h3 class="tabset">What differentiates the samples in one cluster from another?</h3>
+<div id="cell-counts-and-mixing-score" class="section level4">
+<h4>Cell Counts and Mixing Score</h4>
+<p>Could these quantitaive properties explain the differences:</p>
+<ul>
+<li><p>ratio.tumor.immune</p></li>
+<li><p>Count.Immune</p></li>
+<li><p>Count.Tumor</p></li>
+<li><p>Count.Endothelial</p></li>
+<li><p>Count.Mesenchymal.like</p></li>
+<li><p>Count.Total</p></li>
+</ul>
+<p>One can immediately see that cluster 2 has a higher ration of tumor-immune to immune-immune contact, though this effect seems to be mainly driven by the cold tumors (low number of immune cells).</p>
+<p>In general cluster 2 contains the samples with low total cell numbers and with a high number of tumor cells compared to immune cells, leading to the classification being either cold or mixed.</p>
+<p>It kind of fits that we have a relatively high number of tumor cells in cluster 9, and that we saw a gain in explained variance for pS6 and Ki67.</p>
+<pre class="r"><code>sample.meta %&gt;%
+  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
+            by = c(&quot;SampleID&quot; = &quot;sample&quot;)) %&gt;%
   filter(cluster %in% keep) %&gt;%
+  rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
+                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
+  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %&gt;%
+  pivot_longer(cols = c(ratio.tumor.immune, Count.Immune, Count.Tumor, 
+                        Count.Endothelial, Count.Mesenchymal.like, Count.Total),
+               names_to = &quot;statistic&quot;, values_to = &quot;value&quot;) %&gt;%
   ggplot() +
-  geom_boxplot(aes(x=cluster, y=value)) +
-  lims(y = c(0, 100))</code></pre>
-<pre><code>Warning: Removed 1184 rows containing non-finite values (stat_boxplot).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+  geom_boxplot(aes(x = cluster, y = value), outlier.shape=NA) +
+  geom_jitter(aes(x = cluster, y = value, col = Classification), size=.8, width=.3) +
+  facet_wrap(~ statistic, scales = &quot;free&quot;, ncol = 3) +
+  theme(legend.position=&quot;top&quot;) +
+  scale_color_manual(values = c(&quot;mixed&quot; = &quot;indianred&quot;, 
+                               &quot;compartimentalized&quot; = &quot;forestgreen&quot;,
+                               &quot;cold&quot; = &quot;royalblue&quot;))</code></pre>
+<pre><code>Warning: Removed 4 rows containing non-finite values (stat_boxplot).</code></pre>
+<pre><code>Warning: Removed 4 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-46-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-1">
 Past versions of unnamed-chunk-46-1.png
@@ -4418,55 +4457,18 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="classification" class="section level4">
-<h4>Classification</h4>
-<p>What about the proportion of the classification (referring to mixed, compartmentalized, or cold) accross the clusters?</p>
-<pre class="r"><code>p1 &lt;- sample.meta %&gt;%
+<p>What about the immune cell types which are present?</p>
+<pre class="r"><code>meta %&gt;%
+  mutate(SampleID = as.character(SampleID)) %&gt;%
   left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
             by = c(&quot;SampleID&quot; = &quot;sample&quot;)) %&gt;%
   filter(cluster %in% keep) %&gt;%
-  rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
-                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
-  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %&gt;%
-  group_by(cluster) %&gt;%
-  summarise(n = n(), 
-         n.mixed = sum(Classification == &quot;mixed&quot;),
-         n.comp = sum(Classification == &quot;compartimentalized&quot;),
-         n.cold = sum(Classification == &quot;cold&quot;)) %&gt;%
-  mutate(fraction.mixed = n.mixed/n,
-         fraction.comp = n.comp/n,
-         fraction.cold = n.cold/n) %&gt;%
-  pivot_longer(cols = starts_with(&quot;frac&quot;)) %&gt;%
+  filter(immuneGroup != &quot;Non-Immune?&quot;) %&gt;%
+  group_by(cluster, SampleID) %&gt;%
+  count(immuneGroup) %&gt;%
   ggplot() +
-  geom_col(aes(x = cluster, y = value, fill = name)) +
-  geom_text(aes(x = cluster, y = 0.99, label = n), vjust = -0.5) +
-  scale_fill_manual(values = c(&quot;fraction.mixed&quot; = &quot;indianred&quot;, 
-                               &quot;fraction.comp&quot; = &quot;forestgreen&quot;,
-                               &quot;fraction.cold&quot; = &quot;royalblue&quot;)) +
-  labs(title = &quot;Fractions&quot;)
-
-p2 &lt;- sample.meta %&gt;%
-  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
-            by = c(&quot;SampleID&quot; = &quot;sample&quot;)) %&gt;%
-  filter(cluster %in% keep) %&gt;%
-  rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
-                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
-  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %&gt;%
-  group_by(cluster) %&gt;%
-  summarise(n = n(), 
-         n.mixed = sum(Classification == &quot;mixed&quot;),
-         n.comp = sum(Classification == &quot;compartimentalized&quot;),
-         n.cold = sum(Classification == &quot;cold&quot;)) %&gt;%
-  pivot_longer(cols = starts_with(&quot;n.&quot;)) %&gt;%
-  ggplot() +
-  geom_col(aes(x = cluster, y = value, fill = name)) +
-  scale_fill_manual(values = c(&quot;n.mixed&quot; = &quot;indianred&quot;, 
-                               &quot;n.comp&quot; = &quot;forestgreen&quot;,
-                               &quot;n.cold&quot; = &quot;royalblue&quot;)) +
-  labs(title = &quot;Absolute Numbers&quot;)
-
-gridExtra::grid.arrange(p1, p2, ncol = 2)</code></pre>
+  geom_boxplot(aes(x=cluster, y=n)) +
+  facet_wrap(~ immuneGroup, scales = &quot;free&quot;)</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-47-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-47-1">
@@ -4637,26 +4639,22 @@ schae211
 </table>
 </div>
 </div>
+<p>Though it may be more informative to actually look at the cell ratios, or proportions.</p>
 </div>
-<div id="intra-and-multiview" class="section level4">
-<h4>Intra and Multiview</h4>
-<p>Could it also be possible that the the intraview R2 somehow explains the clustering we see in the gain.R2. Meaning samples in which the intraview R2s are rather low and samples in which it is rather high?</p>
-<p>First, we one can note that for the targets there seem to be three distinct clusters. On the left the intra R2 is rather high, in the middle the intra R2 is rather low, and on the right the intra R2 values are mixed across the samples.</p>
-<p>Regarding the question, the clusters seem to be somewhat preserved, so the intraview R2 probably has something to do with the observed clusterin in gain R2 (the intraview basically determines the potential of gaining explained variance).</p>
-<pre class="r"><code>ranger.results$improvements %&gt;% 
-  filter(measure == &quot;intra.R2&quot;) %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+<div id="spatial-distribution" class="section level4">
+<h4>Spatial Distribution</h4>
+<p>What about the spatial distribution of the cells? Could it be a contributing factor? Let’s look at the mean distances to the neighboring cells (as determined by Delaunay Triangulation) for each cell in a given cluster.</p>
+<p>And it seems like the distances are larger cluster 2 compared to the rest. This could explain the overall low gain in R2.</p>
+<pre class="r"><code>stat.per.sample %&gt;%
+  mutate(sample = as.character(sample)) %&gt;%
+  inner_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
             by = &quot;sample&quot;) %&gt;%
   filter(cluster %in% keep) %&gt;%
-  select(-c(measure, cluster)) %&gt;% 
-  pivot_wider(names_from = target) %&gt;%
-  replace(is.na(.), 0) %&gt;%
-  as.data.frame() %&gt;%
-  column_to_rownames(var = &quot;sample&quot;) %&gt;%
-  as.matrix() %&gt;%
-  pheatmap::pheatmap(., annotation_row = col.annotation)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-48-1.png" width="768" style="display: block; margin: auto;" /></p>
+  ggplot() +
+  geom_boxplot(aes(x=cluster, y=value)) +
+  lims(y = c(0, 100))</code></pre>
+<pre><code>Warning: Removed 1244 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-48-1">
 Past versions of unnamed-chunk-48-1.png
@@ -4760,21 +4758,55 @@ schae211
 </table>
 </div>
 </div>
-<p>How does the multiview R2 heatmap look like?</p>
-<p>Regarding the sample clusters one can see quite clearly that the clusters from the gain.R2 statistic are not fully preserved. For a given sample the neighboring samples often belong to the same cluster, but the clusters seem to be broken into several smaller subsets (e.g. look at clusters 2 and 4).</p>
-<pre class="r"><code>ranger.results$improvements %&gt;% 
-  filter(measure == &quot;multi.R2&quot;) %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
-            by = &quot;sample&quot;) %&gt;%
+</div>
+<div id="classification" class="section level4">
+<h4>Classification</h4>
+<p>What about the proportion of the classification (referring to mixed, compartmentalized, or cold) accross the clusters?</p>
+<pre class="r"><code>p1 &lt;- sample.meta %&gt;%
+  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
+            by = c(&quot;SampleID&quot; = &quot;sample&quot;)) %&gt;%
   filter(cluster %in% keep) %&gt;%
-  select(-c(measure, cluster)) %&gt;% 
-  pivot_wider(names_from = target) %&gt;%
-  replace(is.na(.), 0) %&gt;%
-  as.data.frame() %&gt;%
-  column_to_rownames(var = &quot;sample&quot;) %&gt;%
-  as.matrix() %&gt;%
-  pheatmap::pheatmap(., annotation_row = col.annotation)</code></pre>
+  rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
+                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
+  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %&gt;%
+  group_by(cluster) %&gt;%
+  summarise(n = n(), 
+         n.mixed = sum(Classification == &quot;mixed&quot;),
+         n.comp = sum(Classification == &quot;compartimentalized&quot;),
+         n.cold = sum(Classification == &quot;cold&quot;)) %&gt;%
+  mutate(fraction.mixed = n.mixed/n,
+         fraction.comp = n.comp/n,
+         fraction.cold = n.cold/n) %&gt;%
+  pivot_longer(cols = starts_with(&quot;frac&quot;)) %&gt;%
+  ggplot() +
+  geom_col(aes(x = cluster, y = value, fill = name)) +
+  geom_text(aes(x = cluster, y = 0.99, label = n), vjust = -0.5) +
+  scale_fill_manual(values = c(&quot;fraction.mixed&quot; = &quot;indianred&quot;, 
+                               &quot;fraction.comp&quot; = &quot;forestgreen&quot;,
+                               &quot;fraction.cold&quot; = &quot;royalblue&quot;)) +
+  labs(title = &quot;Fractions&quot;)
+
+p2 &lt;- sample.meta %&gt;%
+  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
+            by = c(&quot;SampleID&quot; = &quot;sample&quot;)) %&gt;%
+  filter(cluster %in% keep) %&gt;%
+  rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
+                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
+  mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor) %&gt;%
+  group_by(cluster) %&gt;%
+  summarise(n = n(), 
+         n.mixed = sum(Classification == &quot;mixed&quot;),
+         n.comp = sum(Classification == &quot;compartimentalized&quot;),
+         n.cold = sum(Classification == &quot;cold&quot;)) %&gt;%
+  pivot_longer(cols = starts_with(&quot;n.&quot;)) %&gt;%
+  ggplot() +
+  geom_col(aes(x = cluster, y = value, fill = name)) +
+  scale_fill_manual(values = c(&quot;n.mixed&quot; = &quot;indianred&quot;, 
+                               &quot;n.comp&quot; = &quot;forestgreen&quot;,
+                               &quot;n.cold&quot; = &quot;royalblue&quot;)) +
+  labs(title = &quot;Absolute Numbers&quot;)
+
+gridExtra::grid.arrange(p1, p2, ncol = 2)</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-49-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-49-1">
@@ -4879,36 +4911,144 @@ schae211
 </table>
 </div>
 </div>
-<p>Another way to go about this investigation may be to select the top targets in terms of gain R2 and then check what this gain R2 is correlated with The details can be found below.</p>
 </div>
-<div id="from-the-targets" class="section level4">
-<h4>From the Targets</h4>
-<p>Let’s take the 12 targets (1/3 of all targets) for which the mean gain.R2 is the largest and investigate the differences between the samples.</p>
-<pre class="r"><code>top.targets &lt;- ranger.results$improvements %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;%
-  group_by(target) %&gt;%
-  summarise(mean.gain.R2 = mean(value), .groups = &quot;drop&quot;) %&gt;%
-  slice_max(mean.gain.R2, n=12) %&gt;%
-  pull(target)
-top.targets</code></pre>
-<pre><code> [1] &quot;CD138&quot;       &quot;CD209&quot;       &quot;phospho.S6&quot;  &quot;IDO&quot;         &quot;CD20&quot;       
- [6] &quot;EGFR&quot;        &quot;HLA_Class_1&quot; &quot;Keratin17&quot;   &quot;CD11c&quot;       &quot;Ki67&quot;       
-[11] &quot;CD56&quot;        &quot;PD.L1&quot;      </code></pre>
-<p>How should the summarise the gained explained variance per sample? Sum it up, take the mean, median?</p>
-<pre class="r"><code>plots &lt;- map2(c(mean, median, sum), c(&quot;Mean&quot;, &quot;Median&quot;, &quot;Sum&quot;), function(func, name) {
-  ranger.results$improvements %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;% 
-  filter(target %in% top.targets) %&gt;%
+<div id="intra-and-multiview" class="section level4">
+<h4>Intra and Multiview</h4>
+<p>Could it also be possible that the the intraview R2 somehow explains the clustering we see in the gain.R2. Meaning samples in which the intraview R2s are rather low and samples in which it is rather high?</p>
+<p>First, we one can note that for the targets there seem to be three distinct clusters. On the left the intra R2 is rather high, in the middle the intra R2 is rather low, and on the right the intra R2 values are mixed across the samples.</p>
+<p>Regarding the question, the clusters seem to be somewhat preserved, so the intraview R2 probably has something to do with the observed clusterin in gain R2 (the intraview basically determines the potential of gaining explained variance).</p>
+<pre class="r"><code>ranger.results$improvements %&gt;% 
+  filter(measure == &quot;intra.R2&quot;) %&gt;%
   mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  group_by(sample) %&gt;%
-  summarise(stat = func(value), .groups = &quot;keep&quot;) %&gt;%
-  ggplot() +
-  geom_bar(aes(x = reorder(sample, -stat), y = stat), 
-           stat = &quot;identity&quot;) +
-  labs(title = name)
-})
-
-do.call(gridExtra::grid.arrange, c(plots, ncol=1))</code></pre>
+  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+            by = &quot;sample&quot;) %&gt;%
+  filter(cluster %in% keep) %&gt;%
+  select(-c(measure, cluster)) %&gt;% 
+  pivot_wider(names_from = target) %&gt;%
+  replace(is.na(.), 0) %&gt;%
+  as.data.frame() %&gt;%
+  column_to_rownames(var = &quot;sample&quot;) %&gt;%
+  as.matrix() %&gt;%
+  pheatmap::pheatmap(., annotation_row = col.annotation)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-50-1">
+Past versions of unnamed-chunk-50-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-50-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" target="_blank">4dd0190</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-25
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/b9bdcf8f021a839a46025300954a049d839d2772/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" target="_blank">b9bdcf8</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" target="_blank">4df87c6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/8cb127da7ac02437189484ceca9b48c35af55e39/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" target="_blank">8cb127d</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-21
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/b575d1aef88c4a0daeccde431bccf8b5cfe310fd/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" target="_blank">b575d1a</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-21
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" target="_blank">cdd0218</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/0d268343a456c96db3262aaab868f53efeefd081/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-50-1.png" target="_blank">0d26834</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-19
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>How does the multiview R2 heatmap look like?</p>
+<p>Regarding the sample clusters one can see quite clearly that the clusters from the gain.R2 statistic are not fully preserved. For a given sample the neighboring samples often belong to the same cluster, but the clusters seem to be broken into several smaller subsets (e.g. look at clusters 2 and 4).</p>
+<pre class="r"><code>ranger.results$improvements %&gt;% 
+  filter(measure == &quot;multi.R2&quot;) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+            by = &quot;sample&quot;) %&gt;%
+  filter(cluster %in% keep) %&gt;%
+  select(-c(measure, cluster)) %&gt;% 
+  pivot_wider(names_from = target) %&gt;%
+  replace(is.na(.), 0) %&gt;%
+  as.data.frame() %&gt;%
+  column_to_rownames(var = &quot;sample&quot;) %&gt;%
+  as.matrix() %&gt;%
+  pheatmap::pheatmap(., annotation_row = col.annotation)</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-51-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-51-1">
@@ -5035,158 +5175,37 @@ schae211
 </table>
 </div>
 </div>
-<p>To know which statistic might be useful, we should figure out how our gain.R2 stat for each sample is dependent on the targets.</p>
-<pre class="r"><code>ordering &lt;- ranger.results$improvements %&gt;% 
+<p>Another way to go about this investigation may be to select the top targets in terms of gain R2 and then check what this gain R2 is correlated with The details can be found below.</p>
+</div>
+<div id="from-the-targets" class="section level4">
+<h4>From the Targets</h4>
+<p>Let’s take the 12 targets (1/3 of all targets) for which the mean gain.R2 is the largest and investigate the differences between the samples.</p>
+<pre class="r"><code>top.targets &lt;- ranger.results$improvements %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  group_by(sample) %&gt;%
-  summarise(m = median(value)) %&gt;%
-  arrange(desc(m)) %&gt;%
-  pull(sample)
-
-ranger.results$improvements %&gt;%
+  group_by(target) %&gt;%
+  summarise(mean.gain.R2 = mean(value), .groups = &quot;drop&quot;) %&gt;%
+  slice_max(mean.gain.R2, n=12) %&gt;%
+  pull(target)
+top.targets</code></pre>
+<pre><code> [1] &quot;CD138&quot;       &quot;CD209&quot;       &quot;phospho.S6&quot;  &quot;IDO&quot;         &quot;CD20&quot;       
+ [6] &quot;EGFR&quot;        &quot;HLA_Class_1&quot; &quot;Keratin17&quot;   &quot;CD11c&quot;       &quot;Ki67&quot;       
+[11] &quot;CD56&quot;        &quot;PD.L1&quot;      </code></pre>
+<p>How should the summarise the gained explained variance per sample? Sum it up, take the mean, median?</p>
+<pre class="r"><code>plots &lt;- map2(c(mean, median, sum), c(&quot;Mean&quot;, &quot;Median&quot;, &quot;Sum&quot;), function(func, name) {
+  ranger.results$improvements %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;% 
   filter(target %in% top.targets) %&gt;%
   mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  mutate(sample = factor(sample, levels = ordering)) %&gt;%
+  group_by(sample) %&gt;%
+  summarise(stat = func(value), .groups = &quot;keep&quot;) %&gt;%
   ggplot() +
-  geom_boxplot(aes(x = sample, y = value))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-52-1">
-Past versions of unnamed-chunk-52-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-52-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" target="_blank">4dd0190</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-25
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/b9bdcf8f021a839a46025300954a049d839d2772/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" target="_blank">b9bdcf8</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" target="_blank">4df87c6</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/8cb127da7ac02437189484ceca9b48c35af55e39/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" target="_blank">8cb127d</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-21
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/b575d1aef88c4a0daeccde431bccf8b5cfe310fd/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" target="_blank">b575d1a</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-21
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/5c6e1e1ee747cdc424b77e572d92ffb1ab1e5ba2/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" target="_blank">5c6e1e1</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-19
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/cdd02181ff4348f97104d057c66a1d678e5918f9/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-52-1.png" target="_blank">cdd0218</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-19
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Let’s look at some correlation between other sample features and the gained explained variance (R2).</p>
-<p>Quantiative Predictors: - Mixing score - Count of immune cells - Count of tumor cells - Count of endothelial cells - Count of mesenchymal-like cells - Total cell count</p>
-<pre class="r"><code>plots &lt;- map(c(&quot;ratio.tumor.immune&quot;, &quot;Count.Immune&quot;, &quot;Count.Tumor&quot;, 
-               &quot;Count.Endothelial&quot;, &quot;Count.Mesenchymal.like&quot;, &quot;Count.Total&quot;),
-              function(test.var) {
-  ranger.results$improvements %&gt;%
-    filter(measure == &quot;gain.R2&quot;) %&gt;% 
-    filter(target %in% top.targets) %&gt;%
-    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-    group_by(sample) %&gt;%
-    summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
-              median.gain.R2 = median(value), .groups = &quot;drop&quot;) %&gt;%
-    left_join(sample.meta %&gt;%
-                rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
-                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
-                mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor),
-              by = c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-    pivot_longer(cols = c(sum.gain.R2, mean.gain.R2, median.gain.R2), 
-                 names_to = &quot;stat&quot;) %&gt;%
-    mutate(stat = factor(stat, levels = c(&quot;mean.gain.R2&quot;, &quot;sum.gain.R2&quot;, &quot;median.gain.R2&quot;))) %&gt;%
-    ggplot() +
-    geom_point(aes(x = !!sym(test.var), y = value)) +
-    geom_smooth(aes(x = !!sym(test.var), y = value),
-                formula = y ~ x, method = &quot;lm&quot;) +
-    facet_wrap(~ stat, ncol=3, scales=&quot;free_y&quot;) +
-    labs(title = test.var)
+  geom_bar(aes(x = reorder(sample, -stat), y = stat), 
+           stat = &quot;identity&quot;) +
+  labs(title = name)
 })
 
 do.call(gridExtra::grid.arrange, c(plots, ncol=1))</code></pre>
-<pre><code>Warning: Removed 12 rows containing non-finite values (stat_smooth).</code></pre>
-<pre><code>Warning: Removed 12 rows containing missing values (geom_point).</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-53-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-53-1.png" width="768" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-53-1">
 Past versions of unnamed-chunk-53-1.png
@@ -5290,28 +5309,22 @@ schae211
 </table>
 </div>
 </div>
-<p>Correlation Plot:</p>
-<pre class="r"><code>walk(c(&quot;sum.gain.R2&quot;, &quot;mean.gain.R2&quot;, &quot;median.gain.R2&quot;), function(test.var) {
-  ranger.results$improvements %&gt;%
-    filter(measure == &quot;gain.R2&quot;) %&gt;% 
-    filter(target %in% top.targets) %&gt;%
-    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-    group_by(sample) %&gt;%
-    summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
-              median.gain.R2 = median(value), .groups = &quot;drop&quot;) %&gt;%
-    left_join(sample.meta %&gt;%
-                rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
-                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
-                select(1:10) %&gt;%
-                replace(is.na(.), 0) %&gt;%
-                mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor),
-              by = c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-    select(!!sym(test.var), ratio.tumor.immune,
-           Count.Immune, Count.Tumor, Count.Endothelial, Count.Mesenchymal.like,
-           Count.Total) %&gt;%
-    cor() %&gt;%
-    corrplot::corrplot(type = &quot;upper&quot;, tl.col = &quot;black&quot;)
-})</code></pre>
+<p>To know which statistic might be useful, we should figure out how our gain.R2 stat for each sample is dependent on the targets.</p>
+<pre class="r"><code>ordering &lt;- ranger.results$improvements %&gt;% 
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  group_by(sample) %&gt;%
+  summarise(m = median(value)) %&gt;%
+  arrange(desc(m)) %&gt;%
+  pull(sample)
+
+ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  filter(target %in% top.targets) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  mutate(sample = factor(sample, levels = ordering)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x = sample, y = value))</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-54-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-54-1">
@@ -5383,111 +5396,137 @@ schae211
 </table>
 </div>
 </div>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-54-2.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-54-2">
-Past versions of unnamed-chunk-54-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-54-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-54-2.png" target="_blank">4dd0190</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-25
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-54-3.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-54-3">
-Past versions of unnamed-chunk-54-3.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-54-3" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-54-3.png" target="_blank">4dd0190</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-25
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Now taking the top 10 and the bottom 10 samples and comparing their features. Features being the mixing score, the R2 of the intraview for the chosen targets</p>
-<pre class="r"><code>top.10 &lt;- ranger.results$improvements %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;% 
-  filter(target %in% top.targets) %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  group_by(sample) %&gt;%
-  summarise(mean.gain.R2 = sum(value), .groups = &quot;drop&quot;) %&gt;%
-  slice_max(mean.gain.R2, n = 10) %&gt;%
-  pull(sample)
+<p>Let’s look at some correlation between other sample features and the gained explained variance (R2).</p>
+<p>Quantiative Predictors:</p>
+<ul>
+<li><p>Mixing score</p></li>
+<li><p>Count of immune cells</p></li>
+<li><p>Count of tumor cells</p></li>
+<li><p>Count of endothelial cells</p></li>
+<li><p>Count of mesenchymal-like cells</p></li>
+<li><p>Total cell count</p></li>
+</ul>
+<pre class="r"><code>plots &lt;- map(c(&quot;ratio.tumor.immune&quot;, &quot;Count.Immune&quot;, &quot;Count.Tumor&quot;, 
+               &quot;Count.Endothelial&quot;, &quot;Count.Mesenchymal.like&quot;, &quot;Count.Total&quot;),
+              function(test.var) {
+  ranger.results$improvements %&gt;%
+    filter(measure == &quot;gain.R2&quot;) %&gt;% 
+    filter(target %in% top.targets) %&gt;%
+    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+    group_by(sample) %&gt;%
+    summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
+              median.gain.R2 = median(value), .groups = &quot;drop&quot;) %&gt;%
+    left_join(sample.meta %&gt;%
+                rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
+                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
+                mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor),
+              by = c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+    pivot_longer(cols = c(sum.gain.R2, mean.gain.R2, median.gain.R2), 
+                 names_to = &quot;stat&quot;) %&gt;%
+    mutate(stat = factor(stat, levels = c(&quot;mean.gain.R2&quot;, &quot;sum.gain.R2&quot;, &quot;median.gain.R2&quot;))) %&gt;%
+    ggplot() +
+    geom_point(aes(x = !!sym(test.var), y = value, col = Classification)) +
+    geom_smooth(aes(x = !!sym(test.var), y = value),
+                formula = y ~ x, method = &quot;lm&quot;) +
+    facet_wrap(~ stat, ncol=3, scales=&quot;free_y&quot;) +
+    labs(title = test.var)
+})
 
-bottom.10 &lt;- ranger.results$improvements %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;% 
-  filter(target %in% top.targets) %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  group_by(sample) %&gt;%
-  summarise(mean.gain.R2 = sum(value), .groups = &quot;drop&quot;) %&gt;%
-  slice_min(mean.gain.R2, n = 10) %&gt;%
-  pull(sample)</code></pre>
-<p>Looking at the mixing score (ratio of immune-tumor contacts divided by the number of immune-immune contacts). And we can kinda see that the</p>
-<pre class="r"><code>sample.meta %&gt;%
-  mutate(group.tmp = case_when(
-    SampleID %in% top.10 ~ &quot;top&quot;,
-    SampleID %in% bottom.10 ~ &quot;bottom&quot;,
-    TRUE ~ &quot;middle&quot;,
-  )) %&gt;%
-  mutate(group.tmp = factor(group.tmp, levels = c(&quot;top&quot;, &quot;middle&quot;, &quot;bottom&quot;))) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x=group.tmp, y=ratio.tumor.immune))</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-56-1.png" width="672" style="display: block; margin: auto;" /></p>
+do.call(gridExtra::grid.arrange, c(plots, ncol=1))</code></pre>
+<pre><code>Warning: Removed 12 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>Warning: Removed 12 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-55-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-55-1">
+Past versions of unnamed-chunk-55-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-55-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-55-1.png" target="_blank">4dd0190</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-25
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-55-1.png" target="_blank">4df87c6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/8cb127da7ac02437189484ceca9b48c35af55e39/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-55-1.png" target="_blank">8cb127d</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-21
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>What about the same plots without cold samples? The results looks quite different.</p>
+<pre class="r"><code>plots &lt;- map(c(&quot;ratio.tumor.immune&quot;, &quot;Count.Immune&quot;, &quot;Count.Tumor&quot;, 
+               &quot;Count.Endothelial&quot;, &quot;Count.Mesenchymal.like&quot;, &quot;Count.Total&quot;),
+              function(test.var) {
+  ranger.results$improvements %&gt;%
+    filter(measure == &quot;gain.R2&quot;) %&gt;% 
+    filter(target %in% top.targets) %&gt;%
+    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+    group_by(sample) %&gt;%
+    summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
+              median.gain.R2 = median(value), .groups = &quot;drop&quot;) %&gt;%
+    left_join(sample.meta %&gt;%
+                rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
+                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
+                mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor),
+              by = c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+    pivot_longer(cols = c(sum.gain.R2, mean.gain.R2, median.gain.R2), 
+                 names_to = &quot;stat&quot;) %&gt;%
+    mutate(stat = factor(stat, levels = c(&quot;mean.gain.R2&quot;, &quot;sum.gain.R2&quot;, &quot;median.gain.R2&quot;))) %&gt;%
+    filter(Classification != &quot;cold&quot;) %&gt;%
+    ggplot() +
+    geom_point(aes(x = !!sym(test.var), y = value, col = Classification)) +
+    geom_smooth(aes(x = !!sym(test.var), y = value),
+                formula = y ~ x, method = &quot;lm&quot;) +
+    facet_wrap(~ stat, ncol=3, scales=&quot;free_y&quot;) +
+    labs(title = test.var)
+})
+
+do.call(gridExtra::grid.arrange, c(plots, ncol=1))</code></pre>
+<pre><code>Warning: Removed 9 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>Warning: Removed 9 rows containing missing values (geom_point).</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-56-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-56-1">
 Past versions of unnamed-chunk-56-1.png
@@ -5558,12 +5597,28 @@ schae211
 </table>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div id="view-contributions" class="section level2">
-<h2>View Contributions</h2>
-<pre class="r"><code>mistyR::plot_view_contributions(ranger.results)</code></pre>
+<p>Correlation Plot:</p>
+<pre class="r"><code>walk(c(&quot;sum.gain.R2&quot;, &quot;mean.gain.R2&quot;, &quot;median.gain.R2&quot;), function(test.var) {
+  ranger.results$improvements %&gt;%
+    filter(measure == &quot;gain.R2&quot;) %&gt;% 
+    filter(target %in% top.targets) %&gt;%
+    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+    group_by(sample) %&gt;%
+    summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
+              median.gain.R2 = median(value), .groups = &quot;drop&quot;) %&gt;%
+    left_join(sample.meta %&gt;%
+                rename(&quot;Count.Keratin.positive.Tumor&quot; = &quot;Count.Keratin-positive tumor&quot;,
+                       &quot;Count.Mesenchymal.like&quot; = &quot;Count.Mesenchymal-like&quot;) %&gt;%
+                select(1:10) %&gt;%
+                replace(is.na(.), 0) %&gt;%
+                mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor),
+              by = c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+    select(!!sym(test.var), ratio.tumor.immune,
+           Count.Immune, Count.Tumor, Count.Endothelial, Count.Mesenchymal.like,
+           Count.Total) %&gt;%
+    cor() %&gt;%
+    corrplot::corrplot(type = &quot;upper&quot;, tl.col = &quot;black&quot;)
+})</code></pre>
 <p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-57-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-57-1">
@@ -5635,90 +5690,36 @@ schae211
 </table>
 </div>
 </div>
-<p>Also looking at the variability.</p>
-<pre class="r"><code>ranger.results$contributions %&gt;%
-  filter(!str_starts(view, &quot;p\\.&quot;), view != &quot;intercept&quot;) %&gt;%
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-57-2.png" width="672" style="display: block; margin: auto;" /><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-57-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Now taking the top 10 and the bottom 10 samples and comparing their features. Features being the mixing score, the R2 of the intraview for the chosen targets</p>
+<pre class="r"><code>top.10 &lt;- ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  filter(target %in% top.targets) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  group_by(sample) %&gt;%
+  summarise(mean.gain.R2 = sum(value), .groups = &quot;drop&quot;) %&gt;%
+  slice_max(mean.gain.R2, n = 10) %&gt;%
+  pull(sample)
+
+bottom.10 &lt;- ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  filter(target %in% top.targets) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  group_by(sample) %&gt;%
+  summarise(mean.gain.R2 = sum(value), .groups = &quot;drop&quot;) %&gt;%
+  slice_min(mean.gain.R2, n = 10) %&gt;%
+  pull(sample)</code></pre>
+<p>Looking at the mixing score (ratio of immune-tumor contacts divided by the number of immune-immune contacts). And we can kinda see that the</p>
+<pre class="r"><code>sample.meta %&gt;%
+  mutate(group.tmp = case_when(
+    SampleID %in% top.10 ~ &quot;top&quot;,
+    SampleID %in% bottom.10 ~ &quot;bottom&quot;,
+    TRUE ~ &quot;middle&quot;,
+  )) %&gt;%
+  mutate(group.tmp = factor(group.tmp, levels = c(&quot;top&quot;, &quot;middle&quot;, &quot;bottom&quot;))) %&gt;%
   ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ view, ncol = 1)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-58-1.png" width="576" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-58-1">
-Past versions of unnamed-chunk-58-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-58-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-58-1.png" target="_blank">4dd0190</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-25
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-58-1.png" target="_blank">4df87c6</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/8cb127da7ac02437189484ceca9b48c35af55e39/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-58-1.png" target="_blank">8cb127d</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-21
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/b575d1aef88c4a0daeccde431bccf8b5cfe310fd/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-58-1.png" target="_blank">b575d1a</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-21
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="importances" class="section level2">
-<h2>Importances</h2>
-<p>Intra:</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;intra&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-59-1.png" width="576" style="display: block; margin: auto;" /></p>
+  geom_boxplot(aes(x=group.tmp, y=ratio.tumor.immune))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-59-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-59-1">
 Past versions of unnamed-chunk-59-1.png
@@ -5778,9 +5779,14 @@ schae211
 </table>
 </div>
 </div>
-<p>Juxtaview:</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;juxta.40&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-60-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Now what about the simple box plot containing the top targets</p>
+<pre class="r"><code>ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(sample.meta, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=Classification, y=value))</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-60-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-60-1">
 Past versions of unnamed-chunk-60-1.png
@@ -5851,17 +5857,168 @@ schae211
 </table>
 </div>
 </div>
-<p>Paraview:</p>
-<p>I think it is quite interesting that Beta-catenin seems to be important to predict Pan.Keratin, Keratin.6, and EGFR expression. The other way it also true, meaning that Keratin6 and Pan.Keratin are useful in predicting Beta-catenin expression. This probably only shows that those proteins are coexpressed in cancer.</p>
-<p>Though, if they are only co-expressed wouldn’t we expect to actually see the same relationship in the intraview (which we do not!).</p>
-<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;para.120&quot;, clean = TRUE)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-61-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>tmp &lt;- ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(sample.meta, by=c(&quot;sample&quot; = &quot;SampleID&quot;))
+
+targets &lt;- tmp$target %&gt;% unique
+
+t.test(x = (tmp %&gt;% filter(Classification==&quot;compartimentalized&quot;) %&gt;%
+              pull(value)),
+       y = (tmp %&gt;% filter(Classification==&quot;mixed&quot;) %&gt;%
+              pull(value)),
+       alternative = &quot;two.sided&quot;)</code></pre>
+<pre><code>
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = 0.92767, df = 1084.8, p-value = 0.3538
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.2458481  0.6867746
+sample estimates:
+mean of x mean of y 
+ 3.218987  2.998524 </code></pre>
+<p>So actually the predictions are not overall better for compartimentalized samples. But for which targets is the gain in R2 much different compared to the gain in R2 for mixed samples?</p>
+<p>Check by using t.test, not controlled for multiple hypothesis testing!</p>
+<pre class="r"><code>all.targets &lt;- map(targets, function(t) {
+  tmp &lt;- ranger.results$improvements %&gt;%
+    filter(measure == &quot;gain.R2&quot;) %&gt;% 
+    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+    left_join(sample.meta, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+    filter(target == t)
+  
+  test.results &lt;- t.test(x = (tmp %&gt;% filter(Classification==&quot;compartimentalized&quot;) %&gt;%
+              pull(value)),
+       y = (tmp %&gt;% filter(Classification==&quot;mixed&quot;) %&gt;%
+              pull(value)),
+       alternative = &quot;two.sided&quot;)
+  
+  list(&quot;target&quot; = t, &quot;t.test&quot; = test.results)
+})
+walk(all.targets, function(target.test) {
+  if (target.test$t.test$p.value &lt; 0.05) {
+    print(target.test$target)
+    print(target.test$t.test)
+  }
+})</code></pre>
+<pre><code>[1] &quot;PD1&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = 2.0727, df = 23.552, p-value = 0.04931
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.006484952 3.978703491
+sample estimates:
+mean of x mean of y 
+ 3.622345  1.629751 
+
+[1] &quot;CD31&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = 2.1926, df = 29.978, p-value = 0.03623
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.1079941 3.0434776
+sample estimates:
+mean of x mean of y 
+ 4.204335  2.628599 
+
+[1] &quot;CD4&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = 2.903, df = 20.841, p-value = 0.008551
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.2184547 1.3237747
+sample estimates:
+mean of x mean of y 
+1.0069175 0.2358028 
+
+[1] &quot;CD11c&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = 2.7294, df = 22.963, p-value = 0.01196
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.9900908 7.1921080
+sample estimates:
+mean of x mean of y 
+ 7.552832  3.461732 
+
+[1] &quot;CSF.1R&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = 2.7518, df = 21.103, p-value = 0.01192
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.3292636 2.3641287
+sample estimates:
+mean of x mean of y 
+2.2129598 0.8662636 
+
+[1] &quot;CD68&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = 3.4136, df = 24.7, p-value = 0.002217
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.5493122 2.2229578
+sample estimates:
+mean of x mean of y 
+2.3169531 0.9308181 
+
+[1] &quot;Pan.Keratin&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = -2.3848, df = 20.395, p-value = 0.02689
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -5.0247679 -0.3390167
+sample estimates:
+mean of x mean of y 
+ 1.139232  3.821125 
+
+[1] &quot;H3K9ac&quot;
+
+    Welch Two Sample t-test
+
+data:  (tmp %&gt;% filter(Classification == &quot;compartimentalized&quot;) %&gt;% pull(value)) and (tmp %&gt;% filter(Classification == &quot;mixed&quot;) %&gt;% pull(value))
+t = -2.5984, df = 29.213, p-value = 0.01453
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -1.6093511 -0.1919723
+sample estimates:
+mean of x mean of y 
+ 1.289872  2.190534 </code></pre>
+</div>
+</div>
+</div>
+<div id="view-contributions" class="section level2">
+<h2>View Contributions</h2>
+<pre class="r"><code>mistyR::plot_view_contributions(ranger.results)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-62-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-61-1">
-Past versions of unnamed-chunk-61-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-62-1">
+Past versions of unnamed-chunk-62-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-61-1" class="collapse">
+<div id="fig-unnamed-chunk-62-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -5880,18 +6037,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-61-1.png" target="_blank">4dd0190</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-25
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/b9bdcf8f021a839a46025300954a049d839d2772/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-61-1.png" target="_blank">b9bdcf8</a>
+<a href="https://github.com/schae211/mibi_analysis/blob/b9bdcf8f021a839a46025300954a049d839d2772/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-62-1.png" target="_blank">b9bdcf8</a>
 </td>
 <td>
 schae211
@@ -5902,63 +6048,27 @@ schae211
 </tr>
 <tr>
 <td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-61-1.png" target="_blank">4df87c6</a>
+<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-62-1.png" target="_blank">4df87c6</a>
 </td>
 <td>
 schae211
 </td>
 <td>
 2021-10-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/8cb127da7ac02437189484ceca9b48c35af55e39/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-61-1.png" target="_blank">8cb127d</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-21
 </td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-</div>
-<div id="signatures" class="section level2">
-<h2>Signatures</h2>
-<div id="performance" class="section level3">
-<h3>Performance</h3>
-<pre class="r"><code>ranger.perf.sig &lt;- mistyR::extract_signature(ranger.results, &quot;performance&quot;)
-ranger.perf.pca &lt;- stats::prcomp(ranger.perf.sig %&gt;% select(-sample))</code></pre>
-<pre class="r"><code>p1 &lt;- ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
-                 col=factor(sample.meta$GRADE))) +
-  labs(title = &quot;Grade&quot;)
-
-p2 &lt;- ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
-                 col=factor(sample.meta$Classification))) +
-  labs(title = &quot;Classification&quot;)
-
-p3 &lt;- ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], 
-                 y=ranger.perf.pca$x[,2],
-                 col=log10(sample.meta$ratio.tumor.immune))) +
-  scale_color_viridis_c() +
-  labs(title = &quot;Mixing Score&quot;)
-
-p4 &lt;- ggplot() +
-  geom_point(aes(x=ranger.perf.pca$x[,1], 
-                 y=ranger.perf.pca$x[,2],
-                 col=sample.meta$Count.Total)) +
-  scale_color_viridis_c() +
-  labs(title = &quot;Total Cell Counts&quot;)
-
-gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-63-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>Also looking at the variability.</p>
+<pre class="r"><code>ranger.results$contributions %&gt;%
+  filter(!str_starts(view, &quot;p\\.&quot;), view != &quot;intercept&quot;) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x = target, y = value)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  facet_wrap(~ view, ncol = 1)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-63-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-63-1">
 Past versions of unnamed-chunk-63-1.png
@@ -6029,13 +6139,12 @@ schae211
 </table>
 </div>
 </div>
-<p>Which factors drive the variance in the results?</p>
-<pre class="r"><code>fviz_pca_var(ranger.perf.pca, col.var=&quot;contrib&quot;,
-             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
-             repel = TRUE)</code></pre>
-<pre><code>Warning: ggrepel: 33 unlabeled data points (too many overlaps). Consider
-increasing max.overlaps</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-64-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="importances" class="section level2">
+<h2>Importances</h2>
+<p>Intra:</p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;intra&quot;, clean = TRUE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-64-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-64-1">
 Past versions of unnamed-chunk-64-1.png
@@ -6128,19 +6237,9 @@ schae211
 </table>
 </div>
 </div>
-<p>We kind of see that the gain in R2 for CD11c differentiates mixed and compartimentalized tumors. Since CD11c is a marker for dendritic cells (DCs) what does this mean? That DCs is only present in comparitmentalized tumors and thus we can only gain explained variance for CD11c here?</p>
-<p>And looking at the boxplot below, this is the case. In the compartimentalized samples there are more DCs (see DC + CD/Mono).</p>
-<pre class="r"><code>meta %&gt;%
-  mutate(SampleID = as.character(SampleID)) %&gt;%
-  left_join(sample.meta, by=&quot;SampleID&quot;) %&gt;%
-  filter(Classification != &quot;cold&quot;) %&gt;%
-  group_by(Classification, SampleID) %&gt;%
-  count(immuneGroup) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x=immuneGroup, y=n, col=Classification)) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-  scale_y_log10()</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-65-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Juxtaview:</p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;juxta.40&quot;, clean = TRUE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-65-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-65-1">
 Past versions of unnamed-chunk-65-1.png
@@ -6200,24 +6299,65 @@ schae211
 </table>
 </div>
 </div>
+<p>Paraview:</p>
+<p>I think it is quite interesting that Beta-catenin seems to be important to predict Pan.Keratin, Keratin.6, and EGFR expression. The other way it also true, meaning that Keratin6 and Pan.Keratin are useful in predicting Beta-catenin expression. This probably only shows that those proteins are coexpressed in cancer.</p>
+<p>Though, if they are only co-expressed wouldn’t we expect to actually see the same relationship in the intraview (which we do not!).</p>
+<pre class="r"><code>mistyR::plot_interaction_heatmap(ranger.results, view = &quot;para.120&quot;, clean = TRUE)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-66-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-66-1">
+Past versions of unnamed-chunk-66-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-66-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/b9bdcf8f021a839a46025300954a049d839d2772/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-66-1.png" target="_blank">b9bdcf8</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-66-1.png" target="_blank">4df87c6</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-22
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="importance" class="section level3">
-<h3>Importance</h3>
-<pre class="r"><code>ranger.imp.sig &lt;- mistyR::extract_signature(ranger.results, &quot;importance&quot;)
-ranger.imp.pca &lt;- stats::prcomp(ranger.imp.sig %&gt;% select(-sample))</code></pre>
-<p>Color by Grade.</p>
-<pre class="r"><code>p1 &lt;- ggplot() +
-  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
-                 col=factor(sample.meta$GRADE))) +
-  labs(title = &quot;Grade&quot;)
-
-p2 &lt;- ggplot() +
-  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
-                 col=factor(sample.meta$Classification))) +
-  labs(title = &quot;Classification&quot;)
-
-gridExtra::grid.arrange(p1, p2, ncol=2)</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-67-1.png" width="1536" style="display: block; margin: auto;" /></p>
+</div>
+<p>Now what about looking at some contrasts.</p>
+<pre class="r"><code>plot_contrast_heatmap(ranger.results, 
+                      from.view = &quot;intra&quot;,
+                      to.view = &quot;para.120&quot;,
+                      cutoff = 0.5)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-67-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-67-1">
 Past versions of unnamed-chunk-67-1.png
@@ -6277,83 +6417,105 @@ schae211
 </table>
 </div>
 </div>
+<pre class="r"><code>plot_contrast_heatmap(ranger.results, 
+                      from.view = &quot;para.120&quot;,
+                      to.view = &quot;intra&quot;,
+                      cutoff = 2)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-67-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="signatures" class="section level2">
+<h2>Signatures</h2>
+<div id="performance" class="section level3">
+<h3>Performance</h3>
+<pre class="r"><code>ranger.perf.sig &lt;- mistyR::extract_signature(ranger.results, &quot;performance&quot;)
+ranger.perf.pca &lt;- stats::prcomp(ranger.perf.sig %&gt;% select(-sample))</code></pre>
+<pre class="r"><code>p1 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(sample.meta$GRADE))) +
+  labs(title = &quot;Grade&quot;)
+
+p2 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(sample.meta$Classification))) +
+  labs(title = &quot;Classification&quot;)
+
+p3 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=log10(sample.meta$ratio.tumor.immune))) +
+  scale_color_viridis_c() +
+  labs(title = &quot;Mixing Score&quot;)
+
+p4 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=sample.meta$Count.Total)) +
+  scale_color_viridis_c() +
+  labs(title = &quot;Total Cell Counts&quot;)
+
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-69-1.png" width="1536" style="display: block; margin: auto;" /></p>
+<p>Which factors drive the variance in the results?</p>
+<pre class="r"><code>fviz_pca_var(ranger.perf.pca, col.var=&quot;contrib&quot;,
+             gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
+             repel = TRUE)</code></pre>
+<pre><code>Warning: ggrepel: 33 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-70-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We kind of see that the gain in R2 for CD11c differentiates mixed and compartimentalized tumors. Since CD11c is a marker for dendritic cells (DCs) what does this mean? That DCs is only present in comparitmentalized tumors and thus we can only gain explained variance for CD11c here?</p>
+<p>And looking at the boxplot below, this is the case. In the compartimentalized samples there are more DCs (see DC + CD/Mono).</p>
+<pre class="r"><code>meta %&gt;%
+  mutate(SampleID = as.character(SampleID)) %&gt;%
+  left_join(sample.meta, by=&quot;SampleID&quot;) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  group_by(Classification, SampleID) %&gt;%
+  count(immuneGroup) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=immuneGroup, y=n, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
+  scale_y_log10()</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-71-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Check the DC counts in the performance PCA. And actually it is true</p>
+<pre class="r"><code>ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=( 
+meta %&gt;%
+  group_by(SampleID) %&gt;%
+  filter(immuneGroup %in% c(&quot;DC/Mono&quot;, &quot;DC&quot;)) %&gt;%
+  mutate(immuneGroup = &quot;DC/Mono&quot;) %&gt;%
+  count(immuneGroup) %&gt;%
+  rbind(tibble(SampleID = 26, immuneGroup=&quot;DC/Mono&quot;, n=0)) %&gt;%
+  arrange(SampleID) %&gt;%
+  pull(n) ) ) ) +
+  scale_color_viridis_c() +
+  labs(col = &quot;n.DC&quot;)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="importance" class="section level3">
+<h3>Importance</h3>
+<pre class="r"><code>ranger.imp.sig &lt;- mistyR::extract_signature(ranger.results, &quot;importance&quot;)
+ranger.imp.pca &lt;- stats::prcomp(ranger.imp.sig %&gt;% select(-sample))</code></pre>
+<p>Color by Grade.</p>
+<pre class="r"><code>p1 &lt;- ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=factor(sample.meta$GRADE))) +
+  labs(title = &quot;Grade&quot;)
+
+p2 &lt;- ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=factor(sample.meta$Classification))) +
+  labs(title = &quot;Classification&quot;)
+
+gridExtra::grid.arrange(p1, p2, ncol=2)</code></pre>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-74-1.png" width="1536" style="display: block; margin: auto;" /></p>
 <p>Looking at the variable loadings one can see that the importances are often similar for different views and that the importances are reciprocal, e.g. - CD45 &amp; HLA_Class_1 (= MHC1) - CD63 &amp; CD68 (macrophages) - CD16 &amp; CD11c (natural killer cells, neutrophils, monocytes, and macrophages) - CD16 &amp; CD45</p>
 <pre class="r"><code>fviz_pca_var(ranger.imp.pca, col.var=&quot;contrib&quot;,
              gradient.cols = c(&quot;#00AFBB&quot;, &quot;#E7B800&quot;, &quot;#FC4E07&quot;),
              repel = TRUE)</code></pre>
 <pre><code>Warning: ggrepel: 528 unlabeled data points (too many overlaps). Consider
 increasing max.overlaps</code></pre>
-<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-68-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-68-1">
-Past versions of unnamed-chunk-68-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-68-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-68-1.png" target="_blank">4dd0190</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-25
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/b9bdcf8f021a839a46025300954a049d839d2772/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-68-1.png" target="_blank">b9bdcf8</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/65157102734db5e04526bba184f5eab29ef3aa12/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-68-1.png" target="_blank">6515710</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/4df87c61f10c239f0b239092910f582f0fd25957/docs/figure/MIBI_Analysis.Rmd/unnamed-chunk-68-1.png" target="_blank">4df87c6</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/MIBI_Analysis.Rmd/unnamed-chunk-75-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
