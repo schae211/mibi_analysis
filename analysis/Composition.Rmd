@@ -268,7 +268,7 @@ it was retained after preprocessing. And we see that especially Tregs, dendritic
 cells (DC) and natural killer cells (NK) were only retained in frew samples.
 
 TODO: Would it make sense to exlcude those cell types which are present in 
-fewer than 5 samples?
+fewer than 5 samples? - See below
 
 ```{r}
 map(misty.views.smp, ~ colnames(.x$intraview$data)) %>%
@@ -390,3 +390,287 @@ misty.results$importances %>%
 ```
 
 We can see that dendritic cells are associated with tumor cells. 
+
+# Running MISTy Subset
+
+Next up we want to run MISTy looking only at a subset of the data to
+have more meaningful signatures.
+
+We will simply remove Tregs and NK and merge Class_DC.Mono with Class_DC.
+Futhermore, we will remove Other.immune because it is rather difficult
+to interpret this group.
+
+```{r}
+map(misty.views.smp, ~ colnames(.x$intraview$data)) %>%
+  unlist %>%
+  table %>%
+  data.frame() %>%
+  rename("Class" = ".") %>%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat="identity") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r}
+to.remove <- c("Class_Tregs", "Class_DC", "Class_NK", "Class_Other.immune")
+misty.views.red <- map(misty.views.smp, function(misty.view) {
+  if ("Class_DC" %in% colnames(misty.view$intraview$data)) {
+    misty.view$intraview$data <- misty.view$intraview$data %>%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+    
+    misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+  }
+  
+  misty.view$intraview$data <- misty.view$intraview$data %>%
+    select(-any_of(to.remove))
+  
+  misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
+    select(-any_of(to.remove))
+  
+  misty.view
+})
+```
+
+```{r}
+map(misty.views.red, ~ colnames(.x$intraview$data)) %>%
+  unlist %>%
+  table %>%
+  data.frame() %>%
+  rename("Class" = ".") %>%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat="identity") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+Now we can actually run MISTy.
+
+```{r message=FALSE, warning=FALSE}
+red.result.folders <- map2(misty.views.red, 
+                      names(misty.views.red), 
+                      function(misty.views, i) {
+  
+  misty.views %>%
+    run_misty(results.folder = paste0("analysis/red.composition.analysis/smp.", i), 
+              bypass.intra = TRUE,
+              cv.folds = 10)
+})
+```
+
+```{r message=FALSE}
+red.misty.results <- collect_results(red.result.folders)
+```
+
+# MISTy Results Subset
+
+```{r}
+plot_improvement_stats(red.misty.results, "gain.R2")
+```
+
+```{r}
+plot_view_contributions(misty.results)
+```
+
+```{r}
+# Can be used to make a custom color palette
+makeColorRampPalette <- function(colors, cutoff.fraction, num.colors.in.palette)
+{
+  stopifnot(length(colors) == 5)
+  ramp1 <- colorRampPalette(colors[1:2])(num.colors.in.palette * 
+                                           cutoff.fraction)
+  ramp2 <- colorRampPalette(colors[3:5])(num.colors.in.palette *
+                                           (1 - cutoff.fraction))
+  return(c(ramp1, ramp2))
+}
+
+cols <- makeColorRampPalette(c("white", "white", "blue", "yellow", "red"),
+                             cutoff.fraction = .5,
+                             num.colors.in.palette = 100)
+
+red.misty.results$importances %>%
+  filter(Importance > 0) %>%
+  filter(view == "para.50") %>%
+  group_by(Predictor, Target) %>%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
+  mutate(Predictor = paste0("P.", Predictor),
+         Target = paste0("T.", Target)) %>%
+  pivot_wider(names_from = Target, values_from = imp) %>%
+  column_to_rownames(var = "Predictor") %>%
+  as.matrix() %>% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)
+```
+
+# MISTy Without Tumor
+
+Now we could actually run the same analyis excluding tumor cells.
+
+```{r}
+to.remove <- c("Class_Tregs", "Class_DC", "Class_NK", "Class_Other.immune",
+               "Class_Tumor")
+misty.views.notumor <- map(misty.views.smp, function(misty.view) {
+  if ("Class_DC" %in% colnames(misty.view$intraview$data)) {
+    misty.view$intraview$data <- misty.view$intraview$data %>%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+    
+    misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+  }
+  
+  misty.view$intraview$data <- misty.view$intraview$data %>%
+    select(-any_of(to.remove))
+  
+  misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
+    select(-any_of(to.remove))
+  
+  misty.view
+})
+```
+
+```{r}
+map(misty.views.notumor, ~ colnames(.x$intraview$data)) %>%
+  unlist %>%
+  table %>%
+  data.frame() %>%
+  rename("Class" = ".") %>%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat="identity") +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+```{r message=FALSE, warning=FALSE}
+notumor.result.folders <- map2(misty.views.notumor, 
+                      names(misty.views.notumor), 
+                      function(misty.views, i) {
+  
+  misty.views %>%
+    run_misty(results.folder = 
+                paste0("analysis/notumor.composition.analysis/smp.", i), 
+              bypass.intra = TRUE,
+              cv.folds = 10)
+})
+```
+
+```{r message=FALSE}
+notumor.misty.results <- collect_results(notumor.result.folders)
+```
+
+```{r}
+plot_improvement_stats(notumor.misty.results, "gain.R2")
+```
+
+Results stratified by classification.
+
+```{r}
+notumor.misty.results$improvements %>%
+  mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
+  filter(measure == "gain.R2") %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) 
+```
+
+And we see that we can predict the identify of cells much better in
+compartimentalized tumors.
+
+```{r}
+plot_view_contributions(notumor.misty.results)
+```
+
+```{r}
+notumor.misty.results$importances %>%
+  filter(Importance > 0) %>%
+  filter(view == "para.50") %>%
+  group_by(Predictor, Target) %>%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
+  mutate(Predictor = paste0("P.", Predictor),
+         Target = paste0("T.", Target)) %>%
+  pivot_wider(names_from = Target, values_from = imp) %>%
+  column_to_rownames(var = "Predictor") %>%
+  as.matrix() %>% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)
+```
+
+Only mixed samples:
+
+```{r}
+notumor.misty.results$importances %>%
+  mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
+  filter(Importance > 0) %>%
+  filter(view == "para.50") %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(Classification == "mixed") %>%
+  select(sample, Predictor, Target, Importance) %>%
+  group_by(Predictor, Target) %>%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
+  mutate(Predictor = paste0("P.", Predictor),
+         Target = paste0("T.", Target)) %>%
+  pivot_wider(names_from = Target, values_from = imp) %>%
+  column_to_rownames(var = "Predictor") %>%
+  as.matrix() %>% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)
+```
+
+Only compartimentalized samples.
+
+```{r}
+notumor.misty.results$importances %>%
+  mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
+  filter(Importance > 0) %>%
+  filter(view == "para.50") %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(Classification == "compartimentalized") %>%
+  select(sample, Predictor, Target, Importance) %>%
+  group_by(Predictor, Target) %>%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
+  mutate(Predictor = paste0("P.", Predictor),
+         Target = paste0("T.", Target)) %>%
+  pivot_wider(names_from = Target, values_from = imp) %>%
+  column_to_rownames(var = "Predictor") %>%
+  as.matrix() %>% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)
+```
+
+Looking at the actual sample pictures whether these importances make sense.
+
+First, B and CD4 T cells in mixed TMEs
+
+```{r fig.width=10, fig.height=8}
+meta %>%
+  mutate(SampleID = as.character(SampleID)) %>%
+  left_join(meta.smp) %>%
+  filter(Classification == "mixed") %>%
+  mutate(class = case_when(
+    Group %in% c("Keratin-positive tumor", "Tumor") ~ "Tumor",
+    !(immuneGroup %in% c("B", "CD4 T")) ~ "Ignore",
+    TRUE ~ immuneGroup
+  )) %>%
+  filter(class != "Ignore") %>%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=class), size=.1) +
+  facet_wrap(~ SampleID) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))
+```
+
+Second, B and CD4 T cells in compartimentalized TMEs
+
+```{r fig.width=10, fig.height=8}
+meta %>%
+  mutate(SampleID = as.character(SampleID)) %>%
+  left_join(meta.smp) %>%
+  filter(Classification == "compartimentalized") %>%
+  mutate(class = case_when(
+    Group %in% c("Keratin-positive tumor", "Tumor") ~ "Tumor",
+    !(immuneGroup %in% c("B", "CD4 T")) ~ "Ignore",
+    TRUE ~ immuneGroup
+  )) %>%
+  filter(class != "Ignore") %>%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=class), size=.1) +
+  facet_wrap(~ SampleID) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))
+```
+
+And in fact one can see that CD4 T and B cells colocalize.
+
+

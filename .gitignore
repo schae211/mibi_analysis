@@ -22,3 +22,5 @@ results/
 old_files/
 code/.ipynb*
 data/_old
+analysis/notumor.composition.analysis
+analysis/red.composition.analysis

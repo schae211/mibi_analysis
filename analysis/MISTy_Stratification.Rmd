@@ -5,7 +5,7 @@ title: "Cell Type-specific Analysis"
 # Set up
 
 ```{r setup}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
 knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
 ```
 
@@ -375,7 +375,7 @@ if ("immune.immune.results.RDS" %in% list.files("data")) {
 We see quite some gain in variance explained for IDO which is an immunoregulatory
 protein. The same is true for PD-L1
 
-```{r fig.width=6, fig.height=}
+```{r fig.width=6, fig.height=4}
 mistyR::plot_improvement_stats(cancer.immune.results, measure = "gain.R2")
 ```
 
@@ -405,7 +405,7 @@ compartimentalized samples).
 And in fact it is true that the gain in variance is somewhat higher for those
 immunoregulatory proteins in compartimentalized tumors.
 
-```{r fig.height=4, fig.width=8}
+```{r}
 cancer.immune.results$improvements %>%
   mutate(SampleID = str_extract(sample, "(?<=_s)[0-9]+")) %>%
   left_join(meta.smp, by = "SampleID") %>%
