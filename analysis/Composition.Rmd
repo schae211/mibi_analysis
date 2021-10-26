@@ -61,6 +61,7 @@ Next up, one-hot encoding of the cell types. Again the first six rows.
 expr <- mltools::one_hot(data.table::as.data.table(data)) %>%
   select(-c(row, col)) %>%
   rename_all(make.names)
+colnames(expr) <- colnames(expr) %>% str_replace_all("_", ".")
 expr %>% slice_head(n=6)
 ```
 
@@ -221,6 +222,7 @@ Run MISTy bypassing the intraview and using 10 CV folds. Per default random
 forest is used.
 
 ```{r message=FALSE, warning=FALSE}
+misty.views.smp$`1`$intraview$data
 result.folders <- map2(misty.views.smp, 
                       names(misty.views.smp), 
                       function(misty.views, i) {
@@ -339,8 +341,8 @@ perf.sig <- extract_signature(misty.results = misty.results,
   select(c(SampleID, ends_with("gain.R2")))
 
 ggplot(perf.sig) +
-geom_point(aes(x=Class_Macrophages_gain.R2, 
-               y=Class_Tumor_gain.R2,
+geom_point(aes(x=Class.Macrophages_gain.R2, 
+               y=Class.Tumor_gain.R2,
                col=perf.sig %>% left_join(meta.smp, by="SampleID") %>%
                    pull(Classification))) +
   labs(col = "Class")
@@ -358,22 +360,12 @@ plot_view_contributions(misty.results)
 
 ## Importances
 
-Somehow there is a bug here and although the view `para.50` exist, we cannot
-plot the importances.
-
 ```{r}
-misty.results$importances$view %>% unique
-```
-
-Here the plot we get.
-
-```{r}
-plot_interaction_heatmap(misty.results, "para.50")
+plot_interaction_heatmap(misty.results, "para.50", cutoff = .25)
 ```
 
 Plotting it using `pheatmap` and adding P or T for predictor and target
-to the cell type names. So on the bottom we have the targets and on the right
-side the predictors.
+to the cell type names. 
 
 ```{r}
 misty.results$importances %>%
@@ -386,6 +378,7 @@ misty.results$importances %>%
   pivot_wider(names_from = Target, values_from = imp) %>%
   column_to_rownames(var = "Predictor") %>%
   as.matrix() %>% 
+  t() %>%
   pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)
 ```
 
@@ -412,14 +405,14 @@ map(misty.views.smp, ~ colnames(.x$intraview$data)) %>%
 ```
 
 ```{r}
-to.remove <- c("Class_Tregs", "Class_DC", "Class_NK", "Class_Other.immune")
+to.remove <- c("Class.Tregs", "Class.DC", "Class.NK", "Class.Other.immune")
 misty.views.red <- map(misty.views.smp, function(misty.view) {
-  if ("Class_DC" %in% colnames(misty.view$intraview$data)) {
+  if ("Class.DC" %in% colnames(misty.view$intraview$data)) {
     misty.view$intraview$data <- misty.view$intraview$data %>%
-      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
     
     misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
-      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
   }
   
   misty.view$intraview$data <- misty.view$intraview$data %>%
@@ -472,6 +465,11 @@ plot_view_contributions(misty.results)
 ```
 
 ```{r}
+plot_interaction_heatmap(red.misty.results, "para.50", cutoff = .25)
+```
+
+
+```{r}
 # Can be used to make a custom color palette
 makeColorRampPalette <- function(colors, cutoff.fraction, num.colors.in.palette)
 {
@@ -505,15 +503,15 @@ red.misty.results$importances %>%
 Now we could actually run the same analyis excluding tumor cells.
 
 ```{r}
-to.remove <- c("Class_Tregs", "Class_DC", "Class_NK", "Class_Other.immune",
-               "Class_Tumor")
+to.remove <- c("Class.Tregs", "Class.DC", "Class.NK", "Class.Other.immune",
+               "Class.Tumor")
 misty.views.notumor <- map(misty.views.smp, function(misty.view) {
-  if ("Class_DC" %in% colnames(misty.view$intraview$data)) {
+  if ("Class.DC" %in% colnames(misty.view$intraview$data)) {
     misty.view$intraview$data <- misty.view$intraview$data %>%
-      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
     
     misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
-      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
   }
   
   misty.view$intraview$data <- misty.view$intraview$data %>%
@@ -560,6 +558,10 @@ plot_improvement_stats(notumor.misty.results, "gain.R2")
 
 Results stratified by classification.
 
+Based on these results, I will only look at the targets below for which
+we got a gain in R2, namely: B, CD4, CD8, DC.Mono, Endothelial,
+Macrophages, Mesenchymal, Neutrophils
+
 ```{r}
 notumor.misty.results$improvements %>%
   mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
@@ -578,6 +580,11 @@ plot_view_contributions(notumor.misty.results)
 ```
 
 ```{r}
+plot_interaction_heatmap(notumor.misty.results, "para.50", cutoff = .4)
+```
+
+
+```{r}
 notumor.misty.results$importances %>%
   filter(Importance > 0) %>%
   filter(view == "para.50") %>%
@@ -585,6 +592,7 @@ notumor.misty.results$importances %>%
   summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
   mutate(Predictor = paste0("P.", Predictor),
          Target = paste0("T.", Target)) %>%
+  filter(!(Target %in% c("T.Class_CD3.T", "T.Class_Mono.Neu"))) %>%
   pivot_wider(names_from = Target, values_from = imp) %>%
   column_to_rownames(var = "Predictor") %>%
   as.matrix() %>% 
@@ -605,6 +613,7 @@ notumor.misty.results$importances %>%
   summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
   mutate(Predictor = paste0("P.", Predictor),
          Target = paste0("T.", Target)) %>%
+  filter(!(Target %in% c("T.Class_CD3.T", "T.Class_Mono.Neu"))) %>%
   pivot_wider(names_from = Target, values_from = imp) %>%
   column_to_rownames(var = "Predictor") %>%
   as.matrix() %>% 
@@ -625,6 +634,7 @@ notumor.misty.results$importances %>%
   summarise(imp = mean(Importance, na.rm=TRUE, .groups="keep")) %>%
   mutate(Predictor = paste0("P.", Predictor),
          Target = paste0("T.", Target)) %>%
+  filter(!(Target %in% c("T.Class_CD3.T", "T.Class_Mono.Neu"))) %>%
   pivot_wider(names_from = Target, values_from = imp) %>%
   column_to_rownames(var = "Predictor") %>%
   as.matrix() %>% 

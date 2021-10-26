@@ -814,6 +814,8 @@ the samples and targets.
 
 Keep in mind that I replaced all NA values for the gain.R2 with 0 so the 
 clustering is actually possible (we need to be able to compute distances!).
+I think this is fair since the marker basically absent and there can be
+no gain in R2.
 
 ```{r fig.width=8, fig.height=7}
 ranger.results$improvements %>% 
@@ -860,10 +862,13 @@ plot(hc)
 rect.hclust(hc , k = k, border = 2:6)
 ```
 
-Removing clusters with only 1 sample in them.
+Merging cluster for sample 19 and 21 and removing cluster for sample 26 
+from the analysis.
 
 ```{r}
 hc.clusters <- cutree(hc, k = k)
+
+hc.clusters["21"] <- hc.clusters["19"]
 
 n <- unique(hc.clusters) %>%
   set_names() %>%
@@ -893,6 +898,32 @@ ranger.results$improvements %>%
   column_to_rownames(var = "sample") %>%
   as.matrix() %>%
   pheatmap::pheatmap(., annotation_row = col.annotation)
+```
+
+Do these clusters still make sense if we do not replace NA by 0?
+
+It looks ok, though we see that for cluster 2 there are simply many missing 
+data points. The reason being that these samples contain very few immune
+cells and thus miss certain markers.
+
+```{r fig.width=8, fig.height=7}
+tmp <- ranger.results$improvements %>% 
+  filter(measure == "gain.R2") %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(tibble(sample = names(hc.clusters), cluster = hc.clusters), 
+            by = "sample") %>%
+  filter(cluster %in% keep) %>%
+  select(-c(measure, cluster)) %>% 
+  pivot_wider(names_from = target) %>%
+  as.data.frame() %>%
+  column_to_rownames(var = "sample") %>%
+  as.matrix()
+
+# order based on annotation
+ordered <- tmp[names(hc.clusters[hc.clusters %in% keep] %>% sort), ]
+
+pheatmap::pheatmap(ordered, annotation_row = col.annotation,
+                     cluster_rows = FALSE, cluster_cols = FALSE)
 ```
 
 What is actually the difference in gain R2 across the different clusters? For
@@ -939,17 +970,26 @@ ranger.results$improvements %>%
   * Cluster 9: Only cluster with interesting gain in R2 for Ki67
   (marker for proliferation?) and HLA_Class_1. 
   Furthermore gains for pS6, Keratin17, EGFR, and CD138.
-
+  
+  * Cluster 7: Only cluster with interesting gain in R2 for CD56
+  (marker for NK).
+  
 ### What differentiates the samples in one cluster from another? {.tabset}
 
 #### Cell Counts and Mixing Score
 
 Could these quantitaive properties explain the differences:
+
  * ratio.tumor.immune
+ 
  * Count.Immune
+ 
  * Count.Tumor
+ 
  * Count.Endothelial
+ 
  * Count.Mesenchymal.like
+ 
  * Count.Total
 
 One can immediately see that cluster 2 has a higher ration of tumor-immune to
@@ -962,8 +1002,6 @@ the classification being either cold or mixed.
 
 It kind of fits that we have a relatively high number of tumor cells in cluster
 9, and that we saw a gain in explained variance for pS6 and Ki67.
-
-
 
 ```{r fig.height=5, fig.width=8}
 sample.meta %>%
@@ -986,6 +1024,23 @@ sample.meta %>%
                                "cold" = "royalblue"))
 ```
 
+What about the immune cell types which are present?
+
+```{r fig.height=5, fig.width=8}
+meta %>%
+  mutate(SampleID = as.character(SampleID)) %>%
+  left_join(tibble(sample = names(hc.clusters), cluster = factor(hc.clusters)), 
+            by = c("SampleID" = "sample")) %>%
+  filter(cluster %in% keep) %>%
+  filter(immuneGroup != "Non-Immune?") %>%
+  group_by(cluster, SampleID) %>%
+  count(immuneGroup) %>%
+  ggplot() +
+  geom_boxplot(aes(x=cluster, y=n)) +
+  facet_wrap(~ immuneGroup, scales = "free")
+```
+
+
 Though it may be more informative to actually look at the cell ratios, or 
 proportions. 
 
@@ -994,7 +1049,9 @@ proportions.
 What about the spatial distribution of the cells? Could it be a contributing 
 factor? Let's look at the mean distances to the neighboring cells 
 (as determined by Delaunay Triangulation) for each cell in a given cluster. 
+
 And it seems like the distances are larger cluster 2 compared to the rest.
+This could explain the overall low gain in R2.
 
 ```{r}
 stat.per.sample %>%
@@ -1178,11 +1235,17 @@ Let's look at some correlation between other sample features and the
 gained explained variance (R2).
 
 Quantiative Predictors:
+
 - Mixing score
+
 - Count of immune cells
+
 - Count of tumor cells
+
 - Count of endothelial cells
+
 - Count of mesenchymal-like cells
+
 - Total cell count
 
 ```{r fig.height=18, fig.width=10}
@@ -1205,7 +1268,41 @@ plots <- map(c("ratio.tumor.immune", "Count.Immune", "Count.Tumor",
                  names_to = "stat") %>%
     mutate(stat = factor(stat, levels = c("mean.gain.R2", "sum.gain.R2", "median.gain.R2"))) %>%
     ggplot() +
-    geom_point(aes(x = !!sym(test.var), y = value)) +
+    geom_point(aes(x = !!sym(test.var), y = value, col = Classification)) +
+    geom_smooth(aes(x = !!sym(test.var), y = value),
+                formula = y ~ x, method = "lm") +
+    facet_wrap(~ stat, ncol=3, scales="free_y") +
+    labs(title = test.var)
+})
+
+do.call(gridExtra::grid.arrange, c(plots, ncol=1))
+```
+
+What about the same plots without cold samples? The results looks quite 
+different.
+
+```{r fig.height=18, fig.width=10}
+plots <- map(c("ratio.tumor.immune", "Count.Immune", "Count.Tumor", 
+               "Count.Endothelial", "Count.Mesenchymal.like", "Count.Total"),
+              function(test.var) {
+  ranger.results$improvements %>%
+    filter(measure == "gain.R2") %>% 
+    filter(target %in% top.targets) %>%
+    mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+    group_by(sample) %>%
+    summarise(sum.gain.R2 = sum(value), mean.gain.R2 = mean(value),
+              median.gain.R2 = median(value), .groups = "drop") %>%
+    left_join(sample.meta %>%
+                rename("Count.Keratin.positive.Tumor" = "Count.Keratin-positive tumor",
+                       "Count.Mesenchymal.like" = "Count.Mesenchymal-like") %>%
+                mutate(Count.Tumor = Count.Tumor + Count.Keratin.positive.Tumor),
+              by = c("sample" = "SampleID")) %>%
+    pivot_longer(cols = c(sum.gain.R2, mean.gain.R2, median.gain.R2), 
+                 names_to = "stat") %>%
+    mutate(stat = factor(stat, levels = c("mean.gain.R2", "sum.gain.R2", "median.gain.R2"))) %>%
+    filter(Classification != "cold") %>%
+    ggplot() +
+    geom_point(aes(x = !!sym(test.var), y = value, col = Classification)) +
     geom_smooth(aes(x = !!sym(test.var), y = value),
                 formula = y ~ x, method = "lm") +
     facet_wrap(~ stat, ncol=3, scales="free_y") +
@@ -1279,6 +1376,61 @@ sample.meta %>%
   geom_boxplot(aes(x=group.tmp, y=ratio.tumor.immune))
 ```
 
+Now what about the simple box plot containing the top targets
+
+```{r}
+ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(sample.meta, by=c("sample" = "SampleID")) %>%
+  ggplot() +
+  geom_boxplot(aes(x=Classification, y=value))
+
+tmp <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(sample.meta, by=c("sample" = "SampleID"))
+
+targets <- tmp$target %>% unique
+
+t.test(x = (tmp %>% filter(Classification=="compartimentalized") %>%
+              pull(value)),
+       y = (tmp %>% filter(Classification=="mixed") %>%
+              pull(value)),
+       alternative = "two.sided")
+```
+
+So actually the predictions are not overall better for compartimentalized
+samples. But for which targets is the gain in R2 much different compared
+to the gain in R2 for mixed samples?
+
+Check by using t.test, not controlled for multiple hypothesis testing!
+
+```{r}
+all.targets <- map(targets, function(t) {
+  tmp <- ranger.results$improvements %>%
+    filter(measure == "gain.R2") %>% 
+    mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+    left_join(sample.meta, by=c("sample" = "SampleID")) %>%
+    filter(target == t)
+  
+  test.results <- t.test(x = (tmp %>% filter(Classification=="compartimentalized") %>%
+              pull(value)),
+       y = (tmp %>% filter(Classification=="mixed") %>%
+              pull(value)),
+       alternative = "two.sided")
+  
+  list("target" = t, "t.test" = test.results)
+})
+walk(all.targets, function(target.test) {
+  if (target.test$t.test$p.value < 0.05) {
+    print(target.test$target)
+    print(target.test$t.test)
+  }
+})
+```
+
+
 ## View Contributions
 
 ```{r}
@@ -1324,6 +1476,21 @@ the same relationship in the intraview (which we do not!).
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
 ```
+
+Now what about looking at some contrasts.
+
+```{r}
+plot_contrast_heatmap(ranger.results, 
+                      from.view = "intra",
+                      to.view = "para.120",
+                      cutoff = 0.5)
+
+plot_contrast_heatmap(ranger.results, 
+                      from.view = "para.120",
+                      to.view = "intra",
+                      cutoff = 2)
+```
+
 
 ## Signatures
 
@@ -1390,6 +1557,26 @@ meta %>%
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
   scale_y_log10()
 ```
+
+Check the DC counts in the performance PCA. And actually it is true
+
+```{r}
+ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=( 
+meta %>%
+  group_by(SampleID) %>%
+  filter(immuneGroup %in% c("DC/Mono", "DC")) %>%
+  mutate(immuneGroup = "DC/Mono") %>%
+  count(immuneGroup) %>%
+  rbind(tibble(SampleID = 26, immuneGroup="DC/Mono", n=0)) %>%
+  arrange(SampleID) %>%
+  pull(n) ) ) ) +
+  scale_color_viridis_c() +
+  labs(col = "n.DC")
+```
+
 
 ### Importance
 
