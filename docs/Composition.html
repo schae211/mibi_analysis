@@ -407,7 +407,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-25
+<strong>Last updated:</strong> 2021-10-26
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -522,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree968c11fee944ec4a472039a8b995f371d7852a01targetblank968c11fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/968c11fee944ec4a472039a8b995f371d7852a01" target="_blank">968c11f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree3732f8d30856fc0a8336c6923ceb0338a46cd253targetblank3732f8da"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/3732f8d30856fc0a8336c6923ceb0338a46cd253" target="_blank">3732f8d</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree968c11fee944ec4a472039a8b995f371d7852a01targetblank968c11fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree3732f8d30856fc0a8336c6923ceb0338a46cd253targetblank3732f8da" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/968c11fee944ec4a472039a8b995f371d7852a01" target="_blank">968c11f</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/3732f8d30856fc0a8336c6923ceb0338a46cd253" target="_blank">3732f8d</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -579,7 +579,8 @@ Ignored files:
     Ignored:    analysis/cell.specific.results/immune.immune_s8/
     Ignored:    analysis/cell.specific.results/immune.immune_s9/
     Ignored:    analysis/composition.analysis/
-    Ignored:    analysis/figure/
+    Ignored:    analysis/notumor.composition.analysis/
+    Ignored:    analysis/red.composition.analysis/
     Ignored:    analysis/results/
     Ignored:    analysis/test/
     Ignored:    data/cancer.immune.results.RDS
@@ -640,6 +641,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/3732f8d30856fc0a8336c6923ceb0338a46cd253/analysis/Composition.Rmd" target="_blank">3732f8d</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-26
+</td>
+<td>
+extending the neighborhood composition analysis
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/Composition.html" target="_blank">4dd0190</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-25
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1039,7 +1074,7 @@ schae211
 </div>
 </div>
 <p>Regarding the error bars let’s check for each cell type in how many samples it was retained after preprocessing. And we see that especially Tregs, dendritic cells (DC) and natural killer cells (NK) were only retained in frew samples.</p>
-<p>TODO: Would it make sense to exlcude those cell types which are present in fewer than 5 samples?</p>
+<p>TODO: Would it make sense to exlcude those cell types which are present in fewer than 5 samples? - See below</p>
 <pre class="r"><code>map(misty.views.smp, ~ colnames(.x$intraview$data)) %&gt;%
   unlist %&gt;%
   table %&gt;%
@@ -1131,6 +1166,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4dd0190eabae5ca19b0ecd4d45a3cfc7860c9b2a/docs/figure/Composition.Rmd/unnamed-chunk-15-1.png" target="_blank">4dd0190</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-25
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/b858544394dc0446b045ad5a8194c707197e25c0/docs/figure/Composition.Rmd/unnamed-chunk-15-1.png" target="_blank">b858544</a>
@@ -1441,6 +1487,240 @@ schae211
 </div>
 </div>
 <p>We can see that dendritic cells are associated with tumor cells.</p>
+</div>
+</div>
+<div id="running-misty-subset" class="section level1">
+<h1>Running MISTy Subset</h1>
+<p>Next up we want to run MISTy looking only at a subset of the data to have more meaningful signatures.</p>
+<p>We will simply remove Tregs and NK and merge Class_DC.Mono with Class_DC. Futhermore, we will remove Other.immune because it is rather difficult to interpret this group.</p>
+<pre class="r"><code>map(misty.views.smp, ~ colnames(.x$intraview$data)) %&gt;%
+  unlist %&gt;%
+  table %&gt;%
+  data.frame() %&gt;%
+  rename(&quot;Class&quot; = &quot;.&quot;) %&gt;%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat=&quot;identity&quot;) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>to.remove &lt;- c(&quot;Class_Tregs&quot;, &quot;Class_DC&quot;, &quot;Class_NK&quot;, &quot;Class_Other.immune&quot;)
+misty.views.red &lt;- map(misty.views.smp, function(misty.view) {
+  if (&quot;Class_DC&quot; %in% colnames(misty.view$intraview$data)) {
+    misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+    
+    misty.view$paraview.50$data &lt;- misty.view$paraview.50$data %&gt;%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+  }
+  
+  misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
+    select(-any_of(to.remove))
+  
+  misty.view$paraview.50$data &lt;- misty.view$paraview.50$data %&gt;%
+    select(-any_of(to.remove))
+  
+  misty.view
+})</code></pre>
+<pre class="r"><code>map(misty.views.red, ~ colnames(.x$intraview$data)) %&gt;%
+  unlist %&gt;%
+  table %&gt;%
+  data.frame() %&gt;%
+  rename(&quot;Class&quot; = &quot;.&quot;) %&gt;%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat=&quot;identity&quot;) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-25-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Now we can actually run MISTy.</p>
+<pre class="r"><code>red.result.folders &lt;- map2(misty.views.red, 
+                      names(misty.views.red), 
+                      function(misty.views, i) {
+  
+  misty.views %&gt;%
+    run_misty(results.folder = paste0(&quot;analysis/red.composition.analysis/smp.&quot;, i), 
+              bypass.intra = TRUE,
+              cv.folds = 10)
+})</code></pre>
+<pre class="r"><code>red.misty.results &lt;- collect_results(red.result.folders)</code></pre>
+<pre><code>Warning: Expected 2 pieces. Additional pieces discarded in 132 rows [1, 2, 3, 4,
+5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
+</div>
+<div id="misty-results-subset" class="section level1">
+<h1>MISTy Results Subset</h1>
+<pre class="r"><code>plot_improvement_stats(red.misty.results, &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-28-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_view_contributions(misty.results)</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-29-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Can be used to make a custom color palette
+makeColorRampPalette &lt;- function(colors, cutoff.fraction, num.colors.in.palette)
+{
+  stopifnot(length(colors) == 5)
+  ramp1 &lt;- colorRampPalette(colors[1:2])(num.colors.in.palette * 
+                                           cutoff.fraction)
+  ramp2 &lt;- colorRampPalette(colors[3:5])(num.colors.in.palette *
+                                           (1 - cutoff.fraction))
+  return(c(ramp1, ramp2))
+}
+
+cols &lt;- makeColorRampPalette(c(&quot;white&quot;, &quot;white&quot;, &quot;blue&quot;, &quot;yellow&quot;, &quot;red&quot;),
+                             cutoff.fraction = .5,
+                             num.colors.in.palette = 100)
+
+red.misty.results$importances %&gt;%
+  filter(Importance &gt; 0) %&gt;%
+  filter(view == &quot;para.50&quot;) %&gt;%
+  group_by(Predictor, Target) %&gt;%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups=&quot;keep&quot;)) %&gt;%
+  mutate(Predictor = paste0(&quot;P.&quot;, Predictor),
+         Target = paste0(&quot;T.&quot;, Target)) %&gt;%
+  pivot_wider(names_from = Target, values_from = imp) %&gt;%
+  column_to_rownames(var = &quot;Predictor&quot;) %&gt;%
+  as.matrix() %&gt;% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Predictor&#39;. You can override using the `.groups` argument.</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="misty-without-tumor" class="section level1">
+<h1>MISTy Without Tumor</h1>
+<p>Now we could actually run the same analyis excluding tumor cells.</p>
+<pre class="r"><code>to.remove &lt;- c(&quot;Class_Tregs&quot;, &quot;Class_DC&quot;, &quot;Class_NK&quot;, &quot;Class_Other.immune&quot;,
+               &quot;Class_Tumor&quot;)
+misty.views.notumor &lt;- map(misty.views.smp, function(misty.view) {
+  if (&quot;Class_DC&quot; %in% colnames(misty.view$intraview$data)) {
+    misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+    
+    misty.view$paraview.50$data &lt;- misty.view$paraview.50$data %&gt;%
+      mutate(Class_DC.Mono = Class_DC.Mono + Class_DC)
+  }
+  
+  misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
+    select(-any_of(to.remove))
+  
+  misty.view$paraview.50$data &lt;- misty.view$paraview.50$data %&gt;%
+    select(-any_of(to.remove))
+  
+  misty.view
+})</code></pre>
+<pre class="r"><code>map(misty.views.notumor, ~ colnames(.x$intraview$data)) %&gt;%
+  unlist %&gt;%
+  table %&gt;%
+  data.frame() %&gt;%
+  rename(&quot;Class&quot; = &quot;.&quot;) %&gt;%
+  ggplot() +
+    geom_bar(aes(x=reorder(Class, -Freq), y=Freq), stat=&quot;identity&quot;) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1))</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>notumor.result.folders &lt;- map2(misty.views.notumor, 
+                      names(misty.views.notumor), 
+                      function(misty.views, i) {
+  
+  misty.views %&gt;%
+    run_misty(results.folder = 
+                paste0(&quot;analysis/notumor.composition.analysis/smp.&quot;, i), 
+              bypass.intra = TRUE,
+              cv.folds = 10)
+})</code></pre>
+<pre class="r"><code>notumor.misty.results &lt;- collect_results(notumor.result.folders)</code></pre>
+<pre><code>Warning: Expected 2 pieces. Additional pieces discarded in 110 rows [1, 2, 3, 4,
+5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...].</code></pre>
+<pre class="r"><code>plot_improvement_stats(notumor.misty.results, &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Results stratified by classification.</p>
+<pre class="r"><code>notumor.misty.results$improvements %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) </code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>And we see that we can predict the identify of cells much better in compartimentalized tumors.</p>
+<pre class="r"><code>plot_view_contributions(notumor.misty.results)</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>notumor.misty.results$importances %&gt;%
+  filter(Importance &gt; 0) %&gt;%
+  filter(view == &quot;para.50&quot;) %&gt;%
+  group_by(Predictor, Target) %&gt;%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups=&quot;keep&quot;)) %&gt;%
+  mutate(Predictor = paste0(&quot;P.&quot;, Predictor),
+         Target = paste0(&quot;T.&quot;, Target)) %&gt;%
+  pivot_wider(names_from = Target, values_from = imp) %&gt;%
+  column_to_rownames(var = &quot;Predictor&quot;) %&gt;%
+  as.matrix() %&gt;% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Predictor&#39;. You can override using the `.groups` argument.</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Only mixed samples:</p>
+<pre class="r"><code>notumor.misty.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
+  filter(Importance &gt; 0) %&gt;%
+  filter(view == &quot;para.50&quot;) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Classification == &quot;mixed&quot;) %&gt;%
+  select(sample, Predictor, Target, Importance) %&gt;%
+  group_by(Predictor, Target) %&gt;%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups=&quot;keep&quot;)) %&gt;%
+  mutate(Predictor = paste0(&quot;P.&quot;, Predictor),
+         Target = paste0(&quot;T.&quot;, Target)) %&gt;%
+  pivot_wider(names_from = Target, values_from = imp) %&gt;%
+  column_to_rownames(var = &quot;Predictor&quot;) %&gt;%
+  as.matrix() %&gt;% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Predictor&#39;. You can override using the `.groups` argument.</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Only compartimentalized samples.</p>
+<pre class="r"><code>notumor.misty.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
+  filter(Importance &gt; 0) %&gt;%
+  filter(view == &quot;para.50&quot;) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Classification == &quot;compartimentalized&quot;) %&gt;%
+  select(sample, Predictor, Target, Importance) %&gt;%
+  group_by(Predictor, Target) %&gt;%
+  summarise(imp = mean(Importance, na.rm=TRUE, .groups=&quot;keep&quot;)) %&gt;%
+  mutate(Predictor = paste0(&quot;P.&quot;, Predictor),
+         Target = paste0(&quot;T.&quot;, Target)) %&gt;%
+  pivot_wider(names_from = Target, values_from = imp) %&gt;%
+  column_to_rownames(var = &quot;Predictor&quot;) %&gt;%
+  as.matrix() %&gt;% 
+  pheatmap::pheatmap(cluster_rows=FALSE, cluster_cols=FALSE)</code></pre>
+<pre><code>`summarise()` has grouped output by &#39;Predictor&#39;. You can override using the `.groups` argument.</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Looking at the actual sample pictures whether these importances make sense.</p>
+<p>First, B and CD4 T cells in mixed TMEs</p>
+<pre class="r"><code>meta %&gt;%
+  mutate(SampleID = as.character(SampleID)) %&gt;%
+  left_join(meta.smp) %&gt;%
+  filter(Classification == &quot;mixed&quot;) %&gt;%
+  mutate(class = case_when(
+    Group %in% c(&quot;Keratin-positive tumor&quot;, &quot;Tumor&quot;) ~ &quot;Tumor&quot;,
+    !(immuneGroup %in% c(&quot;B&quot;, &quot;CD4 T&quot;)) ~ &quot;Ignore&quot;,
+    TRUE ~ immuneGroup
+  )) %&gt;%
+  filter(class != &quot;Ignore&quot;) %&gt;%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=class), size=.1) +
+  facet_wrap(~ SampleID) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))</code></pre>
+<pre><code>Joining, by = &quot;SampleID&quot;</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-41-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>Second, B and CD4 T cells in compartimentalized TMEs</p>
+<pre class="r"><code>meta %&gt;%
+  mutate(SampleID = as.character(SampleID)) %&gt;%
+  left_join(meta.smp) %&gt;%
+  filter(Classification == &quot;compartimentalized&quot;) %&gt;%
+  mutate(class = case_when(
+    Group %in% c(&quot;Keratin-positive tumor&quot;, &quot;Tumor&quot;) ~ &quot;Tumor&quot;,
+    !(immuneGroup %in% c(&quot;B&quot;, &quot;CD4 T&quot;)) ~ &quot;Ignore&quot;,
+    TRUE ~ immuneGroup
+  )) %&gt;%
+  filter(class != &quot;Ignore&quot;) %&gt;%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=class), size=.1) +
+  facet_wrap(~ SampleID) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))</code></pre>
+<pre><code>Joining, by = &quot;SampleID&quot;</code></pre>
+<p><img src="figure/Composition.Rmd/unnamed-chunk-42-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>And in fact one can see that CD4 T and B cells colocalize.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1496,7 +1776,6 @@ loaded via a namespace (and not attached):
 [73] httpuv_1.6.3       cellranger_1.1.0   gtable_0.3.0       assertthat_0.2.1  
 [77] xfun_0.26          broom_0.7.9        later_1.3.0        pheatmap_1.0.12   
 [81] mltools_0.3.5      globals_0.14.0     ellipsis_0.3.2    </code></pre>
-</div>
 </div>
 </div>
 
