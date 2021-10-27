@@ -445,10 +445,50 @@ p3 <- ggplot() +
 
 p4 <- ggplot() +
   geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
-                 col=factor(meta.smp %>%
+                 col=(meta.smp %>%
   mutate(TIL_score = ifelse(TIL_score %in% c("NA", "NaN"), 
-                            NA, TIL_score)) %>% pull(TIL_score)))) +
-  labs(col = "TIL Score", x="PCA-1", y="PCA-2")
+                            NA, TIL_score)) %>% pull(TIL_score) %>%
+    as.numeric()))) +
+  labs(col = "TIL Score", x="PCA-1", y="PCA-2") +
+  scale_color_viridis_c()
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)
 ```
+
+- But what about the importance signatures? I am not quite sure whether there
+are patterns, once could argue about the grade I guess.
+
+```{r fig.width=8, fig.height=6}
+ranger.imp.sig <- mistyR::extract_signature(ranger.results, "importance")
+ranger.imp.pca <- stats::prcomp(ranger.imp.sig %>% select(-sample))
+
+p1 <- ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=factor(meta.smp$GRADE))) +
+  labs(col = "Grade", x="PCA-1", y="PCA-2")
+
+p2 <- ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=factor(meta.smp$STAGE))) +
+  labs(col = "Stage", x="PCA-1", y="PCA-2")
+
+p3 <- ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=factor(meta.smp %>%
+                              mutate(STAGE = substring(STAGE, 1, 1)) %>%
+                              pull(STAGE)))) +
+  labs(col = "red. Stage", x="PCA-1", y="PCA-2")
+
+p4 <- ggplot() +
+  geom_point(aes(x=ranger.imp.pca$x[,1], y=ranger.imp.pca$x[,2],
+                 col=meta.smp %>%
+  mutate(TIL_score = ifelse(TIL_score %in% c("NA", "NaN"), 
+                            NA, TIL_score)) %>% pull(TIL_score) %>%
+    as.numeric())) +
+  labs(col = "TIL Score", x="PCA-1", y="PCA-2") +
+  scale_color_viridis_c()
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)
+```
+
+
+
 
