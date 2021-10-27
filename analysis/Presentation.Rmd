@@ -15,11 +15,14 @@ plan("multisession", workers=14)
 # Loading data generated the other tabs.
 meta <- readRDS("data/meta_data.RDS")
 all.expr <- readRDS("data/expression.RDS")
-meta.smp <- readRDS("data/sample_meta.RDS")
+meta.smp <- readRDS("data/sample_meta.RDS") %>%
+    mutate(Classification = ifelse(Classification == "compartimentalized",
+                               "compartmentalized", Classification))
 misty.views.smp <- readRDS("data/misty_views_smp.RDS")
 ranger.results <- readRDS("data/ranger.results.RDS")
 cancer.immune.results <- readRDS("data/cancer.immune.RDS")
 immune.immune.results <- readRDS("data/immune.immune.RDS")
+lmbag.results <- readRDS("data/lmbag.results.RDS")
 ```
 
 # What is MISTy?
@@ -47,14 +50,27 @@ url <- "https://www.dropbox.com/s/5wyh520i1wl62ul/graphical_abstract.png?raw=1"
 # Basic MISTy Workflow
 
 - For each target, first the variance explained (R2) is computed using only 
-intracellular information (intraview) and then information from the spatial 
-context (multiview). 
+intracellular information (intraview, here green) and then information from the spatial 
+context (multiview, here brown). 
+
+```{r fig.height=4, fig.width=10}
+ranger.results$improvements %>%
+  filter(measure %in% c("intra.R2", "multi.R2")) %>%
+  mutate(measure = factor(measure, levels = c("multi.R2", "intra.R2"))) %>%
+  ggplot() +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  labs(y = "Statistic", x = "Target") +
+  scale_color_manual(values = c("multi.R2" = "forestgreen", 
+                                "intra.R2" = "brown"))
+```
+
 
 - If the R2 values for the multiview (gain.R2) is higher, this shows that taking 
-the spatial context (epxression of all other markers in the neighboring cells) 
+the spatial context (expression of all other markers in the neighboring cells) 
 has predictive power for the target.
 
-- Thus, we will first look at the gain in explained variance accross all targets
+- Thus, we will look at the gain in explained variance across all targets
 and samples (see errorbars).
 
 ```{r}
@@ -95,11 +111,11 @@ p2 <- ggplot() +
 gridExtra::grid.arrange(p1, p2, ncol=2)
 ```
 
-- Alternatively one could look at the boxplot containing all gain R2 values
+- Alternatively one could look at the boxplot containing all gain R2 values.
 
 - Especially for cold tumors, the gains in R2 are rather low and according
-to the plot the overall differences between compartimentalized and
-mixed tumors are not to big.
+to the plot the overall differences between compartmentalized and
+mixed tumors are not too big.
 
 ```{r fig.width=6, fig.height=4}
 ranger.results$improvements %>%
@@ -109,18 +125,19 @@ ranger.results$improvements %>%
   ggplot() +
   geom_boxplot(aes(x=Classification, y=value, col=Classification)) +
   scale_color_manual(values = c("cold" = "red",
-                                "compartimentalized" = "forestgreen", 
+                                "compartmentalized" = "forestgreen", 
                                 "mixed" = "blue"))
 ```
 
 
 - So for which targets is the gain in R2 different between
-compartimentalized and mixed samples? Meaning for the prediction 
+compartmentalized and mixed samples? Meaning for the prediction 
 of which targets is it important whether the special context comprises
-a structured or unstructed TME?
+a structured or unstructured TME?
 
-- On top we can see the targets for which the gain in R2 when taking the spatial
-context into consideration is significantly different between 
+- On top we can see the targets for which the gain in R2 is significantly 
+different between compartmentalized and mixed samples. On the bottom the
+multi R2 (total explained variance) is shown.
 
 ```{r fig.height=6, fig.width=7}
 tmp <- ranger.results$improvements %>%
@@ -138,7 +155,7 @@ all.targets <- map(targets, function(t) {
     left_join(meta.smp, by=c("sample" = "SampleID")) %>%
     filter(target == t)
   
-  test.results <- t.test(x = (tmp %>% filter(Classification=="compartimentalized") %>%
+  test.results <- t.test(x = (tmp %>% filter(Classification=="compartmentalized") %>%
               pull(value)),
        y = (tmp %>% filter(Classification=="mixed") %>%
               pull(value)),
@@ -166,14 +183,14 @@ ranger.results$improvements %>%
   mutate(Classification = factor(Classification)) %>%
   ggplot() +
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  scale_color_manual(values = c("compartimentalized" = "forestgreen", "mixed" = "blue")) +
+  scale_color_manual(values = c("compartmentalized" = "forestgreen", "mixed" = "blue")) +
   facet_wrap(~ measure, scales = "free", ncol=1)
 ```
 
 - But what kind of interactions could explaine those differences? Which other
 markers are important for the prediction of those targets?
 
-- Let's contrast the importances of the paraview for compartimentalized and mixed samples
+- Let's contrast the importances of the paraview for compartmentalized and mixed samples.
 
 ```{r}
 cutoff = 0.5
@@ -196,7 +213,7 @@ ranger.results$importances %>%
 
 - For example CD11b seems to be important for the prediction of CD68 in mixed
 samples whereas CD11c seems to beimportant for the prediction of CD68 in
-compartimentalized samples.
+compartmentalized samples.
 
 # Neighborhood Composition Analysis with MISTy
 
@@ -301,11 +318,11 @@ cancer.immune.results$importances %>%
   coord_equal()
 ```
 
-## Tumor -> Immune
+## Immune -> Immune
 
-- What kind of interactions are important here?
+- What kind of interactions are important between immune cells?
 
-- 
+- For example PD1 expression is helpful to predict Lag3 expression.
 
 ```{r fig.height=3, fig.width=6}
 cutoff = 0
@@ -330,6 +347,10 @@ immune.immune.results$importances %>%
 interactions it would be helpful to have more markers that help to decipher
 pathway activity and expression of ligands.
 
+- How does the site/location in the solid tumor where the sample is taken from influence the sample-to-sample heterogeneity? Did you by now had a look at similar samples, 
+and are the effects you saw preserved across different sites in the same
+patient?
+
 # Appendix
 
 - Interestingly the prediction of the other immuno-regulatory proteins apart from
@@ -342,15 +363,15 @@ ranger.results$improvements %>%
   left_join(meta.smp, by=c("sample" = "SampleID")) %>%
   filter(target %in% c("IDO", "PD.L1", "PD1", "Lag3")) %>%
   filter(Classification != "cold") %>%
-  mutate(Classification = factor(Classification)) %>%
+
   ggplot() +
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  scale_color_manual(values = c("compartimentalized" = "forestgreen", "mixed" = "blue")) +
+  scale_color_manual(values = c("compartmentalized" = "forestgreen", "mixed" = "blue")) +
   labs(x = "Target", y = "Gain Explained Variance (R2)")
 ```
 
 - Also for the prediction of cell types, the gain in R2 is much higher
-in compartimentalized samples.
+in compartmentalized samples.
 
 ```{r}
 notumor.misty.results$improvements %>%
@@ -360,6 +381,74 @@ notumor.misty.results$improvements %>%
   ggplot() +
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  scale_color_manual(values = c("compartimentalized" = "forestgreen", 
+  scale_color_manual(values = c("compartmentalized" = "forestgreen", 
                                 "mixed" = "blue")) 
 ```
+
+One could also run MISTy with linear models as base learner in a bagged to
+to increase interpretability. Though this strongly reduced the variance that
+can be explained.
+
+```{r fig.height=4, fig.width=10}
+lmbag.results$improvements %>%
+  filter(measure %in% c("intra.R2", "multi.R2")) %>%
+  mutate(measure = factor(measure, levels = c("multi.R2", "intra.R2"))) %>%
+  ggplot() +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  labs(y = "Statistic", x = "Target") +
+  scale_color_manual(values = c("multi.R2" = "forestgreen", 
+                                "intra.R2" = "brown"))
+```
+
+- The interactions we have looked at before.
+
+```{r fig.width=7, fig.height=7}
+cutoff = 0.5
+lmbag.results$importances %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(Target %in% sign.targets) %>%
+  filter(Classification != "cold") %>%
+  group_by(Classification, view, Predictor, Target) %>%
+  summarise(m.imp = mean(Importance), .groups="drop") %>%
+  filter(view == "para.120") %>%
+  mutate(Importance = ifelse(m.imp < cutoff, 0, m.imp)) %>%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = "black") +
+  scale_fill_gradient2(low = "white", mid = "white", high = "#8DA0CB", midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal() +
+  facet_wrap(~ Classification, ncol=1)
+```
+
+- The grades are not really associated with the performance signature of MISTy 
+in contrast to the tumor structure as seen before.
+
+```{r fig.width=8, fig.height=6}
+p1 <- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp$GRADE))) +
+  labs(col = "Grade", x="PCA-1", y="PCA-2")
+
+p2 <- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp$STAGE))) +
+  labs(col = "Stage", x="PCA-1", y="PCA-2")
+
+p3 <- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp %>%
+                              mutate(STAGE = substring(STAGE, 1, 1)) %>%
+                              pull(STAGE)))) +
+  labs(col = "red. Stage", x="PCA-1", y="PCA-2")
+
+p4 <- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp %>%
+  mutate(TIL_score = ifelse(TIL_score %in% c("NA", "NaN"), 
+                            NA, TIL_score)) %>% pull(TIL_score)))) +
+  labs(col = "TIL Score", x="PCA-1", y="PCA-2")
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)
+```
+
