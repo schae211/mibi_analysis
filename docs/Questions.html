@@ -407,7 +407,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-26
+<strong>Last updated:</strong> 2021-10-27
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -438,16 +438,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreed097ba88d87c292428140f340fb05eebcfc25234targetblankd097ba8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/d097ba88d87c292428140f340fb05eebcfc25234" target="_blank">d097ba8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeddd6715e940b9e8011ec34aef7ab3410df7b3179targetblankddd6715a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/ddd6715e940b9e8011ec34aef7ab3410df7b3179" target="_blank">ddd6715</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreed097ba88d87c292428140f340fb05eebcfc25234targetblankd097ba8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeddd6715e940b9e8011ec34aef7ab3410df7b3179targetblankddd6715a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/d097ba88d87c292428140f340fb05eebcfc25234" target="_blank">d097ba8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/ddd6715e940b9e8011ec34aef7ab3410df7b3179" target="_blank">ddd6715</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -499,6 +499,7 @@ Ignored files:
     Ignored:    analysis/red.composition.analysis/
     Ignored:    analysis/results/
     Ignored:    analysis/test/
+    Ignored:    data/cancer.immune.RDS
     Ignored:    data/cancer.immune.results.RDS
     Ignored:    data/cancer.immune.views.RDS
     Ignored:    data/cellData.csv
@@ -508,11 +509,13 @@ Ignored files:
     Ignored:    data/expression.RDS
     Ignored:    data/expression_per_sample.RDS
     Ignored:    data/graph.clusters.RDS
+    Ignored:    data/immune.immune.RDS
     Ignored:    data/immune.immune.results.RDS
     Ignored:    data/immune.immune.views.RDS
     Ignored:    data/lmbag.results.RDS
     Ignored:    data/meta_data.RDS
     Ignored:    data/misty_views_smp.RDS
+    Ignored:    data/no.tumor.compositon.RDS
     Ignored:    data/patient_class.csv
     Ignored:    data/ranger.results.RDS
     Ignored:    data/raw_tiffs/
@@ -557,6 +560,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/09f21f3cb7d6ac18e535ffb584127bbed2577fb5/analysis/Questions.Rmd" target="_blank">09f21f3</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+see above
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/208354fcafa31c9d478f481e2411d6faa4fbfaf6/docs/Questions.html" target="_blank">208354f</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-26
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1001,12 +1038,16 @@ added questions
 <li>What are the different markers indicative of?</li>
 </ol>
 <ul>
-<li>Tumor-related: EGFR, p53, (also CD138 neoplastic cells?)</li>
+<li>Tumor-related: EGFR, p53, Keratin6, Keratin17, Pan-Keratin,</li>
 <li>Metabolic activity / proliferation: Ki-67, pS6</li>
 <li>Immunoregulatory proteins: PD-1, PD-L1, LAG3, IDO</li>
-<li>Plasma cells: CD138,</li>
-<li>Macrophages: CD209,</li>
-<li>Dendritic Cells (DC): CD11c,</li>
+<li>Macrophages: CD68, CD11b (or pan-myeloid marker)</li>
+<li>Dendritic Cells (DC): CD209, CD11c,</li>
+<li>General Marker for Leukocytes: CD45</li>
+<li>Neutrophils: MPO,</li>
+<li>T-cells: CD4 (helper), CD8 (cytotoxic),</li>
+<li>B-cells: CD20,</li>
+<li>Epithelial cells: CD138</li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
 <li>On which other MIBI datasets could we test MISTy on?</li>
@@ -1023,7 +1064,7 @@ added questions
 <ol start="5" style="list-style-type: decimal">
 <li><p>What factors could explain that we can sometimes explain more or less variance for certain target in certain samples? What drives the performance of MISTy?</p></li>
 <li><p>Is it fair to use the same distance threshold for calculating the juxta and paraview for all the samples, or should the specific threshold depend on some properties of the sample? For example for the juxtaview the median of the following stat: “mean distance to the neighboring cells for each cell i”</p></li>
-<li><p>Why is the gain in explained variance so high for cD138</p></li>
+<li><p>Why is the gain in explained variance so high for CD138, what is this effect driven by?</p></li>
 </ol>
 </div>
 

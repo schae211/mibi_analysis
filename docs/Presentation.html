@@ -522,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeeae25dca56bfb9ab296eb4bc974c3df9d27e1d71targetblankeae25dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/eae25dca56bfb9ab296eb4bc974c3df9d27e1d71" target="_blank">eae25dc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeddd6715e940b9e8011ec34aef7ab3410df7b3179targetblankddd6715a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/ddd6715e940b9e8011ec34aef7ab3410df7b3179" target="_blank">ddd6715</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeeae25dca56bfb9ab296eb4bc974c3df9d27e1d71targetblankeae25dca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeddd6715e940b9e8011ec34aef7ab3410df7b3179targetblankddd6715a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/eae25dca56bfb9ab296eb4bc974c3df9d27e1d71" target="_blank">eae25dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/ddd6715e940b9e8011ec34aef7ab3410df7b3179" target="_blank">ddd6715</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -607,12 +607,6 @@ Ignored files:
     Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
 
-Unstaged changes:
-    Modified:   analysis/Composition.Rmd
-    Modified:   analysis/MIBI_Analysis.Rmd
-    Modified:   analysis/MISTy_Stratification.Rmd
-    Modified:   analysis/Questions.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -650,6 +644,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/ddd6715e940b9e8011ec34aef7ab3410df7b3179/analysis/Presentation.Rmd" target="_blank">ddd6715</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+some new figures in appendix
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/Presentation.html" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -978,17 +1006,140 @@ immune-immune analysis included
 <div id="basic-misty-workflow" class="section level1">
 <h1>Basic MISTy Workflow</h1>
 <ul>
-<li><p>For each target, first the variance explained (R2) is computed using only intracellular information (intraview) and then information from the spatial context (multiview).</p></li>
-<li><p>If the R2 values for the multiview (gain.R2) is higher, this shows that taking the spatial context (epxression of all other markers in the neighboring cells) has predictive power for the target.</p></li>
-<li><p>Thus, we will first look at the gain in explained variance accross all targets and samples (see errorbars).</p></li>
+<li>For each target, first the variance explained (R2) is computed using only intracellular information (intraview, here green) and then information from the spatial context (multiview, here brown).</li>
+</ul>
+<pre class="r"><code>ranger.results$improvements %&gt;%
+  filter(measure %in% c(&quot;intra.R2&quot;, &quot;multi.R2&quot;)) %&gt;%
+  mutate(measure = factor(measure, levels = c(&quot;multi.R2&quot;, &quot;intra.R2&quot;))) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  labs(y = &quot;Statistic&quot;, x = &quot;Target&quot;) +
+  scale_color_manual(values = c(&quot;multi.R2&quot; = &quot;forestgreen&quot;, 
+                                &quot;intra.R2&quot; = &quot;brown&quot;))</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-2-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li><p>If the R2 values for the multiview (gain.R2) is higher, this shows that taking the spatial context (expression of all other markers in the neighboring cells) has predictive power for the target.</p></li>
+<li><p>Thus, we will look at the gain in explained variance across all targets and samples (see errorbars).</p></li>
 </ul>
 <pre class="r"><code>plot_improvement_stats(ranger.results, &quot;gain.R2&quot;)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-3-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li>We might also be interested in whether the direct neighbors (juxtaview) or the broad spatial context (paraview) is more important?</li>
 </ul>
 <pre class="r"><code>plot_view_contributions(ranger.results)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-4-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li><p>Furthermore, we could ask why there is a large variability between the samples in the gain in R2 for the different target. What drives those differences?</p></li>
 <li><p>One component is the tumor structor as we can see in the PCA of the performance signature (which basically contains the gain in R2 for all samples for all targets).</p></li>
@@ -1009,10 +1160,47 @@ p2 &lt;- ggplot() +
   labs(col = &quot;Log10 Mixing Score&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
 
 gridExtra::grid.arrange(p1, p2, ncol=2)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-4-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-5-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-5-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
-<li><p>Alternatively one could look at the boxplot containing all gain R2 values</p></li>
-<li><p>Especially for cold tumors, the gains in R2 are rather low and according to the plot the overall differences between compartimentalized and mixed tumors are not to big.</p></li>
+<li><p>Alternatively one could look at the boxplot containing all gain R2 values.</p></li>
+<li><p>Especially for cold tumors, the gains in R2 are rather low and according to the plot the overall differences between compartmentalized and mixed tumors are not too big.</p></li>
 </ul>
 <pre class="r"><code>ranger.results$improvements %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;% 
@@ -1021,12 +1209,49 @@ gridExtra::grid.arrange(p1, p2, ncol=2)</code></pre>
   ggplot() +
   geom_boxplot(aes(x=Classification, y=value, col=Classification)) +
   scale_color_manual(values = c(&quot;cold&quot; = &quot;red&quot;,
-                                &quot;compartimentalized&quot; = &quot;forestgreen&quot;, 
+                                &quot;compartmentalized&quot; = &quot;forestgreen&quot;, 
                                 &quot;mixed&quot; = &quot;blue&quot;))</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-6-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
-<li><p>So for which targets is the gain in R2 different between compartimentalized and mixed samples? Meaning for the prediction of which targets is it important whether the special context comprises a structured or unstructed TME?</p></li>
-<li><p>On top we can see the targets for which the gain in R2 when taking the spatial context into consideration is significantly different between</p></li>
+<li><p>So for which targets is the gain in R2 different between compartmentalized and mixed samples? Meaning for the prediction of which targets is it important whether the special context comprises a structured or unstructured TME?</p></li>
+<li><p>On top we can see the targets for which the gain in R2 is significantly different between compartmentalized and mixed samples. On the bottom the multi R2 (total explained variance) is shown.</p></li>
 </ul>
 <pre class="r"><code>tmp &lt;- ranger.results$improvements %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;% 
@@ -1043,7 +1268,7 @@ all.targets &lt;- map(targets, function(t) {
     left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
     filter(target == t)
   
-  test.results &lt;- t.test(x = (tmp %&gt;% filter(Classification==&quot;compartimentalized&quot;) %&gt;%
+  test.results &lt;- t.test(x = (tmp %&gt;% filter(Classification==&quot;compartmentalized&quot;) %&gt;%
               pull(value)),
        y = (tmp %&gt;% filter(Classification==&quot;mixed&quot;) %&gt;%
               pull(value)),
@@ -1071,12 +1296,49 @@ ranger.results$improvements %&gt;%
   mutate(Classification = factor(Classification)) %&gt;%
   ggplot() +
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  scale_color_manual(values = c(&quot;compartimentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
+  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
   facet_wrap(~ measure, scales = &quot;free&quot;, ncol=1)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-7-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li><p>But what kind of interactions could explaine those differences? Which other markers are important for the prediction of those targets?</p></li>
-<li><p>Let’s contrast the importances of the paraview for compartimentalized and mixed samples</p></li>
+<li><p>Let’s contrast the importances of the paraview for compartmentalized and mixed samples.</p></li>
 </ul>
 <pre class="r"><code>cutoff = 0.5
 ranger.results$importances %&gt;%
@@ -1094,9 +1356,46 @@ ranger.results$importances %&gt;%
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   coord_equal() +
   facet_wrap(~ Classification, ncol=1)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-8-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
-<li>For example CD11b seems to be important for the prediction of CD68 in mixed samples whereas CD11c seems to beimportant for the prediction of CD68 in compartimentalized samples.</li>
+<li>For example CD11b seems to be important for the prediction of CD68 in mixed samples whereas CD11c seems to beimportant for the prediction of CD68 in compartmentalized samples.</li>
 </ul>
 </div>
 <div id="neighborhood-composition-analysis-with-misty" class="section level1">
@@ -1108,14 +1407,88 @@ ranger.results$importances %&gt;%
 </ul>
 <pre class="r"><code>notumor.misty.results &lt;- readRDS(&quot;data/no.tumor.compositon.RDS&quot;)
 plot_improvement_stats(notumor.misty.results, &quot;gain.R2&quot;)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-9-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li><p>What kind of interactions explain those results?</p></li>
 <li><p>We can see kind of see there is a structure in the immune response. The levels of macrophages are informative about the presence/absense of other cell types (also macrophages are by far the most abundant immune cell type).</p></li>
 <li><p>However, interpreting this plot is not straight forward as those interaction can be very complex (non-linear)</p></li>
 </ul>
 <pre class="r"><code>plot_interaction_heatmap(notumor.misty.results, &quot;para.50&quot;, cutoff = 0)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-10-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li><p>For example we see the mutual interaction between CD4 T-cells and B-cells, which we could investigate by actually looking at the samples (which have rather high numbers of both cell types).</p></li>
 <li><p>It seems like there is some coordinated though not in all samples!</p></li>
@@ -1147,7 +1520,44 @@ meta %&gt;%
   geom_point(aes(x=row, y=col, col=class), size=.1) +
   facet_wrap(~ SampleID, ncol=4) +
   guides(colour = guide_legend(override.aes = list(size = 2)))</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-10-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-11-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-11-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cell-type-specific-analysis" class="section level1">
 <h1>Cell Type Specific Analysis</h1>
@@ -1158,7 +1568,44 @@ meta %&gt;%
 <li><p>Therefore we look at immune cells but only use tumor cell to calculate the paraview</p></li>
 </ul>
 <pre class="r"><code>plot_improvement_stats(cancer.immune.results, &quot;gain.R2&quot;)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-12-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li><p>Looking at the interactions focusing for example only on the immuno regulatory proteins</p></li>
 <li><p>There is no single important predictor, rather many predictors are important for every immuno-regulatory proteins</p></li>
@@ -1178,13 +1625,50 @@ cancer.immune.results$importances %&gt;%
   scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   coord_equal()</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-13-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="tumor---immune-1" class="section level2">
-<h2>Tumor -&gt; Immune</h2>
+</div>
+</div>
+<div id="immune---immune" class="section level2">
+<h2>Immune -&gt; Immune</h2>
 <ul>
-<li><p>What kind of interactions are important here?</p></li>
-<li></li>
+<li><p>What kind of interactions are important between immune cells?</p></li>
+<li><p>For example PD1 expression is helpful to predict Lag3 expression.</p></li>
 </ul>
 <pre class="r"><code>cutoff = 0
 immune.immune.results$importances %&gt;%
@@ -1200,13 +1684,51 @@ immune.immune.results$importances %&gt;%
   scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   coord_equal()</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-14-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="thoughs" class="section level1">
 <h1>Thoughs</h1>
 <ul>
-<li>Since MISTy was rather developed to probe intra- and especially intercellular interactions it would be helpful to have more markers that help to decipher pathway activity and expression of ligands.</li>
+<li><p>Since MISTy was rather developed to probe intra- and especially intercellular interactions it would be helpful to have more markers that help to decipher pathway activity and expression of ligands.</p></li>
+<li><p>How does the site/location in the solid tumor where the sample is taken from influence the sample-to-sample heterogeneity? Did you by now had a look at similar samples, and are the effects you saw preserved across different sites in the same patient?</p></li>
 </ul>
 </div>
 <div id="appendix" class="section level1">
@@ -1220,14 +1742,51 @@ immune.immune.results$importances %&gt;%
   left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
   filter(target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
   filter(Classification != &quot;cold&quot;) %&gt;%
-  mutate(Classification = factor(Classification)) %&gt;%
+
   ggplot() +
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  scale_color_manual(values = c(&quot;compartimentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
+  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
   labs(x = &quot;Target&quot;, y = &quot;Gain Explained Variance (R2)&quot;)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-15-1.png" target="_blank">5ccce68</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
-<li>Also for the prediction of cell types, the gain in R2 is much higher in compartimentalized samples.</li>
+<li>Also for the prediction of cell types, the gain in R2 is much higher in compartmentalized samples.</li>
 </ul>
 <pre class="r"><code>notumor.misty.results$improvements %&gt;%
   mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
@@ -1236,9 +1795,68 @@ immune.immune.results$importances %&gt;%
   ggplot() +
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  scale_color_manual(values = c(&quot;compartimentalized&quot; = &quot;forestgreen&quot;, 
+  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, 
                                 &quot;mixed&quot; = &quot;blue&quot;)) </code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>One could also run MISTy with linear models as base learner in a bagged to to increase interpretability. Though this strongly reduced the variance that can be explained.</p>
+<pre class="r"><code>lmbag.results$improvements %&gt;%
+  filter(measure %in% c(&quot;intra.R2&quot;, &quot;multi.R2&quot;)) %&gt;%
+  mutate(measure = factor(measure, levels = c(&quot;multi.R2&quot;, &quot;intra.R2&quot;))) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  labs(y = &quot;Statistic&quot;, x = &quot;Target&quot;) +
+  scale_color_manual(values = c(&quot;multi.R2&quot; = &quot;forestgreen&quot;, 
+                                &quot;intra.R2&quot; = &quot;brown&quot;))</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
+<ul>
+<li>The interactions we have looked at before.</li>
+</ul>
+<pre class="r"><code>cutoff = 0.5
+lmbag.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% sign.targets) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal() +
+  facet_wrap(~ Classification, ncol=1)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>The grades are not really associated with the performance signature of MISTy in contrast to the tumor structure as seen before.</li>
+</ul>
+<pre class="r"><code>p1 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp$GRADE))) +
+  labs(col = &quot;Grade&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
+
+p2 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp$STAGE))) +
+  labs(col = &quot;Stage&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
+
+p3 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp %&gt;%
+                              mutate(STAGE = substring(STAGE, 1, 1)) %&gt;%
+                              pull(STAGE)))) +
+  labs(col = &quot;red. Stage&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
+
+p4 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp %&gt;%
+  mutate(TIL_score = ifelse(TIL_score %in% c(&quot;NA&quot;, &quot;NaN&quot;), 
+                            NA, TIL_score)) %&gt;% pull(TIL_score)))) +
+  labs(col = &quot;TIL Score&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
+gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-19-1.png" width="768" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
