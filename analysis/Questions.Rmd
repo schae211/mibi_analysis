@@ -12,12 +12,16 @@ heterogeneity in the composition and architecture of the tumor-immune
 microenvironment and its relationship to the molecular attributes of the tumor.
 
 2. What are the different markers indicative of?
-- Tumor-related: EGFR, p53, (also CD138 neoplastic cells?)
+- Tumor-related: EGFR, p53, Keratin6, Keratin17, Pan-Keratin,
 - Metabolic activity / proliferation: Ki-67, pS6
 - Immunoregulatory proteins: PD-1, PD-L1, LAG3, IDO
-- Plasma cells: CD138,
-- Macrophages: CD209, 
-- Dendritic Cells (DC): CD11c,
+- Macrophages: CD68, CD11b (or pan-myeloid marker)
+- Dendritic Cells (DC): CD209, CD11c,
+- General Marker for Leukocytes: CD45
+- Neutrophils: MPO, 
+- T-cells: CD4 (helper), CD8 (cytotoxic), 
+- B-cells: CD20, 
+- Epithelial cells: CD138
 
 3. On which other MIBI datasets could we test MISTy on?
 - Spatio-temporal coordination at the maternal-fetal interface promotes 
@@ -38,4 +42,5 @@ depend on some properties of the sample? For example for the
 juxtaview the median of the following stat: "mean distance to the neighboring 
 cells for each cell i"
 
-7. Why is the gain in explained variance so high for cD138
+7. Why is the gain in explained variance so high for CD138, what is this
+effect driven by?

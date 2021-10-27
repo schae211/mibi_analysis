@@ -1621,5 +1621,6 @@ saveRDS(expr, "data/expression.RDS")
 saveRDS(expr.smp, "data/expression_per_sample.RDS")
 saveRDS(meta, "data/meta_data.RDS")
 saveRDS(sample.meta, "data/sample_meta.RDS")
+saveRDS(ranger.results, "data/ranger.results.RDS")
 ```
 

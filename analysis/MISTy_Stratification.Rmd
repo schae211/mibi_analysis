@@ -494,7 +494,7 @@ Paraview:
 
 ```{r fig.width=6, fig.height=6}
 mistyR::plot_interaction_heatmap(cancer.immune.results, view = "c.para.120",
-                                 clean = TRUE, cutoff = .8)
+                                 clean = TRUE, cutoff = .5)
 ```
 
 ### Signatures
@@ -617,4 +617,11 @@ ggplot() +
 fviz_pca_var(immune.immune.imp.pca, col.var="contrib",
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE)
+```
+
+# Save Results
+
+```{r}
+saveRDS(cancer.immune.results, "data/cancer.immune.RDS")
+saveRDS(immune.immune.results, "data/immune.immune.RDS")
 ```

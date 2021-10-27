@@ -580,7 +580,7 @@ plot_view_contributions(notumor.misty.results)
 ```
 
 ```{r}
-plot_interaction_heatmap(notumor.misty.results, "para.50", cutoff = .4)
+plot_interaction_heatmap(notumor.misty.results, "para.50", cutoff = .0)
 ```
 
 
@@ -683,4 +683,9 @@ meta %>%
 
 And in fact one can see that CD4 T and B cells colocalize.
 
+# Save Results
+
+```{r}
+saveRDS(notumor.misty.results, "data/no.tumor.compositon.RDS")
+```
 
