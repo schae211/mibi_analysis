@@ -407,7 +407,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-26
+<strong>Last updated:</strong> 2021-10-27
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -522,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreed097ba88d87c292428140f340fb05eebcfc25234targetblankd097ba8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/d097ba88d87c292428140f340fb05eebcfc25234" target="_blank">d097ba8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeeae25dca56bfb9ab296eb4bc974c3df9d27e1d71targetblankeae25dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/eae25dca56bfb9ab296eb4bc974c3df9d27e1d71" target="_blank">eae25dc</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreed097ba88d87c292428140f340fb05eebcfc25234targetblankd097ba8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeeae25dca56bfb9ab296eb4bc974c3df9d27e1d71targetblankeae25dca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/d097ba88d87c292428140f340fb05eebcfc25234" target="_blank">d097ba8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/eae25dca56bfb9ab296eb4bc974c3df9d27e1d71" target="_blank">eae25dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -583,6 +583,7 @@ Ignored files:
     Ignored:    analysis/red.composition.analysis/
     Ignored:    analysis/results/
     Ignored:    analysis/test/
+    Ignored:    data/cancer.immune.RDS
     Ignored:    data/cancer.immune.results.RDS
     Ignored:    data/cancer.immune.views.RDS
     Ignored:    data/cellData.csv
@@ -592,17 +593,25 @@ Ignored files:
     Ignored:    data/expression.RDS
     Ignored:    data/expression_per_sample.RDS
     Ignored:    data/graph.clusters.RDS
+    Ignored:    data/immune.immune.RDS
     Ignored:    data/immune.immune.results.RDS
     Ignored:    data/immune.immune.views.RDS
     Ignored:    data/lmbag.results.RDS
     Ignored:    data/meta_data.RDS
     Ignored:    data/misty_views_smp.RDS
+    Ignored:    data/no.tumor.compositon.RDS
     Ignored:    data/patient_class.csv
     Ignored:    data/ranger.results.RDS
     Ignored:    data/raw_tiffs/
     Ignored:    data/sample_meta.RDS
     Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
+
+Unstaged changes:
+    Modified:   analysis/Composition.Rmd
+    Modified:   analysis/MIBI_Analysis.Rmd
+    Modified:   analysis/MISTy_Stratification.Rmd
+    Modified:   analysis/Questions.Rmd
 
 </code></pre>
 <p>
@@ -641,6 +650,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/eae25dca56bfb9ab296eb4bc974c3df9d27e1d71/analysis/Presentation.Rmd" target="_blank">eae25dc</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+created presentation
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/208354fcafa31c9d478f481e2411d6faa4fbfaf6/docs/Presentation.html" target="_blank">208354f</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-26
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -920,29 +963,282 @@ immune-immune analysis included
 </div>
 </div>
 </div>
-<div id="set-up" class="section level1">
-<h1>Set up</h1>
-<p>Messages will be hidden and the output collapsed to make the Rmd more clear.</p>
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
-knitr::opts_knit$set(root.dir = &quot;~/Saez/workflowr_projects/mibi_analysis/&quot;)</code></pre>
-<p>Loaded packages.</p>
-<pre class="r"><code>library(mistyR)
-library(future)
-plan(&quot;multisession&quot;, workers=14)
-library(tidyverse)</code></pre>
-<p>Loading data generated in MIBI_Analysis.Rmd</p>
-<pre class="r"><code>meta &lt;- readRDS(&quot;data/meta_data.RDS&quot;)
-all.expr &lt;- readRDS(&quot;data/expression.RDS&quot;)
-meta.smp &lt;- readRDS(&quot;data/sample_meta.RDS&quot;)
-misty.views.smp &lt;- readRDS(&quot;data/misty_views_smp.RDS&quot;)</code></pre>
-</div>
-<div id="what-to-include" class="section level1">
-<h1>What to include?</h1>
+<div id="what-is-misty" class="section level1">
+<h1>What is MISTy?</h1>
 <ul>
-<li><p>Predicting the identify of tumor and B cells works much better in compartimentalized (structured) tumor microenvironments (TMEs).</p></li>
-<li><p>Predicting the expression of immuno-regulatory proteins on immune cells using the epxression of neighboring tumor cells also works better in compartimentalized TMEs.</p></li>
+<li><p>MISTy is an explainable machine learning framework to probe intra- and intercellular marker interactions.</p></li>
+<li><p>Can we predict the expression of marker X using the information about the expression of marker Y within a given cell and in the neighboring cells?</p></li>
+<li><p>The assumption being that if this is the case, there is some sort of relationship between marker X and Y (which has neither to be causal nor linear).</p></li>
+<li><p>Highly flexible framework, which allows us for example to specifically look at the interaction of certain cell types (e.g. How much can the expression of markers in adjacent tumor cells explain the expression of markers in immune cells).</p></li>
+</ul>
+<center>
+<img src="https://www.dropbox.com/s/5wyh520i1wl62ul/graphical_abstract.png?raw=1">
+</center>
+</div>
+<div id="basic-misty-workflow" class="section level1">
+<h1>Basic MISTy Workflow</h1>
+<ul>
+<li><p>For each target, first the variance explained (R2) is computed using only intracellular information (intraview) and then information from the spatial context (multiview).</p></li>
+<li><p>If the R2 values for the multiview (gain.R2) is higher, this shows that taking the spatial context (epxression of all other markers in the neighboring cells) has predictive power for the target.</p></li>
+<li><p>Thus, we will first look at the gain in explained variance accross all targets and samples (see errorbars).</p></li>
+</ul>
+<pre class="r"><code>plot_improvement_stats(ranger.results, &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>We might also be interested in whether the direct neighbors (juxtaview) or the broad spatial context (paraview) is more important?</li>
+</ul>
+<pre class="r"><code>plot_view_contributions(ranger.results)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>Furthermore, we could ask why there is a large variability between the samples in the gain in R2 for the different target. What drives those differences?</p></li>
+<li><p>One component is the tumor structor as we can see in the PCA of the performance signature (which basically contains the gain in R2 for all samples for all targets).</p></li>
+</ul>
+<pre class="r"><code>ranger.perf.sig &lt;- mistyR::extract_signature(ranger.results, &quot;performance&quot;)
+ranger.perf.pca &lt;- stats::prcomp(ranger.perf.sig %&gt;% select(-sample))
+
+p1 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp$Classification))) +
+  labs(col = &quot;Classification&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
+
+p2 &lt;- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=log10(meta.smp$ratio.tumor.immune))) +
+  scale_color_viridis_c() +
+  labs(col = &quot;Log10 Mixing Score&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
+
+gridExtra::grid.arrange(p1, p2, ncol=2)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-4-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>Alternatively one could look at the boxplot containing all gain R2 values</p></li>
+<li><p>Especially for cold tumors, the gains in R2 are rather low and according to the plot the overall differences between compartimentalized and mixed tumors are not to big.</p></li>
+</ul>
+<pre class="r"><code>ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=Classification, y=value, col=Classification)) +
+  scale_color_manual(values = c(&quot;cold&quot; = &quot;red&quot;,
+                                &quot;compartimentalized&quot; = &quot;forestgreen&quot;, 
+                                &quot;mixed&quot; = &quot;blue&quot;))</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>So for which targets is the gain in R2 different between compartimentalized and mixed samples? Meaning for the prediction of which targets is it important whether the special context comprises a structured or unstructed TME?</p></li>
+<li><p>On top we can see the targets for which the gain in R2 when taking the spatial context into consideration is significantly different between</p></li>
+</ul>
+<pre class="r"><code>tmp &lt;- ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;))
+
+targets &lt;- tmp$target %&gt;% unique
+
+# t.test for all targets
+all.targets &lt;- map(targets, function(t) {
+  tmp &lt;- ranger.results$improvements %&gt;%
+    filter(measure == &quot;gain.R2&quot;) %&gt;% 
+    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+    left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+    filter(target == t)
+  
+  test.results &lt;- t.test(x = (tmp %&gt;% filter(Classification==&quot;compartimentalized&quot;) %&gt;%
+              pull(value)),
+       y = (tmp %&gt;% filter(Classification==&quot;mixed&quot;) %&gt;%
+              pull(value)),
+       alternative = &quot;two.sided&quot;)
+  
+  list(&quot;target&quot; = t, &quot;t.test&quot; = test.results)
+})
+
+# looking at the boxplots for each target
+sign.targets &lt;- map(all.targets, function(target.test) {
+  if (target.test$t.test$p.value &lt; 0.05) {
+    return(target.test$target)
+  }
+}) %&gt;% unlist
+
+ranger.results$improvements %&gt;%
+  filter(measure %in% c(&quot;gain.R2&quot;, &quot;multi.R2&quot;)) %&gt;% 
+  mutate(measure = ifelse(measure == &quot;gain.R2&quot;,
+                          &quot;Gain Explained Variance (R2) [%]&quot;,
+                          &quot;Total Explained Variance (R2)&quot;)) %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(target %in% sign.targets) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  mutate(Classification = factor(Classification)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  scale_color_manual(values = c(&quot;compartimentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
+  facet_wrap(~ measure, scales = &quot;free&quot;, ncol=1)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>But what kind of interactions could explaine those differences? Which other markers are important for the prediction of those targets?</p></li>
+<li><p>Let’s contrast the importances of the paraview for compartimentalized and mixed samples</p></li>
+</ul>
+<pre class="r"><code>cutoff = 0.5
+ranger.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% sign.targets) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal() +
+  facet_wrap(~ Classification, ncol=1)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>For example CD11b seems to be important for the prediction of CD68 in mixed samples whereas CD11c seems to beimportant for the prediction of CD68 in compartimentalized samples.</li>
+</ul>
+</div>
+<div id="neighborhood-composition-analysis-with-misty" class="section level1">
+<h1>Neighborhood Composition Analysis with MISTy</h1>
+<ul>
+<li><p>One can also use MISTy to predict the identity of cells using the neighboring cells. Therefore, we one-hot encode the cell types and bypass modeling of the intraview.</p></li>
+<li><p>Here I excluded Tumor cells and cells which are not really present in every sample.</p></li>
+<li><p>Let’s look at the gain in R2 again to see whether it works</p></li>
+</ul>
+<pre class="r"><code>notumor.misty.results &lt;- readRDS(&quot;data/no.tumor.compositon.RDS&quot;)
+plot_improvement_stats(notumor.misty.results, &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>What kind of interactions explain those results?</p></li>
+<li><p>We can see kind of see there is a structure in the immune response. The levels of macrophages are informative about the presence/absense of other cell types (also macrophages are by far the most abundant immune cell type).</p></li>
+<li><p>However, interpreting this plot is not straight forward as those interaction can be very complex (non-linear)</p></li>
+</ul>
+<pre class="r"><code>plot_interaction_heatmap(notumor.misty.results, &quot;para.50&quot;, cutoff = 0)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>For example we see the mutual interaction between CD4 T-cells and B-cells, which we could investigate by actually looking at the samples (which have rather high numbers of both cell types).</p></li>
+<li><p>It seems like there is some coordinated though not in all samples!</p></li>
+</ul>
+<pre class="r"><code>df &lt;- meta %&gt;%
+  group_by(SampleID) %&gt;%
+  count(immuneGroup) %&gt;%
+  ungroup() %&gt;%
+  pivot_wider(names_from=immuneGroup, values_from=n)
+
+q75_cd4 &lt;- quantile(df$`CD4 T`, .6, na.rm=TRUE)
+q75_b &lt;- quantile(df$B, .6, na.rm=TRUE)
+
+sample.oi &lt;- df %&gt;%
+  filter(`CD4 T` &gt;= q75_cd4, B &gt;= q75_b) %&gt;%
+  pull(SampleID)
+
+meta %&gt;%
+  mutate(SampleID = as.character(SampleID)) %&gt;%
+  left_join(meta.smp, by=&quot;SampleID&quot;) %&gt;%
+  filter(SampleID %in% sample.oi) %&gt;%
+  mutate(class = case_when(
+    Group %in% c(&quot;Keratin-positive tumor&quot;, &quot;Tumor&quot;) ~ &quot;Tumor&quot;,
+    !(immuneGroup %in% c(&quot;B&quot;, &quot;CD4 T&quot;)) ~ &quot;Ignore&quot;,
+    TRUE ~ immuneGroup
+  )) %&gt;%
+  filter(class != &quot;Ignore&quot;) %&gt;%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=class), size=.1) +
+  facet_wrap(~ SampleID, ncol=4) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-10-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="cell-type-specific-analysis" class="section level1">
+<h1>Cell Type Specific Analysis</h1>
+<div id="tumor---immune" class="section level2">
+<h2>Tumor -&gt; Immune</h2>
+<ul>
+<li><p>Using MISTy to uncover interactions between tumor and immune Cells.</p></li>
+<li><p>Therefore we look at immune cells but only use tumor cell to calculate the paraview</p></li>
+</ul>
+<pre class="r"><code>plot_improvement_stats(cancer.immune.results, &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li><p>Looking at the interactions focusing for example only on the immuno regulatory proteins</p></li>
+<li><p>There is no single important predictor, rather many predictors are important for every immuno-regulatory proteins</p></li>
+<li><p>But some predictors are specific, such as EGFR for PD-L1.</p></li>
+</ul>
+<pre class="r"><code>cutoff = 0
+cancer.immune.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;c.para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal()</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="tumor---immune-1" class="section level2">
+<h2>Tumor -&gt; Immune</h2>
+<ul>
+<li><p>What kind of interactions are important here?</p></li>
 <li></li>
 </ul>
+<pre class="r"><code>cutoff = 0
+immune.immune.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;i.para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal()</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="thoughs" class="section level1">
+<h1>Thoughs</h1>
+<ul>
+<li>Since MISTy was rather developed to probe intra- and especially intercellular interactions it would be helpful to have more markers that help to decipher pathway activity and expression of ligands.</li>
+</ul>
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<ul>
+<li>Interestingly the prediction of the other immuno-regulatory proteins apart from PD-1 did not depend on the tumor structure.</li>
+</ul>
+<pre class="r"><code>ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  mutate(Classification = factor(Classification)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  scale_color_manual(values = c(&quot;compartimentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
+  labs(x = &quot;Target&quot;, y = &quot;Gain Explained Variance (R2)&quot;)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Also for the prediction of cell types, the gain in R2 is much higher in compartimentalized samples.</li>
+</ul>
+<pre class="r"><code>notumor.misty.results$improvements %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_color_manual(values = c(&quot;compartimentalized&quot; = &quot;forestgreen&quot;, 
+                                &quot;mixed&quot; = &quot;blue&quot;)) </code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -971,28 +1267,31 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.7     purrr_0.3.4    
- [5] readr_2.0.2     tidyr_1.1.4     tibble_3.1.5    ggplot2_3.3.5  
- [9] tidyverse_1.3.1 future_1.22.1   mistyR_1.1.13   workflowr_1.6.2
+ [1] factoextra_1.0.7 forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7     
+ [5] purrr_0.3.4      readr_2.0.2      tidyr_1.1.4      tibble_3.1.5    
+ [9] ggplot2_3.3.5    tidyverse_1.3.1  future_1.22.1    mistyR_1.1.13   
+[13] workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.7        lubridate_1.8.0   listenv_0.8.0     assertthat_0.2.1 
- [5] rprojroot_2.0.2   digest_0.6.28     utf8_1.2.2        parallelly_1.28.1
- [9] cellranger_1.1.0  R6_2.5.1          backports_1.2.1   reprex_2.0.1     
-[13] evaluate_0.14     httr_1.4.2        highr_0.9         pillar_1.6.3     
-[17] rlang_0.4.11      readxl_1.3.1      rstudioapi_0.13   whisker_0.4      
-[21] jquerylib_0.1.4   rmarkdown_2.11    munsell_0.5.0     broom_0.7.9      
-[25] compiler_4.1.1    httpuv_1.6.3      modelr_0.1.8      xfun_0.26        
-[29] pkgconfig_2.0.3   globals_0.14.0    htmltools_0.5.2   tidyselect_1.1.1 
-[33] codetools_0.2-18  fansi_0.5.0       withr_2.4.2       tzdb_0.1.2       
-[37] crayon_1.4.1      dbplyr_2.1.1      later_1.3.0       grid_4.1.1       
-[41] jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.1   DBI_1.1.1        
-[45] git2r_0.28.0      magrittr_2.0.1    scales_1.1.1      cli_3.0.1        
-[49] stringi_1.7.5     fs_1.5.0          promises_1.2.0.1  xml2_1.3.2       
-[53] bslib_0.3.1       ellipsis_0.3.2    generics_0.1.0    vctrs_0.3.8      
-[57] tools_4.1.1       glue_1.4.2        hms_1.1.1         parallel_4.1.1   
-[61] fastmap_1.1.0     yaml_2.2.1        colorspace_2.0-2  rvest_1.0.1      
-[65] knitr_1.36        haven_2.4.3       sass_0.4.0       </code></pre>
+ [1] httr_1.4.2         sass_0.4.0         jsonlite_1.7.2     viridisLite_0.4.0 
+ [5] modelr_0.1.8       bslib_0.3.1        assertthat_0.2.1   highr_0.9         
+ [9] cellranger_1.1.0   yaml_2.2.1         ggrepel_0.9.1      globals_0.14.0    
+[13] pillar_1.6.3       backports_1.2.1    glue_1.4.2         digest_0.6.28     
+[17] RColorBrewer_1.1-2 promises_1.2.0.1   rvest_1.0.1        colorspace_2.0-2  
+[21] htmltools_0.5.2    httpuv_1.6.3       pkgconfig_2.0.3    broom_0.7.9       
+[25] listenv_0.8.0      haven_2.4.3        scales_1.1.1       whisker_0.4       
+[29] later_1.3.0        tzdb_0.1.2         git2r_0.28.0       generics_0.1.0    
+[33] farver_2.1.0       ellipsis_0.3.2     withr_2.4.2        cli_3.0.1         
+[37] magrittr_2.0.1     crayon_1.4.1       readxl_1.3.1       evaluate_0.14     
+[41] fs_1.5.0           fansi_0.5.0        parallelly_1.28.1  xml2_1.3.2        
+[45] tools_4.1.1        hms_1.1.1          lifecycle_1.0.1    munsell_0.5.0     
+[49] reprex_2.0.1       compiler_4.1.1     jquerylib_0.1.4    rlang_0.4.11      
+[53] grid_4.1.1         rstudioapi_0.13    labeling_0.4.2     rmarkdown_2.11    
+[57] gtable_0.3.0       codetools_0.2-18   DBI_1.1.1          R6_2.5.1          
+[61] gridExtra_2.3      lubridate_1.8.0    knitr_1.36         fastmap_1.1.0     
+[65] utf8_1.2.2         rprojroot_2.0.2    stringi_1.7.5      parallel_4.1.1    
+[69] Rcpp_1.0.7         vctrs_0.3.8        dbplyr_2.1.1       tidyselect_1.1.1  
+[73] xfun_0.26         </code></pre>
 </div>
 </div>
 
