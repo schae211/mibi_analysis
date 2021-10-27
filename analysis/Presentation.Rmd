@@ -2,45 +2,364 @@
 title: "Presentation"
 ---
 
-# Set up
-
-Messages will be hidden and the output collapsed to make the Rmd more clear.
-
-```{r setup}
+```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
 knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
-```
 
-Loaded packages.
-
-```{r}
-library(mistyR)
-library(future)
+suppressPackageStartupMessages(library(mistyR))
+suppressPackageStartupMessages(library(future))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(factoextra))
 plan("multisession", workers=14)
-library(tidyverse)
-```
 
-Loading data generated in MIBI_Analysis.Rmd
-
-```{r}
+# Loading data generated the other tabs.
 meta <- readRDS("data/meta_data.RDS")
 all.expr <- readRDS("data/expression.RDS")
 meta.smp <- readRDS("data/sample_meta.RDS")
 misty.views.smp <- readRDS("data/misty_views_smp.RDS")
+ranger.results <- readRDS("data/ranger.results.RDS")
+cancer.immune.results <- readRDS("data/cancer.immune.RDS")
+immune.immune.results <- readRDS("data/immune.immune.RDS")
 ```
 
-# What to include?
+# What is MISTy?
 
- * Predicting the identify of tumor and B cells works much better in 
-compartimentalized (structured) tumor microenvironments (TMEs).
+- MISTy is an explainable machine learning framework to probe intra- and 
+intercellular marker interactions. 
 
- * Predicting the expression of immuno-regulatory proteins on immune cells using
-the epxression of neighboring tumor cells also works better in 
-compartimentalized TMEs.
+- Can we predict the expression of marker X using the information about the 
+expression of marker Y within a given cell and in the neighboring cells? 
 
- *
+- The assumption being that if this is the case, there is some sort of relationship
+between marker X and Y (which has neither to be causal nor linear).
+
+- Highly flexible framework, which allows us for example to specifically look
+at the interaction of certain cell types (e.g. How much can the expression of markers
+in adjacent tumor cells explain the expression of markers in immune cells).
+
+```{r, echo=FALSE}
+# Define variable containing url
+url <- "https://www.dropbox.com/s/5wyh520i1wl62ul/graphical_abstract.png?raw=1"
+```
+
+<center><img src="`r url`"></center>
+
+# Basic MISTy Workflow
+
+- For each target, first the variance explained (R2) is computed using only 
+intracellular information (intraview) and then information from the spatial 
+context (multiview). 
+
+- If the R2 values for the multiview (gain.R2) is higher, this shows that taking 
+the spatial context (epxression of all other markers in the neighboring cells) 
+has predictive power for the target.
+
+- Thus, we will first look at the gain in explained variance accross all targets
+and samples (see errorbars).
+
+```{r}
+plot_improvement_stats(ranger.results, "gain.R2")
+```
+
+- We might also be interested in whether the direct neighbors (juxtaview) 
+or the broad spatial context (paraview) is more important?
+
+```{r}
+plot_view_contributions(ranger.results)
+```
+
+- Furthermore, we could ask why there is a large variability
+between the samples in the gain in R2 for the different target. What drives
+those differences?
+
+- One component is the tumor structor as we can see in the PCA of the
+performance signature (which basically contains the gain in R2 for all samples
+for all targets).
+
+```{r fig.height=4, fig.width=12}
+ranger.perf.sig <- mistyR::extract_signature(ranger.results, "performance")
+ranger.perf.pca <- stats::prcomp(ranger.perf.sig %>% select(-sample))
+
+p1 <- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
+                 col=factor(meta.smp$Classification))) +
+  labs(col = "Classification", x="PCA-1", y="PCA-2")
+
+p2 <- ggplot() +
+  geom_point(aes(x=ranger.perf.pca$x[,1], 
+                 y=ranger.perf.pca$x[,2],
+                 col=log10(meta.smp$ratio.tumor.immune))) +
+  scale_color_viridis_c() +
+  labs(col = "Log10 Mixing Score", x="PCA-1", y="PCA-2")
+
+gridExtra::grid.arrange(p1, p2, ncol=2)
+```
+
+- Alternatively one could look at the boxplot containing all gain R2 values
+
+- Especially for cold tumors, the gains in R2 are rather low and according
+to the plot the overall differences between compartimentalized and
+mixed tumors are not to big.
+
+```{r fig.width=6, fig.height=4}
+ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  ggplot() +
+  geom_boxplot(aes(x=Classification, y=value, col=Classification)) +
+  scale_color_manual(values = c("cold" = "red",
+                                "compartimentalized" = "forestgreen", 
+                                "mixed" = "blue"))
+```
 
 
+- So for which targets is the gain in R2 different between
+compartimentalized and mixed samples? Meaning for the prediction 
+of which targets is it important whether the special context comprises
+a structured or unstructed TME?
 
+- On top we can see the targets for which the gain in R2 when taking the spatial
+context into consideration is significantly different between 
 
+```{r fig.height=6, fig.width=7}
+tmp <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID"))
 
+targets <- tmp$target %>% unique
+
+# t.test for all targets
+all.targets <- map(targets, function(t) {
+  tmp <- ranger.results$improvements %>%
+    filter(measure == "gain.R2") %>% 
+    mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+    left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+    filter(target == t)
+  
+  test.results <- t.test(x = (tmp %>% filter(Classification=="compartimentalized") %>%
+              pull(value)),
+       y = (tmp %>% filter(Classification=="mixed") %>%
+              pull(value)),
+       alternative = "two.sided")
+  
+  list("target" = t, "t.test" = test.results)
+})
+
+# looking at the boxplots for each target
+sign.targets <- map(all.targets, function(target.test) {
+  if (target.test$t.test$p.value < 0.05) {
+    return(target.test$target)
+  }
+}) %>% unlist
+
+ranger.results$improvements %>%
+  filter(measure %in% c("gain.R2", "multi.R2")) %>% 
+  mutate(measure = ifelse(measure == "gain.R2",
+                          "Gain Explained Variance (R2) [%]",
+                          "Total Explained Variance (R2)")) %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(target %in% sign.targets) %>%
+  filter(Classification != "cold") %>%
+  mutate(Classification = factor(Classification)) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  scale_color_manual(values = c("compartimentalized" = "forestgreen", "mixed" = "blue")) +
+  facet_wrap(~ measure, scales = "free", ncol=1)
+```
+
+- But what kind of interactions could explaine those differences? Which other
+markers are important for the prediction of those targets?
+
+- Let's contrast the importances of the paraview for compartimentalized and mixed samples
+
+```{r}
+cutoff = 0.5
+ranger.results$importances %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(Target %in% sign.targets) %>%
+  filter(Classification != "cold") %>%
+  group_by(Classification, view, Predictor, Target) %>%
+  summarise(m.imp = mean(Importance), .groups="drop") %>%
+  filter(view == "para.120") %>%
+  mutate(Importance = ifelse(m.imp < cutoff, 0, m.imp)) %>%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = "black") +
+  scale_fill_gradient2(low = "white", mid = "white", high = "#8DA0CB", midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal() +
+  facet_wrap(~ Classification, ncol=1)
+```
+
+- For example CD11b seems to be important for the prediction of CD68 in mixed
+samples whereas CD11c seems to beimportant for the prediction of CD68 in
+compartimentalized samples.
+
+# Neighborhood Composition Analysis with MISTy
+
+- One can also use MISTy to predict the identity of cells using the neighboring
+cells. Therefore, we one-hot encode the cell types and bypass modeling of
+the intraview.
+
+- Here I excluded Tumor cells and cells which are not really present in 
+every sample.
+
+- Let's look at the gain in R2 again to see whether it works
+
+```{r}
+notumor.misty.results <- readRDS("data/no.tumor.compositon.RDS")
+plot_improvement_stats(notumor.misty.results, "gain.R2")
+```
+
+- What kind of interactions explain those results?
+
+- We can see kind of see there is a structure in the immune response. The levels
+of macrophages are informative about the presence/absense of other cell types
+(also macrophages are by far the most abundant immune cell type).
+
+- However, interpreting this plot is not straight forward as those interaction
+can be very complex (non-linear)
+
+```{r}
+plot_interaction_heatmap(notumor.misty.results, "para.50", cutoff = 0)
+```
+
+- For example we see the mutual interaction between CD4 T-cells and B-cells, 
+which we could investigate by actually looking at the samples (which have
+rather high numbers of both cell types).
+
+- It seems like there is some coordinated though not in all samples!
+
+```{r fig.width=12, fig.height=8}
+df <- meta %>%
+  group_by(SampleID) %>%
+  count(immuneGroup) %>%
+  ungroup() %>%
+  pivot_wider(names_from=immuneGroup, values_from=n)
+
+q75_cd4 <- quantile(df$`CD4 T`, .6, na.rm=TRUE)
+q75_b <- quantile(df$B, .6, na.rm=TRUE)
+
+sample.oi <- df %>%
+  filter(`CD4 T` >= q75_cd4, B >= q75_b) %>%
+  pull(SampleID)
+
+meta %>%
+  mutate(SampleID = as.character(SampleID)) %>%
+  left_join(meta.smp, by="SampleID") %>%
+  filter(SampleID %in% sample.oi) %>%
+  mutate(class = case_when(
+    Group %in% c("Keratin-positive tumor", "Tumor") ~ "Tumor",
+    !(immuneGroup %in% c("B", "CD4 T")) ~ "Ignore",
+    TRUE ~ immuneGroup
+  )) %>%
+  filter(class != "Ignore") %>%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=class), size=.1) +
+  facet_wrap(~ SampleID, ncol=4) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))
+```
+
+# Cell Type Specific Analysis
+
+## Tumor -> Immune
+
+- Using MISTy to uncover interactions between tumor and immune Cells.
+
+- Therefore we look at immune cells but only use tumor cell to 
+calculate the paraview
+
+```{r}
+plot_improvement_stats(cancer.immune.results, "gain.R2")
+```
+
+- Looking at the interactions focusing for example only on the 
+immuno regulatory proteins
+
+- There is no single important predictor, rather many predictors are
+important for every immuno-regulatory proteins
+
+- But some predictors are specific, such as EGFR for PD-L1.
+
+```{r fig.height=3, fig.width=6}
+cutoff = 0
+cancer.immune.results$importances %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(Target %in% c("IDO", "PD.L1", "PD1", "Lag3")) %>%
+  group_by(Classification, view, Predictor, Target) %>%
+  summarise(m.imp = mean(Importance), .groups="drop") %>%
+  filter(view == "c.para.120") %>%
+  mutate(Importance = ifelse(m.imp < cutoff, 0, m.imp)) %>%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = "black") +
+  scale_fill_gradient2(low = "white", mid = "white", high = "#8DA0CB", midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal()
+```
+
+## Tumor -> Immune
+
+- What kind of interactions are important here?
+
+- 
+
+```{r fig.height=3, fig.width=6}
+cutoff = 0
+immune.immune.results$importances %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(Target %in% c("IDO", "PD.L1", "PD1", "Lag3")) %>%
+  group_by(Classification, view, Predictor, Target) %>%
+  summarise(m.imp = mean(Importance), .groups="drop") %>%
+  filter(view == "i.para.120") %>%
+  mutate(Importance = ifelse(m.imp < cutoff, 0, m.imp)) %>%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = "black") +
+  scale_fill_gradient2(low = "white", mid = "white", high = "#8DA0CB", midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal()
+```
+
+# Thoughs
+
+- Since MISTy was rather developed to probe intra- and especially intercellular
+interactions it would be helpful to have more markers that help to decipher
+pathway activity and expression of ligands.
+
+# Appendix
+
+- Interestingly the prediction of the other immuno-regulatory proteins apart from
+PD-1 did not depend on the tumor structure.
+
+```{r}
+ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>% 
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(target %in% c("IDO", "PD.L1", "PD1", "Lag3")) %>%
+  filter(Classification != "cold") %>%
+  mutate(Classification = factor(Classification)) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  scale_color_manual(values = c("compartimentalized" = "forestgreen", "mixed" = "blue")) +
+  labs(x = "Target", y = "Gain Explained Variance (R2)")
+```
+
+- Also for the prediction of cell types, the gain in R2 is much higher
+in compartimentalized samples.
+
+```{r}
+notumor.misty.results$improvements %>%
+  mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
+  filter(measure == "gain.R2") %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_color_manual(values = c("compartimentalized" = "forestgreen", 
+                                "mixed" = "blue")) 
+```
