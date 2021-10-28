@@ -50,21 +50,21 @@ url <- "https://www.dropbox.com/s/5wyh520i1wl62ul/graphical_abstract.png?raw=1"
 # Basic MISTy Workflow
 
 - For each target, first the variance explained (R2) is computed using only 
-intracellular information (intraview, here green) and then information from the spatial 
-context (multiview, here brown). 
+intracellular information (intraview, here brown) and then information from the spatial 
+context (multiview, here green). 
 
 ```{r fig.height=4, fig.width=10}
 ranger.results$improvements %>%
   filter(measure %in% c("intra.R2", "multi.R2")) %>%
   mutate(measure = factor(measure, levels = c("multi.R2", "intra.R2"))) %>%
   ggplot() +
-  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure),
+               width=.6, outlier.shape = NA) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   labs(y = "Statistic", x = "Target") +
   scale_color_manual(values = c("multi.R2" = "forestgreen", 
                                 "intra.R2" = "brown"))
 ```
-
 
 - If the R2 values for the multiview (gain.R2) is higher, this shows that taking 
 the spatial context (expression of all other markers in the neighboring cells) 
@@ -78,7 +78,10 @@ plot_improvement_stats(ranger.results, "gain.R2")
 ```
 
 - We might also be interested in whether the direct neighbors (juxtaview) 
-or the broad spatial context (paraview) is more important?
+or the broad spatial context (paraview) are more important?
+
+- And most often we see that the broader spatial context (paraview) is more important
+than the local cellular niche (juxtaview).
 
 ```{r}
 plot_view_contributions(ranger.results)
@@ -88,12 +91,20 @@ plot_view_contributions(ranger.results)
 between the samples in the gain in R2 for the different target. What drives
 those differences?
 
-- One component is the tumor structor as we can see in the PCA of the
-performance signature (which basically contains the gain in R2 for all samples
-for all targets).
+- To answer this question we can look at the performance signature, which
+is a collection of all performance measures for each target.
 
-```{r fig.height=4, fig.width=12}
+```{r}
 ranger.perf.sig <- mistyR::extract_signature(ranger.results, "performance")
+ranger.perf.sig %>% 
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  mutate_if(is.numeric, round, digits=2)
+```
+
+- Doing a PCA on this performance signature clearly shows that MISTy performance
+is driven by the tumor structure.
+
+```{r fig.height=5, fig.width=14}
 ranger.perf.pca <- stats::prcomp(ranger.perf.sig %>% select(-sample))
 
 p1 <- ggplot() +
@@ -117,7 +128,7 @@ gridExtra::grid.arrange(p1, p2, ncol=2)
 to the plot the overall differences between compartmentalized and
 mixed tumors are not too big.
 
-```{r fig.width=6, fig.height=4}
+```{r fig.width=6, fig.height=3}
 ranger.results$improvements %>%
   filter(measure == "gain.R2") %>% 
   mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
@@ -126,9 +137,9 @@ ranger.results$improvements %>%
   geom_boxplot(aes(x=Classification, y=value, col=Classification)) +
   scale_color_manual(values = c("cold" = "red",
                                 "compartmentalized" = "forestgreen", 
-                                "mixed" = "blue"))
+                                "mixed" = "blue")) +
+  labs(y = "Gain R2")
 ```
-
 
 - So for which targets is the gain in R2 different between
 compartmentalized and mixed samples? Meaning for the prediction 
@@ -139,7 +150,7 @@ a structured or unstructured TME?
 different between compartmentalized and mixed samples. On the bottom the
 multi R2 (total explained variance) is shown.
 
-```{r fig.height=6, fig.width=7}
+```{r fig.height=3, fig.width=7}
 tmp <- ranger.results$improvements %>%
   filter(measure == "gain.R2") %>% 
   mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
@@ -172,7 +183,7 @@ sign.targets <- map(all.targets, function(target.test) {
 }) %>% unlist
 
 ranger.results$improvements %>%
-  filter(measure %in% c("gain.R2", "multi.R2")) %>% 
+  filter(measure == "gain.R2") %>% 
   mutate(measure = ifelse(measure == "gain.R2",
                           "Gain Explained Variance (R2) [%]",
                           "Total Explained Variance (R2)")) %>%
@@ -183,18 +194,18 @@ ranger.results$improvements %>%
   mutate(Classification = factor(Classification)) %>%
   ggplot() +
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  scale_color_manual(values = c("compartmentalized" = "forestgreen", "mixed" = "blue")) +
-  facet_wrap(~ measure, scales = "free", ncol=1)
+  scale_color_manual(values = c("compartmentalized" = "forestgreen", "mixed" = "blue"))
 ```
 
-- But what kind of interactions could explaine those differences? Which other
+- But what kind of interactions could explain those differences? Which other
 markers are important for the prediction of those targets?
 
-- Let's contrast the importances of the paraview for compartmentalized and mixed samples.
+- Let's look at the **importances** of the **paraview** for these targets in 
+compartmentalized and mixed samples.
 
-```{r}
+```{r fig.width=5, fig.height=5}
 cutoff = 0.5
-ranger.results$importances %>%
+df <- ranger.results$importances %>%
   mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
   left_join(meta.smp, by=c("sample" = "SampleID")) %>%
   filter(Target %in% sign.targets) %>%
@@ -202,7 +213,16 @@ ranger.results$importances %>%
   group_by(Classification, view, Predictor, Target) %>%
   summarise(m.imp = mean(Importance), .groups="drop") %>%
   filter(view == "para.120") %>%
-  mutate(Importance = ifelse(m.imp < cutoff, 0, m.imp)) %>%
+  mutate(Importance = ifelse(m.imp < cutoff, 0, m.imp))
+
+clean.predictors <- df %>%
+  group_by(Predictor) %>%
+  summarise(test = sum(Importance)) %>%
+  filter(test > 1e-3) %>%
+  pull(Predictor) 
+
+df %>%
+  filter(Predictor %in% clean.predictors) %>%
   ggplot(., aes(x = Predictor,y = Target)) +
   geom_tile(aes(fill = Importance), color = "black") +
   scale_fill_gradient2(low = "white", mid = "white", high = "#8DA0CB", midpoint = cutoff) +
@@ -211,27 +231,78 @@ ranger.results$importances %>%
   facet_wrap(~ Classification, ncol=1)
 ```
 
-- For example CD11b seems to be important for the prediction of CD68 in mixed
-samples whereas CD11c seems to beimportant for the prediction of CD68 in
-compartmentalized samples.
+- Now we could also condense this down and only look at the contrast. 
 
-# Neighborhood Composition Analysis with MISTy
+```{r fig.width=5, fig.height=5}
+cutoff <- 0.5
+ranger.results$importances %>%
+  mutate(sample = str_extract(sample, "(?<=_s)[0-9]+")) %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  filter(Target %in% sign.targets) %>%
+  filter(Classification != "cold") %>%
+  group_by(Classification, view, Predictor, Target) %>%
+  summarise(Importance = mean(Importance), .groups="drop") %>%
+  filter(view == "para.120") %>%
+  filter(Predictor %in% clean.predictors) %>%
+  pivot_wider(names_from=Classification, values_from=Importance) %>%
+  group_by(Predictor, Target) %>%
+  summarise(c = sum(compartmentalized, na.rm = TRUE), m = sum(mixed, na.rm = TRUE),
+            .groups="drop") %>%
+  mutate(Contrast.Compartmentalized.Mixed = c - m,
+         Contrast.Mixed.Compartmentalized = m -c) %>%
+  mutate(Contrast.Compartmentalized.Mixed = 
+           ifelse(Contrast.Compartmentalized.Mixed < cutoff, 0,
+                  Contrast.Compartmentalized.Mixed)) %>%
+  mutate(Contrast.Mixed.Compartmentalized = 
+           ifelse(Contrast.Mixed.Compartmentalized < cutoff, 0,
+                  Contrast.Mixed.Compartmentalized)) %>%
+  pivot_longer(cols = starts_with("Contrast"), values_to="Importance") %>%
+  mutate(name = ifelse(name == "Contrast.Compartmentalized.Mixed",
+                       "Contrast: Compartmenalized - Mixed",
+                       "Contrast: Mixed - Compartimenalized")) %>%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = "black") +
+  scale_fill_gradient2(low = "white", mid = "white", high = "#8DA0CB", midpoint = cutoff) +
+  facet_wrap(~ name, ncol=1) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal()
+```
 
-- One can also use MISTy to predict the identity of cells using the neighboring
-cells. Therefore, we one-hot encode the cell types and bypass modeling of
-the intraview.
+- For example EGFR and FoxP3 are more important for prediction of these
+targets in mixed samples, whereas CD45 is more important in compartmentalized
+samples.
+
+# Neighborhood Composition Analysis
+
+- Since MISTy is a flexible framework, I want to give another short example
+how we can use MISTy to predict the identity of cells using the identity
+of the 50 nearest-neighbor of a cell.
 
 - Here I excluded Tumor cells and cells which are not really present in 
 every sample.
 
-- Let's look at the gain in R2 again to see whether it works
+- Let's start again by looking at the gain in R2.
 
 ```{r}
 notumor.misty.results <- readRDS("data/no.tumor.compositon.RDS")
 plot_improvement_stats(notumor.misty.results, "gain.R2")
 ```
 
-- What kind of interactions explain those results?
+- As expecpted these results are driven by the tumor structure:
+
+```{r}
+notumor.misty.results$improvements %>%
+  mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
+  filter(measure == "gain.R2") %>%
+  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_color_manual(values = c("compartmentalized" = "forestgreen", 
+                                "mixed" = "blue")) 
+```
+
+- But in general what kind of interactions explain those results?
 
 - We can see kind of see there is a structure in the immune response. The levels
 of macrophages are informative about the presence/absense of other cell types
@@ -282,19 +353,23 @@ meta %>%
 
 # Cell Type Specific Analysis
 
+- Another use case might be to probe the interactions between certain cell types.
+
+- For example predicting the expression of markers in immune cells using 
+information from the tumor cell in the broader tissue structure (paraview).
+
 ## Tumor -> Immune
 
-- Using MISTy to uncover interactions between tumor and immune Cells.
+- We can see again that the expression of the tumor cells are informative.
 
-- Therefore we look at immune cells but only use tumor cell to 
-calculate the paraview
+- We also see that there is quite some gain in variance explained for
+IDO, PD_L1 and PD1, so which interactions could explain that?
 
 ```{r}
 plot_improvement_stats(cancer.immune.results, "gain.R2")
 ```
 
-- Looking at the interactions focusing for example only on the 
-immuno regulatory proteins
+- Thus, we will have a look at the corresponding importances.
 
 - There is no single important predictor, rather many predictors are
 important for every immuno-regulatory proteins
@@ -318,7 +393,14 @@ cancer.immune.results$importances %>%
   coord_equal()
 ```
 
+- And we could actually ask the same question when looking at the interaction
+of immune cells.
+
+- What kind of interactions explain 
+
 ## Immune -> Immune
+
+
 
 - What kind of interactions are important between immune cells?
 
@@ -341,7 +423,9 @@ immune.immune.results$importances %>%
   coord_equal()
 ```
 
-# Thoughs
+# Thoughts
+
+- We are happy to collaborate
 
 - Since MISTy was rather developed to probe intra- and especially intercellular
 interactions it would be helpful to have more markers that help to decipher
@@ -370,35 +454,28 @@ ranger.results$improvements %>%
   labs(x = "Target", y = "Gain Explained Variance (R2)")
 ```
 
-- Also for the prediction of cell types, the gain in R2 is much higher
-in compartmentalized samples.
-
-```{r}
-notumor.misty.results$improvements %>%
-  mutate(sample = str_extract(sample, "(?<=smp.)[0-9]+")) %>%
-  filter(measure == "gain.R2") %>%
-  left_join(meta.smp, by=c("sample" = "SampleID")) %>%
-  ggplot() +
-  geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  scale_color_manual(values = c("compartmentalized" = "forestgreen", 
-                                "mixed" = "blue")) 
-```
-
-One could also run MISTy with linear models as base learner in a bagged to
+- One could also run MISTy with linear models as base learner in a bagged to
 to increase interpretability. Though this strongly reduced the variance that
 can be explained.
 
 ```{r fig.height=4, fig.width=10}
-lmbag.results$improvements %>%
-  filter(measure %in% c("intra.R2", "multi.R2")) %>%
-  mutate(measure = factor(measure, levels = c("multi.R2", "intra.R2"))) %>%
+df1 <- ranger.results$improvements %>%
+  filter(measure == "gain.R2") %>%
+  mutate(method = "ranger")
+
+df2 <- lmbag.results$improvements %>%
+  filter(measure == "gain.R2") %>%
+  mutate(method = "lm")
+
+rbind(df1, df2) %>%
+  mutate(method = factor(method, levels = c("ranger", "lm"))) %>%
   ggplot() +
-  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=method),
+               outlier.shape = NA, width = .5) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   labs(y = "Statistic", x = "Target") +
-  scale_color_manual(values = c("multi.R2" = "forestgreen", 
-                                "intra.R2" = "brown"))
+  scale_color_manual(values = c("ranger" = "forestgreen", 
+                                "lm" = "brown"))
 ```
 
 - The interactions we have looked at before.
