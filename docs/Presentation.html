@@ -407,10 +407,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-27
+<strong>Last updated:</strong> 2021-10-28
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -426,12 +426,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -522,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree28ffc8b09a6f38b2758a1f1b905105cb3efdccf8targetblank28ffc8ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8" target="_blank">28ffc8b</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree5161309175ed943a3b5b21ebe039422ba0c1dbeetargetblank5161309a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/5161309175ed943a3b5b21ebe039422ba0c1dbee" target="_blank">5161309</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree28ffc8b09a6f38b2758a1f1b905105cb3efdccf8targetblank28ffc8ba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree5161309175ed943a3b5b21ebe039422ba0c1dbeetargetblank5161309a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8" target="_blank">28ffc8b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/5161309175ed943a3b5b21ebe039422ba0c1dbee" target="_blank">5161309</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -607,9 +607,6 @@ Ignored files:
     Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
 
-Unstaged changes:
-    Modified:   analysis/Presentation.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -647,6 +644,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/5161309175ed943a3b5b21ebe039422ba0c1dbee/analysis/Presentation.Rmd" target="_blank">5161309</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+<td>
+workflowr::wflow_publish(files = “analysis/Presentation.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/7302426a520bc08ffdfb56922e16224037e0c615/analysis/Presentation.Rmd" target="_blank">7302426</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+adding importance signature
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/7302426a520bc08ffdfb56922e16224037e0c615/docs/Presentation.html" target="_blank">7302426</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+adding importance signature
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1026,13 +1074,14 @@ immune-immune analysis included
 <div id="basic-misty-workflow" class="section level1">
 <h1>Basic MISTy Workflow</h1>
 <ul>
-<li>For each target, first the variance explained (R2) is computed using only intracellular information (intraview, here green) and then information from the spatial context (multiview, here brown).</li>
+<li>For each target, first the variance explained (R2) is computed using only intracellular information (intraview, here brown) and then information from the spatial context (multiview, here green).</li>
 </ul>
 <pre class="r"><code>ranger.results$improvements %&gt;%
   filter(measure %in% c(&quot;intra.R2&quot;, &quot;multi.R2&quot;)) %&gt;%
   mutate(measure = factor(measure, levels = c(&quot;multi.R2&quot;, &quot;intra.R2&quot;))) %&gt;%
   ggplot() +
-  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure),
+               width=.6, outlier.shape = NA) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
   labs(y = &quot;Statistic&quot;, x = &quot;Target&quot;) +
   scale_color_manual(values = c(&quot;multi.R2&quot; = &quot;forestgreen&quot;, 
@@ -1141,7 +1190,8 @@ schae211
 </div>
 </div>
 <ul>
-<li>We might also be interested in whether the direct neighbors (juxtaview) or the broad spatial context (paraview) is more important?</li>
+<li><p>We might also be interested in whether the direct neighbors (juxtaview) or the broad spatial context (paraview) are more important?</p></li>
+<li><p>And most often we see that the broader spatial context (paraview) is more important than the local cellular niche (juxtaview).</p></li>
 </ul>
 <pre class="r"><code>plot_view_contributions(ranger.results)</code></pre>
 <p><img src="figure/Presentation.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -1195,10 +1245,21 @@ schae211
 </div>
 <ul>
 <li><p>Furthermore, we could ask why there is a large variability between the samples in the gain in R2 for the different target. What drives those differences?</p></li>
-<li><p>One component is the tumor structor as we can see in the PCA of the performance signature (which basically contains the gain in R2 for all samples for all targets).</p></li>
+<li><p>To answer this question we can look at the performance signature, which is a collection of all performance measures for each target.</p></li>
 </ul>
 <pre class="r"><code>ranger.perf.sig &lt;- mistyR::extract_signature(ranger.results, &quot;performance&quot;)
-ranger.perf.pca &lt;- stats::prcomp(ranger.perf.sig %&gt;% select(-sample))
+ranger.perf.sig %&gt;% 
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  mutate_if(is.numeric, round, digits=2)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["sample"],"name":[1],"type":["chr"],"align":["left"]},{"label":["CD11c_intra.R2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["CD11c_multi.R2"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["CD11c_gain.R2"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["CD16_intra.R2"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["CD16_multi.R2"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["CD16_gain.R2"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["CD63_intra.R2"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["CD63_multi.R2"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["CD63_gain.R2"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["HLA.DR_intra.R2"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["HLA.DR_multi.R2"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["HLA.DR_gain.R2"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["CD45_intra.R2"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["CD45_multi.R2"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["CD45_gain.R2"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["Beta.catenin_intra.R2"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["Beta.catenin_multi.R2"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["Beta.catenin_gain.R2"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["CD68_intra.R2"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["CD68_multi.R2"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["CD68_gain.R2"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["Pan.Keratin_intra.R2"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["Pan.Keratin_multi.R2"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["Pan.Keratin_gain.R2"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["phospho.S6_intra.R2"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["phospho.S6_multi.R2"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["phospho.S6_gain.R2"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["Keratin6_intra.R2"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["Keratin6_multi.R2"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["Keratin6_gain.R2"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["CD45RO_intra.R2"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["CD45RO_multi.R2"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["CD45RO_gain.R2"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["H3K9ac_intra.R2"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["H3K9ac_multi.R2"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["H3K9ac_gain.R2"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["H3K27me3_intra.R2"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["H3K27me3_multi.R2"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["H3K27me3_gain.R2"],"name":[40],"type":["dbl"],"align":["right"]},{"label":["HLA_Class_1_intra.R2"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["HLA_Class_1_multi.R2"],"name":[42],"type":["dbl"],"align":["right"]},{"label":["HLA_Class_1_gain.R2"],"name":[43],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"0.22","3":"0.23","4":"1.21","5":"0.07","6":"0.09","7":"1.73","8":"0.08","9":"0.13","10":"5.21","11":"0.69","12":"0.70","13":"0.60","14":"0.89","15":"0.89","16":"0.07","17":"0.08","18":"0.10","19":"1.63","20":"0.35","21":"0.35","22":"0.87","23":"0.70","24":"0.70","25":"0.47","26":"0.73","27":"0.74","28":"0.66","29":"0.67","30":"0.68","31":"0.40","32":"0.59","33":"0.59","34":"0.26","35":"0.66","36":"0.67","37":"1.03","38":"0.81","39":"0.81","40":"0.05","41":"0.79","42":"0.81","43":"1.36"},{"1":"2","2":"0.06","3":"0.07","4":"0.74","5":"0.74","6":"0.74","7":"0.26","8":"0.18","9":"0.18","10":"-0.06","11":"0.56","12":"0.58","13":"1.98","14":"0.93","15":"0.93","16":"-0.01","17":"0.45","18":"0.48","19":"3.20","20":"0.65","21":"0.65","22":"0.15","23":"0.11","24":"0.13","25":"1.23","26":"0.27","27":"0.33","28":"6.62","29":"0.15","30":"0.20","31":"4.43","32":"0.89","33":"0.89","34":"0.00","35":"0.52","36":"0.53","37":"1.55","38":"0.82","39":"0.82","40":"0.04","41":"0.80","42":"0.81","43":"1.19"},{"1":"3","2":"0.58","3":"0.66","4":"8.29","5":"0.38","6":"0.41","7":"3.43","8":"0.14","9":"0.22","10":"7.22","11":"0.74","12":"0.75","13":"1.81","14":"0.94","15":"0.94","16":"0.03","17":"0.54","18":"0.60","19":"6.68","20":"0.37","21":"0.40","22":"2.61","23":"0.84","24":"0.84","25":"0.06","26":"0.55","27":"0.61","28":"6.09","29":"0.75","30":"0.76","31":"0.88","32":"0.77","33":"0.78","34":"0.63","35":"0.72","36":"0.73","37":"0.78","38":"0.64","39":"0.66","40":"1.48","41":"0.86","42":"0.87","43":"1.77"},{"1":"4","2":"0.45","3":"0.62","4":"16.50","5":"0.37","6":"0.46","7":"8.86","8":"0.55","9":"0.55","10":"0.27","11":"0.64","12":"0.67","13":"3.24","14":"0.93","15":"0.93","16":"0.09","17":"0.73","18":"0.75","19":"2.07","20":"0.50","21":"0.53","22":"2.50","23":"0.32","24":"0.34","25":"2.17","26":"0.60","27":"0.62","28":"2.34","29":"0.83","30":"0.85","31":"1.85","32":"0.84","33":"0.84","34":"0.16","35":"0.68","36":"0.69","37":"1.10","38":"0.77","39":"0.77","40":"0.18","41":"0.76","42":"0.79","43":"3.32"},{"1":"5","2":"0.57","3":"0.74","4":"16.74","5":"0.67","6":"0.68","7":"1.20","8":"0.43","9":"0.45","10":"1.31","11":"0.84","12":"0.85","13":"1.47","14":"0.92","15":"0.92","16":"0.12","17":"0.75","18":"0.76","19":"1.17","20":"0.63","21":"0.65","22":"1.91","23":"0.71","24":"0.72","25":"1.32","26":"0.50","27":"0.58","28":"7.42","29":"0.73","30":"0.74","31":"1.46","32":"0.82","33":"0.82","34":"0.35","35":"0.66","36":"0.69","37":"2.72","38":"0.65","39":"0.66","40":"1.10","41":"0.90","42":"0.91","43":"1.00"},{"1":"6","2":"0.52","3":"0.67","4":"15.11","5":"0.66","6":"0.67","7":"1.24","8":"0.15","9":"0.17","10":"1.61","11":"0.70","12":"0.74","13":"3.80","14":"0.92","15":"0.92","16":"0.08","17":"0.73","18":"0.76","19":"3.35","20":"0.40","21":"0.43","22":"2.70","23":"0.54","24":"0.58","25":"4.05","26":"0.51","27":"0.57","28":"5.99","29":"0.69","30":"0.71","31":"2.69","32":"0.84","33":"0.84","34":"0.10","35":"0.76","36":"0.77","37":"1.63","38":"0.78","39":"0.79","40":"0.17","41":"0.78","42":"0.82","43":"4.27"},{"1":"7","2":"0.53","3":"0.55","4":"2.66","5":"0.68","6":"0.67","7":"-0.30","8":"0.50","9":"0.50","10":"0.44","11":"0.02","12":"0.04","13":"2.29","14":"0.80","15":"0.80","16":"0.03","17":"0.38","18":"0.43","19":"5.03","20":"0.63","21":"0.64","22":"1.20","23":"0.26","24":"0.35","25":"9.46","26":"0.29","27":"0.45","28":"15.74","29":"0.64","30":"0.70","31":"5.83","32":"0.74","33":"0.74","34":"-0.03","35":"0.51","36":"0.57","37":"5.40","38":"0.40","39":"0.48","40":"8.29","41":"0.64","42":"0.65","43":"1.54"},{"1":"8","2":"0.20","3":"0.20","4":"-0.21","5":"0.58","6":"0.58","7":"-0.06","8":"0.03","9":"0.03","10":"0.00","11":"0.54","12":"0.57","13":"3.08","14":"0.86","15":"0.86","16":"0.02","17":"0.42","18":"0.44","19":"2.02","20":"0.41","21":"0.41","22":"0.17","23":"0.33","24":"0.36","25":"2.63","26":"0.29","27":"0.31","28":"1.69","29":"0.33","30":"0.38","31":"5.17","32":"0.51","33":"0.51","34":"0.03","35":"0.51","36":"0.54","37":"3.19","38":"0.57","39":"0.58","40":"0.24","41":"0.74","42":"0.76","43":"2.08"},{"1":"9","2":"0.75","3":"0.78","4":"2.68","5":"0.79","6":"0.79","7":"0.39","8":"0.60","9":"0.61","10":"1.48","11":"0.57","12":"0.72","13":"14.85","14":"0.94","15":"0.94","16":"0.07","17":"0.75","18":"0.78","19":"3.27","20":"0.67","21":"0.68","22":"1.04","23":"0.73","24":"0.75","25":"1.27","26":"0.41","27":"0.60","28":"18.78","29":"0.43","30":"0.52","31":"9.42","32":"0.90","33":"0.90","34":"0.05","35":"0.75","36":"0.76","37":"1.76","38":"0.70","39":"0.71","40":"0.62","41":"0.71","42":"0.75","43":"3.80"},{"1":"10","2":"0.59","3":"0.62","4":"2.94","5":"0.80","6":"0.81","7":"0.65","8":"0.30","9":"0.39","10":"8.83","11":"0.53","12":"0.59","13":"5.90","14":"0.88","15":"0.88","16":"0.09","17":"0.72","18":"0.73","19":"0.97","20":"0.56","21":"0.57","22":"1.39","23":"0.74","24":"0.75","25":"1.07","26":"0.38","27":"0.45","28":"7.00","29":"0.66","30":"0.69","31":"2.63","32":"0.84","33":"0.85","34":"0.25","35":"0.68","36":"0.69","37":"1.54","38":"0.78","39":"0.79","40":"0.71","41":"0.75","42":"0.78","43":"3.23"},{"1":"11","2":"0.51","3":"0.53","4":"1.71","5":"0.71","6":"0.71","7":"0.71","8":"0.45","9":"0.46","10":"0.70","11":"0.45","12":"0.60","13":"15.00","14":"0.91","15":"0.91","16":"0.12","17":"0.58","18":"0.64","19":"5.65","20":"0.54","21":"0.55","22":"0.46","23":"0.35","24":"0.47","25":"11.44","26":"0.73","27":"0.74","28":"1.09","29":"0.38","30":"0.45","31":"7.40","32":"0.84","33":"0.84","34":"0.19","35":"0.65","36":"0.68","37":"2.94","38":"0.83","39":"0.83","40":"0.36","41":"0.60","42":"0.66","43":"6.19"},{"1":"12","2":"0.54","3":"0.58","4":"4.52","5":"0.58","6":"0.64","7":"5.44","8":"0.67","9":"0.68","10":"0.83","11":"0.70","12":"0.73","13":"3.35","14":"0.92","15":"0.92","16":"0.06","17":"0.63","18":"0.66","19":"2.13","20":"0.58","21":"0.60","22":"1.60","23":"0.57","24":"0.60","25":"3.47","26":"0.69","27":"0.71","28":"1.55","29":"0.42","30":"0.46","31":"3.63","32":"0.85","33":"0.85","34":"0.19","35":"0.63","36":"0.66","37":"3.63","38":"0.76","39":"0.77","40":"0.36","41":"0.71","42":"0.74","43":"3.14"},{"1":"13","2":"0.33","3":"0.40","4":"7.71","5":"0.37","6":"0.40","7":"3.06","8":"0.16","9":"0.27","10":"10.50","11":"0.59","12":"0.63","13":"3.87","14":"0.92","15":"0.92","16":"0.06","17":"0.69","18":"0.71","19":"1.51","20":"0.43","21":"0.46","22":"2.79","23":"0.68","24":"0.70","25":"1.17","26":"0.54","27":"0.59","28":"5.58","29":"0.58","30":"0.59","31":"1.55","32":"0.79","33":"0.79","34":"0.41","35":"0.66","36":"0.68","37":"1.49","38":"0.71","39":"0.71","40":"0.68","41":"0.70","42":"0.75","43":"4.48"},{"1":"14","2":"0.49","3":"0.57","4":"8.72","5":"0.59","6":"0.60","7":"1.22","8":"0.39","9":"0.43","10":"4.01","11":"0.59","12":"0.63","13":"3.94","14":"0.89","15":"0.89","16":"0.06","17":"0.58","18":"0.62","19":"3.69","20":"0.58","21":"0.59","22":"0.41","23":"0.47","24":"0.52","25":"5.21","26":"0.68","27":"0.72","28":"4.04","29":"0.50","30":"0.57","31":"7.03","32":"0.85","33":"0.86","34":"0.06","35":"0.66","36":"0.68","37":"2.87","38":"0.76","39":"0.77","40":"0.75","41":"0.61","42":"0.70","43":"9.11"},{"1":"15","2":"0.00","3":"0.00","4":"0.03","5":"0.01","6":"0.01","7":"0.00","8":"0.76","9":"0.77","10":"0.81","11":"0.71","12":"0.71","13":"-0.12","14":"0.10","15":"0.10","16":"-0.04","17":"0.48","18":"0.49","19":"0.24","20":"0.70","21":"0.70","22":"0.13","23":"0.42","24":"0.45","25":"2.71","26":"0.49","27":"0.50","28":"1.37","29":"0.21","30":"0.23","31":"1.65","32":"0.79","33":"0.79","34":"0.06","35":"0.80","36":"0.80","37":"0.20","38":"0.80","39":"0.81","40":"0.24","41":"0.70","42":"0.70","43":"0.04"},{"1":"16","2":"0.47","3":"0.51","4":"4.00","5":"0.08","6":"0.17","7":"9.03","8":"0.34","9":"0.40","10":"5.39","11":"0.79","12":"0.81","13":"2.11","14":"0.95","15":"0.95","16":"0.04","17":"0.63","18":"0.65","19":"1.94","20":"0.43","21":"0.48","22":"5.65","23":"0.75","24":"0.76","25":"1.66","26":"0.61","27":"0.66","28":"4.85","29":"0.52","30":"0.54","31":"2.23","32":"0.55","33":"0.61","34":"5.47","35":"0.75","36":"0.76","37":"1.16","38":"0.78","39":"0.78","40":"0.48","41":"0.83","42":"0.84","43":"0.84"},{"1":"17","2":"0.44","3":"0.54","4":"10.70","5":"0.45","6":"0.50","7":"4.89","8":"0.30","9":"0.35","10":"5.29","11":"0.82","12":"0.83","13":"1.11","14":"0.95","15":"0.95","16":"0.03","17":"0.74","18":"0.76","19":"1.61","20":"0.49","21":"0.51","22":"2.07","23":"0.75","24":"0.76","25":"1.00","26":"0.37","27":"0.46","28":"8.98","29":"0.69","30":"0.72","31":"2.57","32":"0.86","33":"0.87","34":"0.38","35":"0.66","36":"0.68","37":"2.24","38":"0.74","39":"0.74","40":"0.59","41":"0.75","42":"0.78","43":"2.84"},{"1":"18","2":"0.20","3":"0.21","4":"0.66","5":"0.57","6":"0.57","7":"0.39","8":"0.45","9":"0.45","10":"0.31","11":"0.68","12":"0.69","13":"0.85","14":"0.86","15":"0.86","16":"0.05","17":"0.49","18":"0.52","19":"3.19","20":"0.78","21":"0.78","22":"0.05","23":"0.49","24":"0.52","25":"2.77","26":"0.62","27":"0.65","28":"2.26","29":"0.48","30":"0.51","31":"3.57","32":"0.67","33":"0.68","34":"0.47","35":"0.62","36":"0.64","37":"2.74","38":"0.79","39":"0.80","40":"0.48","41":"0.37","42":"0.50","43":"13.00"},{"1":"19","2":"0.40","3":"0.42","4":"1.30","5":"0.29","6":"0.30","7":"0.63","8":"0.26","9":"0.27","10":"1.73","11":"0.51","12":"0.60","13":"8.77","14":"0.58","15":"0.58","16":"0.07","17":"0.33","18":"0.40","19":"6.45","20":"0.56","21":"0.56","22":"0.35","23":"0.25","24":"0.31","25":"5.25","26":"0.44","27":"0.50","28":"5.22","29":"0.19","30":"0.25","31":"5.98","32":"0.43","33":"0.44","34":"1.10","35":"0.61","36":"0.67","37":"6.24","38":"0.71","39":"0.72","40":"1.54","41":"0.29","42":"0.52","43":"22.92"},{"1":"20","2":"0.35","3":"0.40","4":"5.08","5":"0.38","6":"0.41","7":"2.79","8":"0.13","9":"0.17","10":"4.02","11":"0.40","12":"0.47","13":"6.52","14":"0.83","15":"0.84","16":"0.36","17":"0.71","18":"0.76","19":"4.89","20":"0.60","21":"0.61","22":"1.82","23":"0.25","24":"0.34","25":"9.08","26":"0.63","27":"0.65","28":"2.17","29":"0.37","30":"0.48","31":"10.66","32":"0.65","33":"0.65","34":"0.74","35":"0.72","36":"0.75","37":"3.49","38":"0.72","39":"0.74","40":"1.57","41":"0.76","42":"0.80","43":"3.30"},{"1":"21","2":"0.16","3":"0.18","4":"1.99","5":"0.67","6":"0.67","7":"0.66","8":"0.79","9":"0.79","10":"0.17","11":"0.24","12":"0.27","13":"2.77","14":"0.86","15":"0.86","16":"0.07","17":"0.47","18":"0.52","19":"4.20","20":"0.53","21":"0.53","22":"0.47","23":"0.28","24":"0.45","25":"17.61","26":"0.27","27":"0.53","28":"25.63","29":"0.65","30":"0.71","31":"6.32","32":"0.84","33":"0.84","34":"0.03","35":"0.67","36":"0.69","37":"2.06","38":"0.60","39":"0.62","40":"1.61","41":"0.48","42":"0.64","43":"15.45"},{"1":"22","2":"0.00","3":"0.00","4":"0.10","5":"0.09","6":"0.09","7":"0.18","8":"0.63","9":"0.64","10":"1.84","11":"0.56","12":"0.57","13":"0.40","14":"0.55","15":"0.55","16":"-0.17","17":"0.30","18":"0.30","19":"-0.04","20":"0.51","21":"0.51","22":"0.01","23":"0.47","24":"0.48","25":"1.14","26":"0.61","27":"0.63","28":"1.42","29":"0.37","30":"0.37","31":"0.69","32":"0.64","33":"0.65","34":"0.35","35":"0.74","36":"0.75","37":"0.42","38":"0.79","39":"0.80","40":"0.14","41":"0.66","42":"0.66","43":"0.07"},{"1":"23","2":"0.52","3":"0.54","4":"1.60","5":"0.61","6":"0.61","7":"0.71","8":"0.21","9":"0.21","10":"-0.13","11":"0.76","12":"0.79","13":"2.10","14":"0.87","15":"0.88","16":"0.47","17":"0.50","18":"0.52","19":"2.66","20":"0.66","21":"0.66","22":"0.12","23":"0.70","24":"0.71","25":"0.81","26":"0.52","27":"0.65","28":"13.16","29":"0.80","30":"0.82","31":"1.96","32":"0.70","33":"0.70","34":"0.15","35":"0.76","36":"0.78","37":"1.16","38":"0.77","39":"0.77","40":"0.67","41":"0.70","42":"0.80","43":"9.65"},{"1":"24","2":"0.24","3":"0.26","4":"1.47","5":"0.19","6":"0.19","7":"0.69","8":"0.70","9":"0.70","10":"-0.10","11":"0.30","12":"0.46","13":"16.27","14":"0.56","15":"0.56","16":"0.27","17":"0.55","18":"0.59","19":"3.98","20":"0.24","21":"0.22","22":"-1.06","23":"0.70","24":"0.70","25":"0.62","26":"0.64","27":"0.83","28":"18.98","29":"0.91","30":"0.92","31":"0.28","32":"0.64","33":"0.64","34":"0.33","35":"0.75","36":"0.80","37":"4.90","38":"0.75","39":"0.77","40":"1.89","41":"0.70","42":"0.76","43":"5.96"},{"1":"25","2":"0.45","3":"0.46","4":"0.86","5":"0.40","6":"0.41","7":"0.29","8":"0.23","9":"0.24","10":"0.71","11":"0.45","12":"0.47","13":"1.86","14":"0.77","15":"0.78","16":"0.02","17":"0.72","18":"0.75","19":"2.94","20":"0.17","21":"0.18","22":"0.37","23":"0.83","24":"0.83","25":"0.39","26":"0.48","27":"0.56","28":"7.66","29":"0.91","30":"0.92","31":"0.37","32":"0.76","33":"0.76","34":"-0.04","35":"0.74","36":"0.76","37":"1.90","38":"0.70","39":"0.71","40":"1.16","41":"0.71","42":"0.73","43":"2.45"},{"1":"26","2":"0.25","3":"0.25","4":"-0.48","5":"0.10","6":"0.11","7":"0.42","8":"0.47","9":"0.47","10":"0.56","11":"0.27","12":"0.36","13":"8.66","14":"0.30","15":"0.30","16":"-0.05","17":"0.34","18":"0.41","19":"6.43","20":"0.60","21":"0.62","22":"2.16","23":"0.18","24":"0.21","25":"3.07","26":"0.86","27":"0.86","28":"0.05","29":"0.09","30":"0.11","31":"2.33","32":"0.37","33":"0.38","34":"0.36","35":"0.80","36":"0.83","37":"3.29","38":"0.82","39":"0.82","40":"0.65","41":"0.67","42":"0.70","43":"2.85"},{"1":"27","2":"0.27","3":"0.27","4":"0.77","5":"0.77","6":"0.77","7":"0.57","8":"0.33","9":"0.36","10":"2.92","11":"0.71","12":"0.72","13":"1.28","14":"0.79","15":"0.79","16":"0.12","17":"0.50","18":"0.53","19":"3.09","20":"0.53","21":"0.53","22":"0.37","23":"0.64","24":"0.65","25":"0.79","26":"0.30","27":"0.43","28":"12.53","29":"0.45","30":"0.48","31":"3.14","32":"0.76","33":"0.76","34":"-0.02","35":"0.58","36":"0.60","37":"2.15","38":"0.49","39":"0.53","40":"3.63","41":"0.58","42":"0.73","43":"14.58"},{"1":"28","2":"0.57","3":"0.62","4":"4.99","5":"0.13","6":"0.19","7":"5.63","8":"0.26","9":"0.30","10":"3.94","11":"0.81","12":"0.82","13":"1.18","14":"0.95","15":"0.95","16":"0.13","17":"0.72","18":"0.73","19":"0.86","20":"0.30","21":"0.33","22":"3.16","23":"0.94","24":"0.94","25":"0.06","26":"0.62","27":"0.68","28":"6.44","29":"0.94","30":"0.94","31":"0.04","32":"0.81","33":"0.81","34":"0.30","35":"0.67","36":"0.69","37":"2.03","38":"0.60","39":"0.61","40":"1.12","41":"0.84","42":"0.85","43":"1.58"},{"1":"29","2":"0.55","3":"0.58","4":"3.82","5":"0.50","6":"0.51","7":"1.83","8":"0.38","9":"0.41","10":"3.59","11":"0.75","12":"0.76","13":"0.82","14":"0.91","15":"0.91","16":"0.06","17":"0.74","18":"0.75","19":"1.07","20":"0.59","21":"0.62","22":"3.08","23":"0.88","24":"0.88","25":"0.19","26":"0.46","27":"0.56","28":"10.07","29":"0.88","30":"0.88","31":"0.36","32":"0.67","33":"0.68","34":"0.56","35":"0.77","36":"0.78","37":"1.14","38":"0.79","39":"0.79","40":"0.25","41":"0.69","42":"0.78","43":"9.06"},{"1":"31","2":"0.51","3":"0.52","4":"1.67","5":"0.41","6":"0.43","7":"1.77","8":"0.30","9":"0.32","10":"2.33","11":"0.63","12":"0.64","13":"1.03","14":"0.75","15":"0.76","16":"0.09","17":"0.63","18":"0.64","19":"1.69","20":"0.70","21":"0.70","22":"0.07","23":"0.83","24":"0.85","25":"1.40","26":"0.60","27":"0.63","28":"2.93","29":"0.85","30":"0.86","31":"0.75","32":"0.65","33":"0.65","34":"0.13","35":"0.65","36":"0.68","37":"2.73","38":"0.81","39":"0.81","40":"0.64","41":"0.47","42":"0.61","43":"13.92"},{"1":"32","2":"0.73","3":"0.75","4":"2.18","5":"0.73","6":"0.75","7":"1.56","8":"0.63","9":"0.63","10":"0.38","11":"0.74","12":"0.79","13":"5.02","14":"0.91","15":"0.91","16":"0.17","17":"0.75","18":"0.76","19":"1.18","20":"0.77","21":"0.78","22":"0.98","23":"0.78","24":"0.80","25":"2.20","26":"0.61","27":"0.66","28":"5.78","29":"0.83","30":"0.84","31":"1.33","32":"0.89","33":"0.89","34":"0.10","35":"0.78","36":"0.79","37":"0.72","38":"0.73","39":"0.74","40":"0.63","41":"0.69","42":"0.72","43":"3.07"},{"1":"33","2":"0.53","3":"0.54","4":"1.25","5":"0.25","6":"0.25","7":"0.16","8":"0.36","9":"0.37","10":"0.78","11":"0.73","12":"0.73","13":"0.25","14":"0.69","15":"0.69","16":"0.19","17":"0.72","18":"0.74","19":"2.69","20":"0.47","21":"0.47","22":"0.27","23":"0.93","24":"0.93","25":"0.05","26":"0.49","27":"0.54","28":"4.46","29":"0.92","30":"0.92","31":"0.04","32":"0.69","33":"0.69","34":"-0.17","35":"0.74","36":"0.74","37":"0.09","38":"0.86","39":"0.86","40":"-0.01","41":"0.65","42":"0.69","43":"3.44"},{"1":"34","2":"0.24","3":"0.29","4":"4.70","5":"0.51","6":"0.54","7":"2.34","8":"0.72","9":"0.72","10":"0.35","11":"0.56","12":"0.59","13":"3.02","14":"0.60","15":"0.61","16":"1.62","17":"0.62","18":"0.64","19":"1.45","20":"0.50","21":"0.51","22":"1.35","23":"0.90","24":"0.90","25":"0.32","26":"0.35","27":"0.38","28":"3.57","29":"0.60","30":"0.64","31":"4.56","32":"0.74","33":"0.74","34":"0.09","35":"0.52","36":"0.54","37":"2.33","38":"0.57","39":"0.58","40":"0.66","41":"0.66","42":"0.71","43":"5.12"},{"1":"35","2":"0.33","3":"0.43","4":"10.19","5":"0.01","6":"0.05","7":"3.89","8":"0.09","9":"0.16","10":"7.11","11":"0.87","12":"0.87","13":"0.67","14":"0.92","15":"0.93","16":"0.08","17":"0.80","18":"0.82","19":"1.56","20":"0.21","21":"0.24","22":"2.84","23":"0.90","24":"0.91","25":"1.28","26":"0.91","27":"0.91","28":"0.05","29":"0.80","30":"0.80","31":"0.86","32":"0.84","33":"0.85","34":"0.40","35":"0.85","36":"0.85","37":"0.30","38":"0.91","39":"0.91","40":"0.03","41":"0.73","42":"0.74","43":"1.65"},{"1":"36","2":"0.25","3":"0.30","4":"5.43","5":"0.15","6":"0.16","7":"1.59","8":"0.31","9":"0.36","10":"4.71","11":"0.62","12":"0.64","13":"2.50","14":"0.85","15":"0.85","16":"0.05","17":"0.64","18":"0.65","19":"1.24","20":"0.46","21":"0.49","22":"3.34","23":"0.92","24":"0.92","25":"-0.03","26":"0.42","27":"0.46","28":"3.41","29":"0.82","30":"0.83","31":"1.22","32":"0.76","33":"0.76","34":"0.11","35":"0.74","36":"0.74","37":"0.25","38":"0.79","39":"0.79","40":"0.21","41":"0.52","42":"0.59","43":"6.93"},{"1":"37","2":"0.41","3":"0.51","4":"9.67","5":"0.48","6":"0.49","7":"1.14","8":"0.28","9":"0.30","10":"1.13","11":"0.70","12":"0.72","13":"2.31","14":"0.92","15":"0.93","16":"0.06","17":"0.78","18":"0.79","19":"1.22","20":"0.47","21":"0.49","22":"1.69","23":"0.92","24":"0.93","25":"0.29","26":"0.36","27":"0.48","28":"12.20","29":"0.79","30":"0.82","31":"3.60","32":"0.86","33":"0.86","34":"0.25","35":"0.71","36":"0.72","37":"0.72","38":"0.72","39":"0.72","40":"0.30","41":"0.74","42":"0.78","43":"4.40"},{"1":"38","2":"0.46","3":"0.48","4":"2.16","5":"0.75","6":"0.75","7":"0.41","8":"0.11","9":"0.13","10":"2.46","11":"0.79","12":"0.80","13":"1.62","14":"0.84","15":"0.84","16":"0.27","17":"0.56","18":"0.59","19":"3.14","20":"0.58","21":"0.58","22":"0.15","23":"0.81","24":"0.82","25":"1.19","26":"0.54","27":"0.57","28":"3.38","29":"0.68","30":"0.75","31":"7.26","32":"0.79","33":"0.80","34":"0.15","35":"0.76","36":"0.77","37":"1.28","38":"0.87","39":"0.87","40":"0.14","41":"0.78","42":"0.81","43":"2.93"},{"1":"39","2":"0.17","3":"0.26","4":"9.02","5":"0.53","6":"0.56","7":"3.62","8":"0.69","9":"0.69","10":"0.59","11":"0.68","12":"0.71","13":"2.33","14":"0.87","15":"0.87","16":"0.13","17":"0.67","18":"0.71","19":"4.02","20":"0.77","21":"0.78","22":"1.55","23":"0.82","24":"0.85","25":"2.61","26":"0.56","27":"0.65","28":"8.95","29":"0.85","30":"0.86","31":"0.93","32":"0.85","33":"0.86","34":"0.14","35":"0.83","36":"0.84","37":"0.44","38":"0.73","39":"0.74","40":"0.74","41":"0.74","42":"0.76","43":"2.18"},{"1":"40","2":"0.40","3":"0.46","4":"5.29","5":"0.18","6":"0.21","7":"2.56","8":"0.03","9":"0.13","10":"9.67","11":"0.71","12":"0.73","13":"1.67","14":"0.91","15":"0.91","16":"0.19","17":"0.71","18":"0.72","19":"0.78","20":"0.38","21":"0.38","22":"0.25","23":"0.92","24":"0.93","25":"1.09","26":"0.77","27":"0.78","28":"1.76","29":"0.79","30":"0.80","31":"0.69","32":"0.83","33":"0.84","34":"0.67","35":"0.76","36":"0.77","37":"1.03","38":"0.85","39":"0.85","40":"0.11","41":"0.74","42":"0.78","43":"3.55"},{"1":"41","2":"0.56","3":"0.61","4":"4.58","5":"0.54","6":"0.56","7":"2.33","8":"0.07","9":"0.14","10":"7.19","11":"0.53","12":"0.58","13":"5.54","14":"0.86","15":"0.86","16":"0.39","17":"0.72","18":"0.76","19":"3.22","20":"0.24","21":"0.27","22":"3.35","23":"0.88","24":"0.88","25":"0.29","26":"0.17","27":"0.32","28":"14.86","29":"0.50","30":"0.57","31":"7.20","32":"0.76","33":"0.77","34":"0.32","35":"0.59","36":"0.60","37":"1.26","38":"0.67","39":"0.69","40":"1.82","41":"0.46","42":"0.57","43":"10.50"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<ul>
+<li>Doing a PCA on this performance signature clearly shows that MISTy performance is driven by the tumor structure.</li>
+</ul>
+<pre class="r"><code>ranger.perf.pca &lt;- stats::prcomp(ranger.perf.sig %&gt;% select(-sample))
 
 p1 &lt;- ggplot() +
   geom_point(aes(x=ranger.perf.pca$x[,1], y=ranger.perf.pca$x[,2],
@@ -1213,69 +1274,7 @@ p2 &lt;- ggplot() +
   labs(col = &quot;Log10 Mixing Score&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;)
 
 gridExtra::grid.arrange(p1, p2, ncol=2)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-5-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-5-1.png" target="_blank">28ffc8b</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-27
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/5ccce685b8982f3bb650fea1d800883f9e30df74/docs/figure/Presentation.Rmd/unnamed-chunk-5-1.png" target="_blank">5ccce68</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-27
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<ul>
-<li><p>Alternatively one could look at the boxplot containing all gain R2 values.</p></li>
-<li><p>Especially for cold tumors, the gains in R2 are rather low and according to the plot the overall differences between compartmentalized and mixed tumors are not too big.</p></li>
-</ul>
-<pre class="r"><code>ranger.results$improvements %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;% 
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x=Classification, y=value, col=Classification)) +
-  scale_color_manual(values = c(&quot;cold&quot; = &quot;red&quot;,
-                                &quot;compartmentalized&quot; = &quot;forestgreen&quot;, 
-                                &quot;mixed&quot; = &quot;blue&quot;))</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-6-1.png" width="1344" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
 Past versions of unnamed-chunk-6-1.png
@@ -1325,55 +1324,20 @@ schae211
 </div>
 </div>
 <ul>
-<li><p>So for which targets is the gain in R2 different between compartmentalized and mixed samples? Meaning for the prediction of which targets is it important whether the special context comprises a structured or unstructured TME?</p></li>
-<li><p>On top we can see the targets for which the gain in R2 is significantly different between compartmentalized and mixed samples. On the bottom the multi R2 (total explained variance) is shown.</p></li>
+<li><p>Alternatively one could look at the boxplot containing all gain R2 values.</p></li>
+<li><p>Especially for cold tumors, the gains in R2 are rather low and according to the plot the overall differences between compartmentalized and mixed tumors are not too big.</p></li>
 </ul>
-<pre class="r"><code>tmp &lt;- ranger.results$improvements %&gt;%
+<pre class="r"><code>ranger.results$improvements %&gt;%
   filter(measure == &quot;gain.R2&quot;) %&gt;% 
   mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;))
-
-targets &lt;- tmp$target %&gt;% unique
-
-# t.test for all targets
-all.targets &lt;- map(targets, function(t) {
-  tmp &lt;- ranger.results$improvements %&gt;%
-    filter(measure == &quot;gain.R2&quot;) %&gt;% 
-    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-    left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-    filter(target == t)
-  
-  test.results &lt;- t.test(x = (tmp %&gt;% filter(Classification==&quot;compartmentalized&quot;) %&gt;%
-              pull(value)),
-       y = (tmp %&gt;% filter(Classification==&quot;mixed&quot;) %&gt;%
-              pull(value)),
-       alternative = &quot;two.sided&quot;)
-  
-  list(&quot;target&quot; = t, &quot;t.test&quot; = test.results)
-})
-
-# looking at the boxplots for each target
-sign.targets &lt;- map(all.targets, function(target.test) {
-  if (target.test$t.test$p.value &lt; 0.05) {
-    return(target.test$target)
-  }
-}) %&gt;% unlist
-
-ranger.results$improvements %&gt;%
-  filter(measure %in% c(&quot;gain.R2&quot;, &quot;multi.R2&quot;)) %&gt;% 
-  mutate(measure = ifelse(measure == &quot;gain.R2&quot;,
-                          &quot;Gain Explained Variance (R2) [%]&quot;,
-                          &quot;Total Explained Variance (R2)&quot;)) %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
   left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  filter(target %in% sign.targets) %&gt;%
-  filter(Classification != &quot;cold&quot;) %&gt;%
-  mutate(Classification = factor(Classification)) %&gt;%
   ggplot() +
-  geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
-  facet_wrap(~ measure, scales = &quot;free&quot;, ncol=1)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+  geom_boxplot(aes(x=Classification, y=value, col=Classification)) +
+  scale_color_manual(values = c(&quot;cold&quot; = &quot;red&quot;,
+                                &quot;compartmentalized&quot; = &quot;forestgreen&quot;, 
+                                &quot;mixed&quot; = &quot;blue&quot;)) +
+  labs(y = &quot;Gain R2&quot;)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
 Past versions of unnamed-chunk-7-1.png
@@ -1423,25 +1387,53 @@ schae211
 </div>
 </div>
 <ul>
-<li><p>But what kind of interactions could explaine those differences? Which other markers are important for the prediction of those targets?</p></li>
-<li><p>Let’s contrast the importances of the paraview for compartmentalized and mixed samples.</p></li>
+<li><p>So for which targets is the gain in R2 different between compartmentalized and mixed samples? Meaning for the prediction of which targets is it important whether the special context comprises a structured or unstructured TME?</p></li>
+<li><p>On top we can see the targets for which the gain in R2 is significantly different between compartmentalized and mixed samples. On the bottom the multi R2 (total explained variance) is shown.</p></li>
 </ul>
-<pre class="r"><code>cutoff = 0.5
-ranger.results$importances %&gt;%
+<pre class="r"><code>tmp &lt;- ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;))
+
+targets &lt;- tmp$target %&gt;% unique
+
+# t.test for all targets
+all.targets &lt;- map(targets, function(t) {
+  tmp &lt;- ranger.results$improvements %&gt;%
+    filter(measure == &quot;gain.R2&quot;) %&gt;% 
+    mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+    left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+    filter(target == t)
+  
+  test.results &lt;- t.test(x = (tmp %&gt;% filter(Classification==&quot;compartmentalized&quot;) %&gt;%
+              pull(value)),
+       y = (tmp %&gt;% filter(Classification==&quot;mixed&quot;) %&gt;%
+              pull(value)),
+       alternative = &quot;two.sided&quot;)
+  
+  list(&quot;target&quot; = t, &quot;t.test&quot; = test.results)
+})
+
+# looking at the boxplots for each target
+sign.targets &lt;- map(all.targets, function(target.test) {
+  if (target.test$t.test$p.value &lt; 0.05) {
+    return(target.test$target)
+  }
+}) %&gt;% unlist
+
+ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
+  mutate(measure = ifelse(measure == &quot;gain.R2&quot;,
+                          &quot;Gain Explained Variance (R2) [%]&quot;,
+                          &quot;Total Explained Variance (R2)&quot;)) %&gt;%
   mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
   left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  filter(Target %in% sign.targets) %&gt;%
+  filter(target %in% sign.targets) %&gt;%
   filter(Classification != &quot;cold&quot;) %&gt;%
-  group_by(Classification, view, Predictor, Target) %&gt;%
-  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
-  filter(view == &quot;para.120&quot;) %&gt;%
-  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
-  ggplot(., aes(x = Predictor,y = Target)) +
-  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
-  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
-  coord_equal() +
-  facet_wrap(~ Classification, ncol=1)</code></pre>
+  mutate(Classification = factor(Classification)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;))</code></pre>
 <p><img src="figure/Presentation.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
@@ -1492,19 +1484,35 @@ schae211
 </div>
 </div>
 <ul>
-<li>For example CD11b seems to be important for the prediction of CD68 in mixed samples whereas CD11c seems to beimportant for the prediction of CD68 in compartmentalized samples.</li>
+<li><p>But what kind of interactions could explain those differences? Which other markers are important for the prediction of those targets?</p></li>
+<li><p>Let’s look at the <strong>importances</strong> of the <strong>paraview</strong> for these targets in compartmentalized and mixed samples.</p></li>
 </ul>
-</div>
-<div id="neighborhood-composition-analysis-with-misty" class="section level1">
-<h1>Neighborhood Composition Analysis with MISTy</h1>
-<ul>
-<li><p>One can also use MISTy to predict the identity of cells using the neighboring cells. Therefore, we one-hot encode the cell types and bypass modeling of the intraview.</p></li>
-<li><p>Here I excluded Tumor cells and cells which are not really present in every sample.</p></li>
-<li><p>Let’s look at the gain in R2 again to see whether it works</p></li>
-</ul>
-<pre class="r"><code>notumor.misty.results &lt;- readRDS(&quot;data/no.tumor.compositon.RDS&quot;)
-plot_improvement_stats(notumor.misty.results, &quot;gain.R2&quot;)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>cutoff = 0.5
+df &lt;- ranger.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% sign.targets) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp))
+
+clean.predictors &lt;- df %&gt;%
+  group_by(Predictor) %&gt;%
+  summarise(test = sum(Importance)) %&gt;%
+  filter(test &gt; 1e-3) %&gt;%
+  pull(Predictor) 
+
+df %&gt;%
+  filter(Predictor %in% clean.predictors) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal() +
+  facet_wrap(~ Classification, ncol=1)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-9-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
 Past versions of unnamed-chunk-9-1.png
@@ -1554,12 +1562,41 @@ schae211
 </div>
 </div>
 <ul>
-<li><p>What kind of interactions explain those results?</p></li>
-<li><p>We can see kind of see there is a structure in the immune response. The levels of macrophages are informative about the presence/absense of other cell types (also macrophages are by far the most abundant immune cell type).</p></li>
-<li><p>However, interpreting this plot is not straight forward as those interaction can be very complex (non-linear)</p></li>
+<li>Now we could also condense this down and only look at the contrast.</li>
 </ul>
-<pre class="r"><code>plot_interaction_heatmap(notumor.misty.results, &quot;para.50&quot;, cutoff = 0)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>cutoff &lt;- 0.5
+ranger.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% sign.targets) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(Importance = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;para.120&quot;) %&gt;%
+  filter(Predictor %in% clean.predictors) %&gt;%
+  pivot_wider(names_from=Classification, values_from=Importance) %&gt;%
+  group_by(Predictor, Target) %&gt;%
+  summarise(c = sum(compartmentalized, na.rm = TRUE), m = sum(mixed, na.rm = TRUE),
+            .groups=&quot;drop&quot;) %&gt;%
+  mutate(Contrast.Compartmentalized.Mixed = c - m,
+         Contrast.Mixed.Compartmentalized = m -c) %&gt;%
+  mutate(Contrast.Compartmentalized.Mixed = 
+           ifelse(Contrast.Compartmentalized.Mixed &lt; cutoff, 0,
+                  Contrast.Compartmentalized.Mixed)) %&gt;%
+  mutate(Contrast.Mixed.Compartmentalized = 
+           ifelse(Contrast.Mixed.Compartmentalized &lt; cutoff, 0,
+                  Contrast.Mixed.Compartmentalized)) %&gt;%
+  pivot_longer(cols = starts_with(&quot;Contrast&quot;), values_to=&quot;Importance&quot;) %&gt;%
+  mutate(name = ifelse(name == &quot;Contrast.Compartmentalized.Mixed&quot;,
+                       &quot;Contrast: Compartmenalized - Mixed&quot;,
+                       &quot;Contrast: Mixed - Compartimenalized&quot;)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  facet_wrap(~ name, ncol=1) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal()</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
 Past versions of unnamed-chunk-10-1.png
@@ -1609,37 +1646,19 @@ schae211
 </div>
 </div>
 <ul>
-<li><p>For example we see the mutual interaction between CD4 T-cells and B-cells, which we could investigate by actually looking at the samples (which have rather high numbers of both cell types).</p></li>
-<li><p>It seems like there is some coordinated though not in all samples!</p></li>
+<li>For example EGFR and FoxP3 are more important for prediction of these targets in mixed samples, whereas CD45 is more important in compartmentalized samples.</li>
 </ul>
-<pre class="r"><code>df &lt;- meta %&gt;%
-  group_by(SampleID) %&gt;%
-  count(immuneGroup) %&gt;%
-  ungroup() %&gt;%
-  pivot_wider(names_from=immuneGroup, values_from=n)
-
-q75_cd4 &lt;- quantile(df$`CD4 T`, .6, na.rm=TRUE)
-q75_b &lt;- quantile(df$B, .6, na.rm=TRUE)
-
-sample.oi &lt;- df %&gt;%
-  filter(`CD4 T` &gt;= q75_cd4, B &gt;= q75_b) %&gt;%
-  pull(SampleID)
-
-meta %&gt;%
-  mutate(SampleID = as.character(SampleID)) %&gt;%
-  left_join(meta.smp, by=&quot;SampleID&quot;) %&gt;%
-  filter(SampleID %in% sample.oi) %&gt;%
-  mutate(class = case_when(
-    Group %in% c(&quot;Keratin-positive tumor&quot;, &quot;Tumor&quot;) ~ &quot;Tumor&quot;,
-    !(immuneGroup %in% c(&quot;B&quot;, &quot;CD4 T&quot;)) ~ &quot;Ignore&quot;,
-    TRUE ~ immuneGroup
-  )) %&gt;%
-  filter(class != &quot;Ignore&quot;) %&gt;%
-  ggplot() +
-  geom_point(aes(x=row, y=col, col=class), size=.1) +
-  facet_wrap(~ SampleID, ncol=4) +
-  guides(colour = guide_legend(override.aes = list(size = 2)))</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-11-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="neighborhood-composition-analysis" class="section level1">
+<h1>Neighborhood Composition Analysis</h1>
+<ul>
+<li><p>Since MISTy is a flexible framework, I want to give another short example how we can use MISTy to predict the identity of cells using the identity of the 50 nearest-neighbor of a cell.</p></li>
+<li><p>Here I excluded Tumor cells and cells which are not really present in every sample.</p></li>
+<li><p>Let’s start again by looking at the gain in R2.</p></li>
+</ul>
+<pre class="r"><code>notumor.misty.results &lt;- readRDS(&quot;data/no.tumor.compositon.RDS&quot;)
+plot_improvement_stats(notumor.misty.results, &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
 Past versions of unnamed-chunk-11-1.png
@@ -1688,16 +1707,18 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="cell-type-specific-analysis" class="section level1">
-<h1>Cell Type Specific Analysis</h1>
-<div id="tumor---immune" class="section level2">
-<h2>Tumor -&gt; Immune</h2>
 <ul>
-<li><p>Using MISTy to uncover interactions between tumor and immune Cells.</p></li>
-<li><p>Therefore we look at immune cells but only use tumor cell to calculate the paraview</p></li>
+<li>As expecpted these results are driven by the tumor structure:</li>
 </ul>
-<pre class="r"><code>plot_improvement_stats(cancer.immune.results, &quot;gain.R2&quot;)</code></pre>
+<pre class="r"><code>notumor.misty.results$improvements %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, 
+                                &quot;mixed&quot; = &quot;blue&quot;)) </code></pre>
 <p><img src="figure/Presentation.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
@@ -1748,25 +1769,12 @@ schae211
 </div>
 </div>
 <ul>
-<li><p>Looking at the interactions focusing for example only on the immuno regulatory proteins</p></li>
-<li><p>There is no single important predictor, rather many predictors are important for every immuno-regulatory proteins</p></li>
-<li><p>But some predictors are specific, such as EGFR for PD-L1.</p></li>
+<li><p>But in general what kind of interactions explain those results?</p></li>
+<li><p>We can see kind of see there is a structure in the immune response. The levels of macrophages are informative about the presence/absense of other cell types (also macrophages are by far the most abundant immune cell type).</p></li>
+<li><p>However, interpreting this plot is not straight forward as those interaction can be very complex (non-linear)</p></li>
 </ul>
-<pre class="r"><code>cutoff = 0
-cancer.immune.results$importances %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  filter(Target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
-  group_by(Classification, view, Predictor, Target) %&gt;%
-  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
-  filter(view == &quot;c.para.120&quot;) %&gt;%
-  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
-  ggplot(., aes(x = Predictor,y = Target)) +
-  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
-  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
-  coord_equal()</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_interaction_heatmap(notumor.misty.results, &quot;para.50&quot;, cutoff = 0)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
 Past versions of unnamed-chunk-13-1.png
@@ -1815,28 +1823,38 @@ schae211
 </table>
 </div>
 </div>
-</div>
-<div id="immune---immune" class="section level2">
-<h2>Immune -&gt; Immune</h2>
 <ul>
-<li><p>What kind of interactions are important between immune cells?</p></li>
-<li><p>For example PD1 expression is helpful to predict Lag3 expression.</p></li>
+<li><p>For example we see the mutual interaction between CD4 T-cells and B-cells, which we could investigate by actually looking at the samples (which have rather high numbers of both cell types).</p></li>
+<li><p>It seems like there is some coordinated though not in all samples!</p></li>
 </ul>
-<pre class="r"><code>cutoff = 0
-immune.immune.results$importances %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  filter(Target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
-  group_by(Classification, view, Predictor, Target) %&gt;%
-  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
-  filter(view == &quot;i.para.120&quot;) %&gt;%
-  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
-  ggplot(., aes(x = Predictor,y = Target)) +
-  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
-  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
-  coord_equal()</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>df &lt;- meta %&gt;%
+  group_by(SampleID) %&gt;%
+  count(immuneGroup) %&gt;%
+  ungroup() %&gt;%
+  pivot_wider(names_from=immuneGroup, values_from=n)
+
+q75_cd4 &lt;- quantile(df$`CD4 T`, .6, na.rm=TRUE)
+q75_b &lt;- quantile(df$B, .6, na.rm=TRUE)
+
+sample.oi &lt;- df %&gt;%
+  filter(`CD4 T` &gt;= q75_cd4, B &gt;= q75_b) %&gt;%
+  pull(SampleID)
+
+meta %&gt;%
+  mutate(SampleID = as.character(SampleID)) %&gt;%
+  left_join(meta.smp, by=&quot;SampleID&quot;) %&gt;%
+  filter(SampleID %in% sample.oi) %&gt;%
+  mutate(class = case_when(
+    Group %in% c(&quot;Keratin-positive tumor&quot;, &quot;Tumor&quot;) ~ &quot;Tumor&quot;,
+    !(immuneGroup %in% c(&quot;B&quot;, &quot;CD4 T&quot;)) ~ &quot;Ignore&quot;,
+    TRUE ~ immuneGroup
+  )) %&gt;%
+  filter(class != &quot;Ignore&quot;) %&gt;%
+  ggplot() +
+  geom_point(aes(x=row, y=col, col=class), size=.1) +
+  facet_wrap(~ SampleID, ncol=4) +
+  guides(colour = guide_legend(override.aes = list(size = 2)))</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-14-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
 Past versions of unnamed-chunk-14-1.png
@@ -1886,30 +1904,19 @@ schae211
 </div>
 </div>
 </div>
-</div>
-<div id="thoughs" class="section level1">
-<h1>Thoughs</h1>
+<div id="cell-type-specific-analysis" class="section level1">
+<h1>Cell Type Specific Analysis</h1>
 <ul>
-<li><p>Since MISTy was rather developed to probe intra- and especially intercellular interactions it would be helpful to have more markers that help to decipher pathway activity and expression of ligands.</p></li>
-<li><p>How does the site/location in the solid tumor where the sample is taken from influence the sample-to-sample heterogeneity? Did you by now had a look at similar samples, and are the effects you saw preserved across different sites in the same patient?</p></li>
+<li><p>Another use case might be to probe the interactions between certain cell types.</p></li>
+<li><p>For example predicting the expression of markers in immune cells using information from the tumor cell in the broader tissue structure (paraview).</p></li>
 </ul>
-</div>
-<div id="appendix" class="section level1">
-<h1>Appendix</h1>
+<div id="tumor---immune" class="section level2">
+<h2>Tumor -&gt; Immune</h2>
 <ul>
-<li>Interestingly the prediction of the other immuno-regulatory proteins apart from PD-1 did not depend on the tumor structure.</li>
+<li><p>We can see again that the expression of the tumor cells are informative.</p></li>
+<li><p>We also see that there is quite some gain in variance explained for IDO, PD_L1 and PD1, so which interactions could explain that?</p></li>
 </ul>
-<pre class="r"><code>ranger.results$improvements %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;% 
-  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
-  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  filter(target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
-  filter(Classification != &quot;cold&quot;) %&gt;%
-
-  ggplot() +
-  geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
-  labs(x = &quot;Target&quot;, y = &quot;Gain Explained Variance (R2)&quot;)</code></pre>
+<pre class="r"><code>plot_improvement_stats(cancer.immune.results, &quot;gain.R2&quot;)</code></pre>
 <p><img src="figure/Presentation.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
@@ -1960,18 +1967,25 @@ schae211
 </div>
 </div>
 <ul>
-<li>Also for the prediction of cell types, the gain in R2 is much higher in compartmentalized samples.</li>
+<li><p>Thus, we will have a look at the corresponding importances.</p></li>
+<li><p>There is no single important predictor, rather many predictors are important for every immuno-regulatory proteins</p></li>
+<li><p>But some predictors are specific, such as EGFR for PD-L1.</p></li>
 </ul>
-<pre class="r"><code>notumor.misty.results$improvements %&gt;%
-  mutate(sample = str_extract(sample, &quot;(?&lt;=smp.)[0-9]+&quot;)) %&gt;%
-  filter(measure == &quot;gain.R2&quot;) %&gt;%
+<pre class="r"><code>cutoff = 0
+cancer.immune.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
   left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x=target, y=value, col=Classification)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, 
-                                &quot;mixed&quot; = &quot;blue&quot;)) </code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+  filter(Target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;c.para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal()</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
 Past versions of unnamed-chunk-16-1.png
@@ -2009,17 +2023,32 @@ schae211
 </table>
 </div>
 </div>
-<p>One could also run MISTy with linear models as base learner in a bagged to to increase interpretability. Though this strongly reduced the variance that can be explained.</p>
-<pre class="r"><code>lmbag.results$improvements %&gt;%
-  filter(measure %in% c(&quot;intra.R2&quot;, &quot;multi.R2&quot;)) %&gt;%
-  mutate(measure = factor(measure, levels = c(&quot;multi.R2&quot;, &quot;intra.R2&quot;))) %&gt;%
-  ggplot() +
-  geom_boxplot(aes(x=reorder(target, -value), y=value, col=measure)) +
+<ul>
+<li><p>And we could actually ask the same question when looking at the interaction of immune cells.</p></li>
+<li><p>What kind of interactions explain</p></li>
+</ul>
+</div>
+<div id="immune---immune" class="section level2">
+<h2>Immune -&gt; Immune</h2>
+<ul>
+<li><p>What kind of interactions are important between immune cells?</p></li>
+<li><p>For example PD1 expression is helpful to predict Lag3 expression.</p></li>
+</ul>
+<pre class="r"><code>cutoff = 0
+immune.immune.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;i.para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
-  labs(y = &quot;Statistic&quot;, x = &quot;Target&quot;) +
-  scale_color_manual(values = c(&quot;multi.R2&quot; = &quot;forestgreen&quot;, 
-                                &quot;intra.R2&quot; = &quot;brown&quot;))</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
+  coord_equal()</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
 Past versions of unnamed-chunk-17-1.png
@@ -2057,25 +2086,32 @@ schae211
 </table>
 </div>
 </div>
+</div>
+</div>
+<div id="thoughts" class="section level1">
+<h1>Thoughts</h1>
 <ul>
-<li>The interactions we have looked at before.</li>
+<li><p>We are happy to collaborate</p></li>
+<li><p>Since MISTy was rather developed to probe intra- and especially intercellular interactions it would be helpful to have more markers that help to decipher pathway activity and expression of ligands.</p></li>
+<li><p>How does the site/location in the solid tumor where the sample is taken from influence the sample-to-sample heterogeneity? Did you by now had a look at similar samples, and are the effects you saw preserved across different sites in the same patient?</p></li>
 </ul>
-<pre class="r"><code>cutoff = 0.5
-lmbag.results$importances %&gt;%
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<ul>
+<li>Interestingly the prediction of the other immuno-regulatory proteins apart from PD-1 did not depend on the tumor structure.</li>
+</ul>
+<pre class="r"><code>ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;% 
   mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
   left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
-  filter(Target %in% sign.targets) %&gt;%
+  filter(target %in% c(&quot;IDO&quot;, &quot;PD.L1&quot;, &quot;PD1&quot;, &quot;Lag3&quot;)) %&gt;%
   filter(Classification != &quot;cold&quot;) %&gt;%
-  group_by(Classification, view, Predictor, Target) %&gt;%
-  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
-  filter(view == &quot;para.120&quot;) %&gt;%
-  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
-  ggplot(., aes(x = Predictor,y = Target)) +
-  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
-  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
-  coord_equal() +
-  facet_wrap(~ Classification, ncol=1)</code></pre>
+
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=Classification)) +
+  scale_color_manual(values = c(&quot;compartmentalized&quot; = &quot;forestgreen&quot;, &quot;mixed&quot; = &quot;blue&quot;)) +
+  labs(x = &quot;Target&quot;, y = &quot;Gain Explained Variance (R2)&quot;)</code></pre>
 <p><img src="figure/Presentation.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
@@ -2102,6 +2138,132 @@ Date
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-18-1.png" target="_blank">28ffc8b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>One could also run MISTy with linear models as base learner in a bagged to to increase interpretability. Though this strongly reduced the variance that can be explained.</li>
+</ul>
+<pre class="r"><code>df1 &lt;- ranger.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  mutate(method = &quot;ranger&quot;)
+
+df2 &lt;- lmbag.results$improvements %&gt;%
+  filter(measure == &quot;gain.R2&quot;) %&gt;%
+  mutate(method = &quot;lm&quot;)
+
+rbind(df1, df2) %&gt;%
+  mutate(method = factor(method, levels = c(&quot;ranger&quot;, &quot;lm&quot;))) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=reorder(target, -value), y=value, col=method),
+               outlier.shape = NA, width = .5) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  labs(y = &quot;Statistic&quot;, x = &quot;Target&quot;) +
+  scale_color_manual(values = c(&quot;ranger&quot; = &quot;forestgreen&quot;, 
+                                &quot;lm&quot; = &quot;brown&quot;))</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/7302426a520bc08ffdfb56922e16224037e0c615/docs/figure/Presentation.Rmd/unnamed-chunk-19-1.png" target="_blank">7302426</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-19-1.png" target="_blank">28ffc8b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>The interactions we have looked at before.</li>
+</ul>
+<pre class="r"><code>cutoff = 0.5
+lmbag.results$importances %&gt;%
+  mutate(sample = str_extract(sample, &quot;(?&lt;=_s)[0-9]+&quot;)) %&gt;%
+  left_join(meta.smp, by=c(&quot;sample&quot; = &quot;SampleID&quot;)) %&gt;%
+  filter(Target %in% sign.targets) %&gt;%
+  filter(Classification != &quot;cold&quot;) %&gt;%
+  group_by(Classification, view, Predictor, Target) %&gt;%
+  summarise(m.imp = mean(Importance), .groups=&quot;drop&quot;) %&gt;%
+  filter(view == &quot;para.120&quot;) %&gt;%
+  mutate(Importance = ifelse(m.imp &lt; cutoff, 0, m.imp)) %&gt;%
+  ggplot(., aes(x = Predictor,y = Target)) +
+  geom_tile(aes(fill = Importance), color = &quot;black&quot;) +
+  scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;white&quot;, high = &quot;#8DA0CB&quot;, midpoint = cutoff) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5)) +
+  coord_equal() +
+  facet_wrap(~ Classification, ncol=1)</code></pre>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/7302426a520bc08ffdfb56922e16224037e0c615/docs/figure/Presentation.Rmd/unnamed-chunk-20-1.png" target="_blank">7302426</a>
 </td>
 <td>
 schae211
@@ -2143,44 +2305,7 @@ p4 &lt;- ggplot() +
   labs(col = &quot;TIL Score&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;) +
   scale_color_viridis_c()
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-19-1.png" width="768" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
-Past versions of unnamed-chunk-19-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-19-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-19-1.png" target="_blank">28ffc8b</a>
-</td>
-<td>
-schae211
-</td>
-<td>
-2021-10-27
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
 <ul>
 <li>But what about the importance signatures? I am not quite sure whether there are patterns, once could argue about the grade I guess.</li>
 </ul>
@@ -2213,7 +2338,7 @@ p4 &lt;- ggplot() +
   labs(col = &quot;TIL Score&quot;, x=&quot;PCA-1&quot;, y=&quot;PCA-2&quot;) +
   scale_color_viridis_c()
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)</code></pre>
-<p><img src="figure/Presentation.Rmd/unnamed-chunk-20-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p><img src="figure/Presentation.Rmd/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2245,6 +2370,7 @@ other attached packages:
  [1] factoextra_1.0.7 forcats_0.5.1    stringr_1.4.0    dplyr_1.0.7     
  [5] purrr_0.3.4      readr_2.0.2      tidyr_1.1.4      tibble_3.1.5    
  [9] ggplot2_3.3.5    tidyverse_1.3.1  future_1.22.1    mistyR_1.1.13   
+[13] workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
  [1] httr_1.4.2         sass_0.4.0         jsonlite_1.7.2     viridisLite_0.4.0 
@@ -2263,9 +2389,9 @@ loaded via a namespace (and not attached):
 [53] grid_4.1.1         rstudioapi_0.13    labeling_0.4.2     rmarkdown_2.11    
 [57] gtable_0.3.0       codetools_0.2-18   DBI_1.1.1          R6_2.5.1          
 [61] gridExtra_2.3      lubridate_1.8.0    knitr_1.36         fastmap_1.1.0     
-[65] utf8_1.2.2         workflowr_1.6.2    rprojroot_2.0.2    stringi_1.7.5     
-[69] parallel_4.1.1     Rcpp_1.0.7         vctrs_0.3.8        dbplyr_2.1.1      
-[73] tidyselect_1.1.1   xfun_0.26         </code></pre>
+[65] utf8_1.2.2         rprojroot_2.0.2    stringi_1.7.5      parallel_4.1.1    
+[69] Rcpp_1.0.7         vctrs_0.3.8        dbplyr_2.1.1       tidyselect_1.1.1  
+[73] xfun_0.26         </code></pre>
 </div>
 </div>
 
