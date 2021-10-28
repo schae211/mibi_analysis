@@ -30,15 +30,27 @@ lmbag.results <- readRDS("data/lmbag.results.RDS")
 - MISTy is an explainable machine learning framework to probe intra- and 
 intercellular marker interactions. 
 
-- Can we predict the expression of marker X using the information about the 
-expression of marker Y within a given cell and in the neighboring cells? 
+- Assuming we have different markers (proteins, transcripts, etc.).
 
-- The assumption being that if this is the case, there is some sort of relationship
-between marker X and Y (which has neither to be causal nor linear).
+**1. Question**: Can we predict the expression of marker X using the information about the 
+expression of other markers within the same cell (juxtaview)
 
-- Highly flexible framework, which allows us for example to specifically look
-at the interaction of certain cell types (e.g. How much can the expression of markers
-in adjacent tumor cells explain the expression of markers in immune cells).
+**2. Question**: Does our prediction improve if we take the expression of the
+other markers in the spatial context into consideration?
+
+- Thereby we can define spatial context flexibly, meaning only the direct 
+neighbors (juxtaview) or the broader tissue (paraview), (or actually any
+other view you could think of).
+
+**3. Question**: What kind of spatial context is important to improve our prediction?
+
+**4. Question**: Which other markers are helpful to predict the expression of marker X?
+
+- If another marker Y is important to predict the expression of markers, there 
+is some sort of relationship between the markers
+(which has neither to be causal nor linear!).
+
+- All of this should get more clear when I show some results.
 
 ```{r, echo=FALSE}
 # Define variable containing url
@@ -77,6 +89,8 @@ and samples (see errorbars).
 plot_improvement_stats(ranger.results, "gain.R2")
 ```
 
+## Which spatial context is more important?
+
 - We might also be interested in whether the direct neighbors (juxtaview) 
 or the broad spatial context (paraview) are more important?
 
@@ -86,6 +100,8 @@ than the local cellular niche (juxtaview).
 ```{r}
 plot_view_contributions(ranger.results)
 ```
+
+## Which factors drive the heterogentiy in the performance?
 
 - Furthermore, we could ask why there is a large variability
 between the samples in the gain in R2 for the different target. What drives
@@ -140,6 +156,8 @@ ranger.results$improvements %>%
                                 "mixed" = "blue")) +
   labs(y = "Gain R2")
 ```
+
+## For which targets is the gain in R2 in significantly different?
 
 - So for which targets is the gain in R2 different between
 compartmentalized and mixed samples? Meaning for the prediction 
@@ -196,6 +214,8 @@ ranger.results$improvements %>%
   geom_boxplot(aes(x=target, y=value, col=Classification)) +
   scale_color_manual(values = c("compartmentalized" = "forestgreen", "mixed" = "blue"))
 ```
+
+## What interactions drive these differenes?
 
 - But what kind of interactions could explain those differences? Which other
 markers are important for the prediction of those targets?
