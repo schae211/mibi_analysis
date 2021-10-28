@@ -522,16 +522,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree5161309175ed943a3b5b21ebe039422ba0c1dbeetargetblank5161309a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/5161309175ed943a3b5b21ebe039422ba0c1dbee" target="_blank">5161309</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeda81c1c8126f70f32279961fea9bc8a780bf053ctargetblankda81c1ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/da81c1c8126f70f32279961fea9bc8a780bf053c" target="_blank">da81c1c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistree5161309175ed943a3b5b21ebe039422ba0c1dbeetargetblank5161309a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeda81c1c8126f70f32279961fea9bc8a780bf053ctargetblankda81c1ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/5161309175ed943a3b5b21ebe039422ba0c1dbee" target="_blank">5161309</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/da81c1c8126f70f32279961fea9bc8a780bf053c" target="_blank">da81c1c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -644,6 +644,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/da81c1c8126f70f32279961fea9bc8a780bf053c/analysis/Presentation.Rmd" target="_blank">da81c1c</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+<td>
+workflowr::wflow_publish(files = “analysis/Presentation.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/Presentation.html" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1063,9 +1097,18 @@ immune-immune analysis included
 <h1>What is MISTy?</h1>
 <ul>
 <li><p>MISTy is an explainable machine learning framework to probe intra- and intercellular marker interactions.</p></li>
-<li><p>Can we predict the expression of marker X using the information about the expression of marker Y within a given cell and in the neighboring cells?</p></li>
-<li><p>The assumption being that if this is the case, there is some sort of relationship between marker X and Y (which has neither to be causal nor linear).</p></li>
-<li><p>Highly flexible framework, which allows us for example to specifically look at the interaction of certain cell types (e.g. How much can the expression of markers in adjacent tumor cells explain the expression of markers in immune cells).</p></li>
+<li><p>Assuming we have different markers (proteins, transcripts, etc.).</p></li>
+</ul>
+<p><strong>1. Question</strong>: Can we predict the expression of marker X using the information about the expression of other markers within the same cell (juxtaview)</p>
+<p><strong>2. Question</strong>: Does our prediction improve if we take the expression of the other markers in the spatial context into consideration?</p>
+<ul>
+<li>Thereby we can define spatial context flexibly, meaning only the direct neighbors (juxtaview) or the broader tissue (paraview), (or actually any other view you could think of).</li>
+</ul>
+<p><strong>3. Question</strong>: What kind of spatial context is important to improve our prediction?</p>
+<p><strong>4. Question</strong>: Which other markers are helpful to predict the expression of marker X?</p>
+<ul>
+<li><p>If another marker Y is important to predict the expression of markers, there is some sort of relationship between the markers (which has neither to be causal nor linear!).</p></li>
+<li><p>All of this should get more clear when I show some results.</p></li>
 </ul>
 <center>
 <img src="https://www.dropbox.com/s/5wyh520i1wl62ul/graphical_abstract.png?raw=1">
@@ -1109,6 +1152,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-2-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-2-1.png" target="_blank">28ffc8b</a>
@@ -1189,6 +1243,8 @@ schae211
 </table>
 </div>
 </div>
+<div id="which-spatial-context-is-more-important" class="section level2">
+<h2>Which spatial context is more important?</h2>
 <ul>
 <li><p>We might also be interested in whether the direct neighbors (juxtaview) or the broad spatial context (paraview) are more important?</p></li>
 <li><p>And most often we see that the broader spatial context (paraview) is more important than the local cellular niche (juxtaview).</p></li>
@@ -1243,6 +1299,9 @@ schae211
 </table>
 </div>
 </div>
+</div>
+<div id="which-factors-drive-the-heterogentiy-in-the-performance" class="section level2">
+<h2>Which factors drive the heterogentiy in the performance?</h2>
 <ul>
 <li><p>Furthermore, we could ask why there is a large variability between the samples in the gain in R2 for the different target. What drives those differences?</p></li>
 <li><p>To answer this question we can look at the performance signature, which is a collection of all performance measures for each target.</p></li>
@@ -1297,6 +1356,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-6-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-6-1.png" target="_blank">28ffc8b</a>
@@ -1362,6 +1432,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-7-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-7-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -1386,6 +1467,9 @@ schae211
 </table>
 </div>
 </div>
+</div>
+<div id="for-which-targets-is-the-gain-in-r2-in-significantly-different" class="section level2">
+<h2>For which targets is the gain in R2 in significantly different?</h2>
 <ul>
 <li><p>So for which targets is the gain in R2 different between compartmentalized and mixed samples? Meaning for the prediction of which targets is it important whether the special context comprises a structured or unstructured TME?</p></li>
 <li><p>On top we can see the targets for which the gain in R2 is significantly different between compartmentalized and mixed samples. On the bottom the multi R2 (total explained variance) is shown.</p></li>
@@ -1459,6 +1543,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-8-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-8-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -1483,6 +1578,9 @@ schae211
 </table>
 </div>
 </div>
+</div>
+<div id="what-interactions-drive-these-differenes" class="section level2">
+<h2>What interactions drive these differenes?</h2>
 <ul>
 <li><p>But what kind of interactions could explain those differences? Which other markers are important for the prediction of those targets?</p></li>
 <li><p>Let’s look at the <strong>importances</strong> of the <strong>paraview</strong> for these targets in compartmentalized and mixed samples.</p></li>
@@ -1535,6 +1633,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-9-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-9-1.png" target="_blank">28ffc8b</a>
@@ -1621,6 +1730,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-10-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-10-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -1648,6 +1768,7 @@ schae211
 <ul>
 <li>For example EGFR and FoxP3 are more important for prediction of these targets in mixed samples, whereas CD45 is more important in compartmentalized samples.</li>
 </ul>
+</div>
 </div>
 <div id="neighborhood-composition-analysis" class="section level1">
 <h1>Neighborhood Composition Analysis</h1>
@@ -1681,6 +1802,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-11-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-11-1.png" target="_blank">28ffc8b</a>
@@ -1744,6 +1876,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-12-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-12-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -1797,6 +1940,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-13-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-13-1.png" target="_blank">28ffc8b</a>
@@ -1879,6 +2033,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-14-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-14-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -1940,6 +2105,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-15-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-15-1.png" target="_blank">28ffc8b</a>
@@ -2010,6 +2186,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-16-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-16-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -2071,6 +2258,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-17-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-17-1.png" target="_blank">28ffc8b</a>
@@ -2137,6 +2335,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-18-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Presentation.Rmd/unnamed-chunk-18-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -2193,6 +2402,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-19-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/schae211/mibi_analysis/blob/7302426a520bc08ffdfb56922e16224037e0c615/docs/figure/Presentation.Rmd/unnamed-chunk-19-1.png" target="_blank">7302426</a>
@@ -2263,6 +2483,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-20-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/7302426a520bc08ffdfb56922e16224037e0c615/docs/figure/Presentation.Rmd/unnamed-chunk-20-1.png" target="_blank">7302426</a>
 </td>
 <td>
@@ -2306,6 +2537,43 @@ p4 &lt;- ggplot() +
   scale_color_viridis_c()
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)</code></pre>
 <p><img src="figure/Presentation.Rmd/unnamed-chunk-21-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
+Past versions of unnamed-chunk-21-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-21-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <ul>
 <li>But what about the importance signatures? I am not quite sure whether there are patterns, once could argue about the grade I guess.</li>
 </ul>
@@ -2339,6 +2607,43 @@ p4 &lt;- ggplot() +
   scale_color_viridis_c()
 gridExtra::grid.arrange(p1, p2, p3, p4, ncol=2)</code></pre>
 <p><img src="figure/Presentation.Rmd/unnamed-chunk-22-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
+Past versions of unnamed-chunk-22-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/f0404412bbc8cbdfda91a7fe5c050ca933f68ff2/docs/figure/Presentation.Rmd/unnamed-chunk-22-1.png" target="_blank">f040441</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-28
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
