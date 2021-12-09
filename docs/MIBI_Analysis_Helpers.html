@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Exploratory Data Analysis MIBI with Helper Function</title>
+
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">mibi_analysis</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="MIBI_Analysis.html">Exploratory Data Analysis</a>
+</li>
+<li>
+  <a href="MISTy_Stratification.html">Cell Type Specific Analysis</a>
+</li>
+<li>
+  <a href="Model_Comparison.html">Model Comparison</a>
+</li>
+<li>
+  <a href="Composition.html">Composition Analysis</a>
+</li>
+<li>
+  <a href="MISTY_Analysis_Helpers.html">MISTy Helpers</a>
+</li>
+<li>
+  <a href="Questions.html">Questions</a>
+</li>
+<li>
+  <a href="Presentation.html">Presentation</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/schae211/mibi_analysis">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis MIBI with Helper Function</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2021-12-09
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>mibi_analysis/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20211011code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20211011)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20211011code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20211011)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+~/Saez/mibi_analysis/
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreebacdb1720c869c2096c088d75cdce8078685fc73targetblankbacdb17a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/bacdb1720c869c2096c088d75cdce8078685fc73" target="_blank">bacdb17</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreebacdb1720c869c2096c088d75cdce8078685fc73targetblankbacdb17a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/bacdb1720c869c2096c088d75cdce8078685fc73" target="_blank">bacdb17</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    analysis/cell.specific.results/immune.immune_s1/
+    Ignored:    analysis/cell.specific.results/immune.immune_s10/
+    Ignored:    analysis/cell.specific.results/immune.immune_s11/
+    Ignored:    analysis/cell.specific.results/immune.immune_s12/
+    Ignored:    analysis/cell.specific.results/immune.immune_s13/
+    Ignored:    analysis/cell.specific.results/immune.immune_s14/
+    Ignored:    analysis/cell.specific.results/immune.immune_s15/
+    Ignored:    analysis/cell.specific.results/immune.immune_s16/
+    Ignored:    analysis/cell.specific.results/immune.immune_s17/
+    Ignored:    analysis/cell.specific.results/immune.immune_s18/
+    Ignored:    analysis/cell.specific.results/immune.immune_s19/
+    Ignored:    analysis/cell.specific.results/immune.immune_s2/
+    Ignored:    analysis/cell.specific.results/immune.immune_s20/
+    Ignored:    analysis/cell.specific.results/immune.immune_s21/
+    Ignored:    analysis/cell.specific.results/immune.immune_s22/
+    Ignored:    analysis/cell.specific.results/immune.immune_s23/
+    Ignored:    analysis/cell.specific.results/immune.immune_s24/
+    Ignored:    analysis/cell.specific.results/immune.immune_s25/
+    Ignored:    analysis/cell.specific.results/immune.immune_s26/
+    Ignored:    analysis/cell.specific.results/immune.immune_s27/
+    Ignored:    analysis/cell.specific.results/immune.immune_s28/
+    Ignored:    analysis/cell.specific.results/immune.immune_s29/
+    Ignored:    analysis/cell.specific.results/immune.immune_s3/
+    Ignored:    analysis/cell.specific.results/immune.immune_s31/
+    Ignored:    analysis/cell.specific.results/immune.immune_s32/
+    Ignored:    analysis/cell.specific.results/immune.immune_s33/
+    Ignored:    analysis/cell.specific.results/immune.immune_s34/
+    Ignored:    analysis/cell.specific.results/immune.immune_s35/
+    Ignored:    analysis/cell.specific.results/immune.immune_s36/
+    Ignored:    analysis/cell.specific.results/immune.immune_s37/
+    Ignored:    analysis/cell.specific.results/immune.immune_s38/
+    Ignored:    analysis/cell.specific.results/immune.immune_s39/
+    Ignored:    analysis/cell.specific.results/immune.immune_s4/
+    Ignored:    analysis/cell.specific.results/immune.immune_s40/
+    Ignored:    analysis/cell.specific.results/immune.immune_s41/
+    Ignored:    analysis/cell.specific.results/immune.immune_s5/
+    Ignored:    analysis/cell.specific.results/immune.immune_s6/
+    Ignored:    analysis/cell.specific.results/immune.immune_s7/
+    Ignored:    analysis/cell.specific.results/immune.immune_s8/
+    Ignored:    analysis/cell.specific.results/immune.immune_s9/
+    Ignored:    analysis/composition.analysis/
+    Ignored:    analysis/notumor.composition.analysis/
+    Ignored:    analysis/red.composition.analysis/
+    Ignored:    analysis/results/
+    Ignored:    analysis/test/
+    Ignored:    data/bagged_mars.RDS
+    Ignored:    data/bgmars.RDS
+    Ignored:    data/cancer.immune.RDS
+    Ignored:    data/cancer.immune.results.RDS
+    Ignored:    data/cancer.immune.views.RDS
+    Ignored:    data/cellData.csv
+    Ignored:    data/coord.RDS
+    Ignored:    data/coordinates.csv
+    Ignored:    data/earth.results.RDS
+    Ignored:    data/expression.RDS
+    Ignored:    data/expression_per_sample.RDS
+    Ignored:    data/graph.clusters.RDS
+    Ignored:    data/immune.immune.RDS
+    Ignored:    data/immune.immune.results.RDS
+    Ignored:    data/immune.immune.views.RDS
+    Ignored:    data/lboost.RDS
+    Ignored:    data/lm.RDS
+    Ignored:    data/lmbag.results.RDS
+    Ignored:    data/mars.RDS
+    Ignored:    data/meta_data.RDS
+    Ignored:    data/mibi_coldata.RDS
+    Ignored:    data/mibi_coord.RDS
+    Ignored:    data/mibi_expression.RDS
+    Ignored:    data/mibi_rowdata.RDS
+    Ignored:    data/misty_views_smp.RDS
+    Ignored:    data/no.tumor.compositon.RDS
+    Ignored:    data/patient_class.csv
+    Ignored:    data/ranger.results.RDS
+    Ignored:    data/raw_tiffs/
+    Ignored:    data/rf.RDS
+    Ignored:    data/sample_meta.RDS
+    Ignored:    data/tboost.RDS
+    Ignored:    data/tumor.immune.contacts.RDS
+    Ignored:    old_files/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/MIBI_Analysis_Helpers.Rmd</code>) and HTML (<code>docs/MIBI_Analysis_Helpers.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/bacdb1720c869c2096c088d75cdce8078685fc73/analysis/MIBI_Analysis_Helpers.Rmd" target="_blank">bacdb17</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-12-09
+</td>
+<td>
+wflow_publish(“analysis/MIBI_Analysis_Helpers.Rmd”)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="set-up" class="section level1">
+<h1>Set up</h1>
+<p>Messages will be hidden and the output collapsed to make the Rmd more clear.</p>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = &quot;~/Saez/mibi_analysis/&quot;)</code></pre>
+<p>Loaded Packages.</p>
+<pre class="r"><code>suppressPackageStartupMessages(library(mistyR))
+suppressPackageStartupMessages(library(future))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(factoextra))
+suppressPackageStartupMessages(library(tiff))
+plan(&quot;multisession&quot;, workers=14)</code></pre>
+</div>
+<div id="loading-and-processing-data" class="section level1">
+<h1>Loading and Processing Data</h1>
+<p>The columns Group and ImmuneGroup in the cell metadata are translated from numbers to their actual meaning.</p>
+<pre class="r"><code>input &lt;- read_csv(&quot;data/cellData.csv&quot;, show_col_types=FALSE)
+
+# See description in Readme
+group.trans &lt;- c(&quot;1&quot; = &quot;Unidentified&quot;, &quot;2&quot; = &quot;Immune&quot;, &quot;3&quot; = &quot;Endothelial&quot;, 
+                 &quot;4&quot; = &quot;Mesenchymal-like&quot;, &quot;5&quot; = &quot;Tumor&quot;, 
+                 &quot;6&quot; = &quot;Keratin-positive tumor&quot;)
+
+immune.group.trans &lt;- c(&quot;0&quot; = &quot;Non-Immune?&quot;, &quot;1&quot; = &quot;Tregs&quot;, &quot;2&quot; = &quot;CD4 T&quot;, 
+                        &quot;3&quot; = &quot;CD8 T&quot;, &quot;4&quot; = &quot;CD3 T&quot;, &quot;5&quot; = &quot;NK&quot;, &quot;6&quot; = &quot;B&quot;,
+                        &quot;7&quot; = &quot;Neutrophils&quot;, &quot;8&quot; = &quot;Macrophages&quot;, 
+                        &quot;9&quot; = &quot;DC&quot;, &quot;10&quot; = &quot;DC/Mono&quot;, &quot;11&quot; = &quot;Mono/Neu&quot;, 
+                        &quot;12&quot; = &quot;Other immune&quot;)
+
+raw_data &lt;- input %&gt;%
+  mutate(Group = group.trans[as.character(Group)]) %&gt;%
+  mutate(immuneGroup = immune.group.trans[as.character(immuneGroup)])
+  
+raw_data %&gt;% slice_head(n=6)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["SampleID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["cellLabelInImage"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["cellSize"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["C"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Na"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Si"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["P"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Ca"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Fe"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["dsDNA"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Vimentin"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["SMA"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Background"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["B7H3"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["FoxP3"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["Lag3"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["CD4"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["CD16"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["CD56"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["OX40"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["PD1"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["CD31"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["PD-L1"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["EGFR"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["Ki67"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["CD209"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["CD11c"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["CD138"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["CD163"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["CD68"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["CSF-1R"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["CD8"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["CD3"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["IDO"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["Keratin17"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["CD63"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["CD45RO"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["CD20"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["p53"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["Beta catenin"],"name":[40],"type":["dbl"],"align":["right"]},{"label":["HLA-DR"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["CD11b"],"name":[42],"type":["dbl"],"align":["right"]},{"label":["CD45"],"name":[43],"type":["dbl"],"align":["right"]},{"label":["H3K9ac"],"name":[44],"type":["dbl"],"align":["right"]},{"label":["Pan-Keratin"],"name":[45],"type":["dbl"],"align":["right"]},{"label":["H3K27me3"],"name":[46],"type":["dbl"],"align":["right"]},{"label":["phospho-S6"],"name":[47],"type":["dbl"],"align":["right"]},{"label":["MPO"],"name":[48],"type":["dbl"],"align":["right"]},{"label":["Keratin6"],"name":[49],"type":["dbl"],"align":["right"]},{"label":["HLA_Class_1"],"name":[50],"type":["dbl"],"align":["right"]},{"label":["Ta"],"name":[51],"type":["dbl"],"align":["right"]},{"label":["Au"],"name":[52],"type":["dbl"],"align":["right"]},{"label":["tumorYN"],"name":[53],"type":["dbl"],"align":["right"]},{"label":["tumorCluster"],"name":[54],"type":["dbl"],"align":["right"]},{"label":["Group"],"name":[55],"type":["chr"],"align":["left"]},{"label":["immuneCluster"],"name":[56],"type":["dbl"],"align":["right"]},{"label":["immuneGroup"],"name":[57],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"2","3":"146","4":"0","5":"-0.59061","6":"0.875220","7":"-2.57650","8":"-0.806060","9":"-0.2344","10":"-1.308000","11":"-0.82196","12":"-0.37796","13":"-0.843460","14":"-0.0070565","15":"-0.076288","16":"-0.086878","17":"-0.37537","18":"-0.35531","19":"-0.068127","20":"-0.03418","21":"-0.16593","22":"-0.16699","23":"-0.31424","24":"-0.30887","25":"-0.23054","26":"-0.09984","27":"-0.35967","28":"-0.35002","29":"-0.0282","30":"-0.37415","31":"-0.41298","32":"-0.374","33":"-0.44579","34":"-0.20952","35":"-0.2738","36":"0.69776","37":"-0.59304","38":"-0.35542","39":"-0.30046","40":"-0.84559","41":"0.014203","42":"-0.19391","43":"-0.75654","44":"-1.42870","45":"0.653120","46":"-1.4583000","47":"-1.142600","48":"-0.13903","49":"-0.41883","50":"-0.53738","51":"2.48110","52":"2.32660","53":"1","54":"0","55":"Keratin-positive tumor","56":"0","57":"Non-Immune?"},{"1":"1","2":"3","3":"102","4":"0","5":"-0.49870","6":"0.017464","7":"-1.22490","8":"-0.501520","9":"-1.3412","10":"0.522570","11":"-0.82196","12":"-0.37796","13":"-0.376830","14":"-0.0070565","15":"-0.076288","16":"-0.086878","17":"-0.37537","18":"-0.35531","19":"-0.068127","20":"-0.03418","21":"-0.16593","22":"-0.16699","23":"-0.31424","24":"-0.30887","25":"-0.23054","26":"-0.09984","27":"-0.35967","28":"-0.35002","29":"-0.0282","30":"-0.37415","31":"-0.41298","32":"-0.374","33":"0.43554","34":"-0.20952","35":"-0.2738","36":"-0.28337","37":"0.50367","38":"-0.10239","39":"-0.30046","40":"-0.84559","41":"-0.580250","42":"-0.19391","43":"0.14394","44":"-0.33962","45":"-0.032431","46":"0.4819200","47":"-0.035906","48":"-0.13903","49":"-0.52769","50":"-0.62060","51":"2.30430","52":"2.18710","53":"0","54":"0","55":"Immune","56":"46","57":"CD3 T"},{"1":"1","2":"4","3":"43","4":"0","5":"-1.48730","6":"-0.630440","7":"-1.91070","8":"-1.228000","9":"-1.3937","10":"-1.782200","11":"-0.82196","12":"-0.37796","13":"-0.089412","14":"-0.0070565","15":"-0.076288","16":"-0.086878","17":"-0.37537","18":"-0.35531","19":"-0.068127","20":"-0.03418","21":"-0.16593","22":"-0.16699","23":"-0.31424","24":"-0.30887","25":"-0.23054","26":"-0.09984","27":"-0.35967","28":"-0.35002","29":"-0.0282","30":"-0.37415","31":"-0.41298","32":"-0.374","33":"-0.44579","34":"-0.20952","35":"-0.2738","36":"-0.28337","37":"-0.61647","38":"-0.35542","39":"-0.30046","40":"-0.84559","41":"-0.671470","42":"-0.19391","43":"-0.76261","44":"-1.68310","45":"1.913300","46":"-1.1521000","47":"-0.590050","48":"-0.13903","49":"0.18774","50":"-1.75050","51":"1.39330","52":"1.47820","53":"1","54":"0","55":"Keratin-positive tumor","56":"0","57":"Non-Immune?"},{"1":"1","2":"5","3":"211","4":"0","5":"-1.00530","6":"-0.532270","7":"-1.74300","8":"-0.944850","9":"-1.0996","10":"-0.057906","11":"-0.82196","12":"-0.37796","13":"-0.203970","14":"-0.0070565","15":"-0.076288","16":"-0.086878","17":"-0.37537","18":"-0.35531","19":"-0.068127","20":"-0.03418","21":"-0.16593","22":"-0.16699","23":"-0.31424","24":"-0.30887","25":"-0.23054","26":"-0.09984","27":"-0.35967","28":"-0.35002","29":"-0.0282","30":"-0.37415","31":"-0.41298","32":"-0.374","33":"-0.44579","34":"-0.20952","35":"-0.2738","36":"-0.28337","37":"-0.61647","38":"-0.35542","39":"-0.30046","40":"-0.84559","41":"-0.574460","42":"-0.19391","43":"-0.15689","44":"-0.60477","45":"0.018498","46":"-0.0031138","47":"-0.536530","48":"-0.13903","49":"-0.30976","50":"-0.52445","51":"1.88680","52":"1.58620","53":"1","54":"0","55":"Keratin-positive tumor","56":"0","57":"Non-Immune?"},{"1":"1","2":"6","3":"177","4":"0","5":"0.15803","6":"-0.710290","7":"0.51737","8":"-0.096251","9":"-1.0526","10":"0.355020","11":"-0.82196","12":"-0.37796","13":"1.097800","14":"-0.0070565","15":"-0.076288","16":"-0.086878","17":"-0.37537","18":"-0.35531","19":"-0.068127","20":"-0.03418","21":"-0.16593","22":"-0.16699","23":"-0.31424","24":"-0.30887","25":"-0.23054","26":"-0.09984","27":"-0.35967","28":"-0.35002","29":"-0.0282","30":"-0.10458","31":"-0.41298","32":"-0.374","33":"0.15320","34":"-0.20952","35":"-0.2738","36":"-0.28337","37":"-0.34618","38":"1.32570","39":"-0.30046","40":"-0.84559","41":"0.752610","42":"-0.19391","43":"0.85870","44":"0.58879","45":"-0.557660","46":"1.5506000","47":"0.726850","48":"-0.13903","49":"-0.52769","50":"-0.99773","51":"-0.51027","52":"-0.49627","53":"0","54":"0","55":"Immune","56":"75","57":"B"},{"1":"1","2":"7","3":"159","4":"0","5":"-0.13290","6":"-0.796930","7":"-0.19051","8":"-0.188450","9":"-1.0823","10":"1.013700","11":"-0.82196","12":"-0.30990","13":"1.142600","14":"-0.0070565","15":"-0.076288","16":"-0.086878","17":"-0.37537","18":"-0.35531","19":"-0.068127","20":"-0.03418","21":"-0.16593","22":"-0.16699","23":"-0.31424","24":"-0.30887","25":"-0.23054","26":"-0.09984","27":"-0.35967","28":"-0.35002","29":"-0.0282","30":"-0.37415","31":"-0.41298","32":"-0.374","33":"0.68168","34":"-0.20952","35":"-0.2738","36":"-0.28337","37":"-0.61647","38":"-0.20439","39":"-0.30046","40":"-0.84559","41":"-0.028668","42":"-0.19391","43":"0.46964","44":"0.70748","45":"0.008316","46":"1.5803000","47":"0.612350","48":"-0.13903","49":"-0.25887","50":"-0.71437","51":"-0.61707","52":"-0.52939","53":"0","54":"0","55":"Immune","56":"46","57":"CD3 T"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Next we add the coordinates of the cells.</p>
+<pre class="r"><code>lbs &lt;- c(1:29, 31:41) # actual samples
+coord &lt;- furrr::future_map_dfr(lbs, function(id) {
+  # Read in raw matrix (in tiff format)
+  tiff &lt;- readTIFF(paste0(&quot;/home/philipp/data/saez/mibi/p&quot;, id, &quot;_labeledcellData.tiff&quot;),
+                   as.is = TRUE)
+  seq.rows &lt;- seq_len(nrow(tiff))
+  seq.cols &lt;- seq_len(ncol(tiff))
+  # important: map over all unique values here! (but I removed 1 and 2)
+  cell.ids &lt;- unique(as.vector(tiff))[-which(unique(as.vector(tiff)) %in% c(0,1))]
+  map_dfr(cell.ids, function(i) {
+    # Convert to binary matrix with TRUE and FALSE
+    binary &lt;- (tiff == i)
+    s &lt;- sum(binary)
+    # Calculate center of mass
+    c(id = id, 
+      i = i,
+      x.center = sum(seq.rows * rowSums(binary)) / s,
+      y.center = sum(seq.cols * colSums(binary)) / s
+    )
+  })
+})</code></pre>
+<p>Then, join the coordinates with the meta data.</p>
+<pre class="r"><code>data &lt;- raw_data %&gt;%
+  inner_join(coord, by = c(&quot;SampleID&quot; = &quot;id&quot;, &quot;cellLabelInImage&quot; = &quot;i&quot;)) %&gt;%
+  rename(row = x.center, col = y.center)</code></pre>
+<p>Split the data into expression matrix and meta data.</p>
+<pre class="r"><code>meta &lt;- data %&gt;%
+  select(c(1:3, 53:59))
+meta %&gt;% slice_head(n=6)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["SampleID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["cellLabelInImage"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["cellSize"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["tumorYN"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["tumorCluster"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Group"],"name":[6],"type":["chr"],"align":["left"]},{"label":["immuneCluster"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["immuneGroup"],"name":[8],"type":["chr"],"align":["left"]},{"label":["row"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["col"],"name":[10],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"2","3":"146","4":"1","5":"0","6":"Keratin-positive tumor","7":"0","8":"Non-Immune?","9":"159.3356","10":"33.85616"},{"1":"1","2":"3","3":"102","4":"0","5":"0","6":"Immune","7":"46","8":"CD3 T","9":"192.2941","10":"31.58824"},{"1":"1","2":"4","3":"43","4":"1","5":"0","6":"Keratin-positive tumor","7":"0","8":"Non-Immune?","9":"213.3256","10":"31.23256"},{"1":"1","2":"5","3":"211","4":"1","5":"0","6":"Keratin-positive tumor","7":"0","8":"Non-Immune?","9":"270.9858","10":"35.77251"},{"1":"1","2":"6","3":"177","4":"0","5":"0","6":"Immune","7":"75","8":"B","9":"382.1751","10":"36.34463"},{"1":"1","2":"7","3":"159","4":"0","5":"0","6":"Immune","7":"46","8":"CD3 T","9":"397.1824","10":"34.07547"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>expr &lt;- data %&gt;%
+  select(4:52)
+expr %&gt;% slice_head(n=6)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["C"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Na"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Si"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["P"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Ca"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Fe"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["dsDNA"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Vimentin"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["SMA"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Background"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["B7H3"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["FoxP3"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Lag3"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["CD4"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["CD16"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["CD56"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["OX40"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["PD1"],"name":[18],"type":["dbl"],"align":["right"]},{"label":["CD31"],"name":[19],"type":["dbl"],"align":["right"]},{"label":["PD-L1"],"name":[20],"type":["dbl"],"align":["right"]},{"label":["EGFR"],"name":[21],"type":["dbl"],"align":["right"]},{"label":["Ki67"],"name":[22],"type":["dbl"],"align":["right"]},{"label":["CD209"],"name":[23],"type":["dbl"],"align":["right"]},{"label":["CD11c"],"name":[24],"type":["dbl"],"align":["right"]},{"label":["CD138"],"name":[25],"type":["dbl"],"align":["right"]},{"label":["CD163"],"name":[26],"type":["dbl"],"align":["right"]},{"label":["CD68"],"name":[27],"type":["dbl"],"align":["right"]},{"label":["CSF-1R"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["CD8"],"name":[29],"type":["dbl"],"align":["right"]},{"label":["CD3"],"name":[30],"type":["dbl"],"align":["right"]},{"label":["IDO"],"name":[31],"type":["dbl"],"align":["right"]},{"label":["Keratin17"],"name":[32],"type":["dbl"],"align":["right"]},{"label":["CD63"],"name":[33],"type":["dbl"],"align":["right"]},{"label":["CD45RO"],"name":[34],"type":["dbl"],"align":["right"]},{"label":["CD20"],"name":[35],"type":["dbl"],"align":["right"]},{"label":["p53"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["Beta catenin"],"name":[37],"type":["dbl"],"align":["right"]},{"label":["HLA-DR"],"name":[38],"type":["dbl"],"align":["right"]},{"label":["CD11b"],"name":[39],"type":["dbl"],"align":["right"]},{"label":["CD45"],"name":[40],"type":["dbl"],"align":["right"]},{"label":["H3K9ac"],"name":[41],"type":["dbl"],"align":["right"]},{"label":["Pan-Keratin"],"name":[42],"type":["dbl"],"align":["right"]},{"label":["H3K27me3"],"name":[43],"type":["dbl"],"align":["right"]},{"label":["phospho-S6"],"name":[44],"type":["dbl"],"align":["right"]},{"label":["MPO"],"name":[45],"type":["dbl"],"align":["right"]},{"label":["Keratin6"],"name":[46],"type":["dbl"],"align":["right"]},{"label":["HLA_Class_1"],"name":[47],"type":["dbl"],"align":["right"]},{"label":["Ta"],"name":[48],"type":["dbl"],"align":["right"]},{"label":["Au"],"name":[49],"type":["dbl"],"align":["right"]}],"data":[{"1":"0","2":"-0.59061","3":"0.875220","4":"-2.57650","5":"-0.806060","6":"-0.2344","7":"-1.308000","8":"-0.82196","9":"-0.37796","10":"-0.843460","11":"-0.0070565","12":"-0.076288","13":"-0.086878","14":"-0.37537","15":"-0.35531","16":"-0.068127","17":"-0.03418","18":"-0.16593","19":"-0.16699","20":"-0.31424","21":"-0.30887","22":"-0.23054","23":"-0.09984","24":"-0.35967","25":"-0.35002","26":"-0.0282","27":"-0.37415","28":"-0.41298","29":"-0.374","30":"-0.44579","31":"-0.20952","32":"-0.2738","33":"0.69776","34":"-0.59304","35":"-0.35542","36":"-0.30046","37":"-0.84559","38":"0.014203","39":"-0.19391","40":"-0.75654","41":"-1.42870","42":"0.653120","43":"-1.4583000","44":"-1.142600","45":"-0.13903","46":"-0.41883","47":"-0.53738","48":"2.48110","49":"2.32660"},{"1":"0","2":"-0.49870","3":"0.017464","4":"-1.22490","5":"-0.501520","6":"-1.3412","7":"0.522570","8":"-0.82196","9":"-0.37796","10":"-0.376830","11":"-0.0070565","12":"-0.076288","13":"-0.086878","14":"-0.37537","15":"-0.35531","16":"-0.068127","17":"-0.03418","18":"-0.16593","19":"-0.16699","20":"-0.31424","21":"-0.30887","22":"-0.23054","23":"-0.09984","24":"-0.35967","25":"-0.35002","26":"-0.0282","27":"-0.37415","28":"-0.41298","29":"-0.374","30":"0.43554","31":"-0.20952","32":"-0.2738","33":"-0.28337","34":"0.50367","35":"-0.10239","36":"-0.30046","37":"-0.84559","38":"-0.580250","39":"-0.19391","40":"0.14394","41":"-0.33962","42":"-0.032431","43":"0.4819200","44":"-0.035906","45":"-0.13903","46":"-0.52769","47":"-0.62060","48":"2.30430","49":"2.18710"},{"1":"0","2":"-1.48730","3":"-0.630440","4":"-1.91070","5":"-1.228000","6":"-1.3937","7":"-1.782200","8":"-0.82196","9":"-0.37796","10":"-0.089412","11":"-0.0070565","12":"-0.076288","13":"-0.086878","14":"-0.37537","15":"-0.35531","16":"-0.068127","17":"-0.03418","18":"-0.16593","19":"-0.16699","20":"-0.31424","21":"-0.30887","22":"-0.23054","23":"-0.09984","24":"-0.35967","25":"-0.35002","26":"-0.0282","27":"-0.37415","28":"-0.41298","29":"-0.374","30":"-0.44579","31":"-0.20952","32":"-0.2738","33":"-0.28337","34":"-0.61647","35":"-0.35542","36":"-0.30046","37":"-0.84559","38":"-0.671470","39":"-0.19391","40":"-0.76261","41":"-1.68310","42":"1.913300","43":"-1.1521000","44":"-0.590050","45":"-0.13903","46":"0.18774","47":"-1.75050","48":"1.39330","49":"1.47820"},{"1":"0","2":"-1.00530","3":"-0.532270","4":"-1.74300","5":"-0.944850","6":"-1.0996","7":"-0.057906","8":"-0.82196","9":"-0.37796","10":"-0.203970","11":"-0.0070565","12":"-0.076288","13":"-0.086878","14":"-0.37537","15":"-0.35531","16":"-0.068127","17":"-0.03418","18":"-0.16593","19":"-0.16699","20":"-0.31424","21":"-0.30887","22":"-0.23054","23":"-0.09984","24":"-0.35967","25":"-0.35002","26":"-0.0282","27":"-0.37415","28":"-0.41298","29":"-0.374","30":"-0.44579","31":"-0.20952","32":"-0.2738","33":"-0.28337","34":"-0.61647","35":"-0.35542","36":"-0.30046","37":"-0.84559","38":"-0.574460","39":"-0.19391","40":"-0.15689","41":"-0.60477","42":"0.018498","43":"-0.0031138","44":"-0.536530","45":"-0.13903","46":"-0.30976","47":"-0.52445","48":"1.88680","49":"1.58620"},{"1":"0","2":"0.15803","3":"-0.710290","4":"0.51737","5":"-0.096251","6":"-1.0526","7":"0.355020","8":"-0.82196","9":"-0.37796","10":"1.097800","11":"-0.0070565","12":"-0.076288","13":"-0.086878","14":"-0.37537","15":"-0.35531","16":"-0.068127","17":"-0.03418","18":"-0.16593","19":"-0.16699","20":"-0.31424","21":"-0.30887","22":"-0.23054","23":"-0.09984","24":"-0.35967","25":"-0.35002","26":"-0.0282","27":"-0.10458","28":"-0.41298","29":"-0.374","30":"0.15320","31":"-0.20952","32":"-0.2738","33":"-0.28337","34":"-0.34618","35":"1.32570","36":"-0.30046","37":"-0.84559","38":"0.752610","39":"-0.19391","40":"0.85870","41":"0.58879","42":"-0.557660","43":"1.5506000","44":"0.726850","45":"-0.13903","46":"-0.52769","47":"-0.99773","48":"-0.51027","49":"-0.49627"},{"1":"0","2":"-0.13290","3":"-0.796930","4":"-0.19051","5":"-0.188450","6":"-1.0823","7":"1.013700","8":"-0.82196","9":"-0.30990","10":"1.142600","11":"-0.0070565","12":"-0.076288","13":"-0.086878","14":"-0.37537","15":"-0.35531","16":"-0.068127","17":"-0.03418","18":"-0.16593","19":"-0.16699","20":"-0.31424","21":"-0.30887","22":"-0.23054","23":"-0.09984","24":"-0.35967","25":"-0.35002","26":"-0.0282","27":"-0.37415","28":"-0.41298","29":"-0.374","30":"0.68168","31":"-0.20952","32":"-0.2738","33":"-0.28337","34":"-0.61647","35":"-0.20439","36":"-0.30046","37":"-0.84559","38":"-0.028668","39":"-0.19391","40":"0.46964","41":"0.70748","42":"0.008316","43":"1.5803000","44":"0.612350","45":"-0.13903","46":"-0.25887","47":"-0.71437","48":"-0.61707","49":"-0.52939"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Patient data provided with the raw data.</p>
+<pre class="r"><code>patient.info &lt;- read_csv(&quot;data/patient_class.csv&quot;,
+                         col_names = c(&quot;SampleID&quot;, &quot;Classification&quot;),
+                         show_col_types=FALSE)
+patient.info %&gt;% slice_head(n=6)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["SampleID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Classification"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"0"},{"1":"2","2":"0"},{"1":"3","2":"1"},{"1":"4","2":"1"},{"1":"5","2":"1"},{"1":"6","2":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<pre class="r"><code>patient.info.paper &lt;- readxl::read_xlsx(&quot;data/mmc2.xlsx&quot;, 
+                                        skip = 1, col_names = TRUE)
+patient.info.paper %&gt;% slice_head(n=6)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["InternalId"],"name":[1],"type":["chr"],"align":["left"]},{"label":["DONOR_NO"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["YEAR"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ANON_ID_ONCOSHARE"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["AGE_AT_DX"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["YEARDX"],"name":[6],"type":["chr"],"align":["left"]},{"label":["STAGE"],"name":[7],"type":["chr"],"align":["left"]},{"label":["SITE_02"],"name":[8],"type":["chr"],"align":["left"]},{"label":["LATERAL"],"name":[9],"type":["chr"],"align":["left"]},{"label":["GRADE"],"name":[10],"type":["chr"],"align":["left"]},{"label":["TCODE_P"],"name":[11],"type":["chr"],"align":["left"]},{"label":["NCODE_P"],"name":[12],"type":["chr"],"align":["left"]},{"label":["MCODE_P"],"name":[13],"type":["chr"],"align":["left"]},{"label":["AJCC_P"],"name":[14],"type":["chr"],"align":["left"]},{"label":["ER"],"name":[15],"type":["chr"],"align":["left"]},{"label":["PR"],"name":[16],"type":["chr"],"align":["left"]},{"label":["HER2NEU"],"name":[17],"type":["chr"],"align":["left"]},{"label":["CS_TUM_SIZE"],"name":[18],"type":["chr"],"align":["left"]},{"label":["RESULT_GENE_1"],"name":[19],"type":["chr"],"align":["left"]},{"label":["RESULT_MUTATION_1"],"name":[20],"type":["chr"],"align":["left"]},{"label":["TEST_OFFERING_1"],"name":[21],"type":["chr"],"align":["left"]},{"label":["RESULT_GENE_2"],"name":[22],"type":["chr"],"align":["left"]},{"label":["RESULT_MUTATION_2"],"name":[23],"type":["chr"],"align":["left"]},{"label":["TEST_OFFERING_2"],"name":[24],"type":["chr"],"align":["left"]},{"label":["MYRIAD_TEST_RESULT"],"name":[25],"type":["chr"],"align":["left"]},{"label":["RECURRENCE_LABEL"],"name":[26],"type":["chr"],"align":["left"]},{"label":["TIL_score"],"name":[27],"type":["chr"],"align":["left"]},{"label":["Survival_days_capped*"],"name":[28],"type":["dbl"],"align":["right"]},{"label":["Censored"],"name":[29],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"30824","3":"2008","4":"9837","5":"77","6":"2008","7":"33","8":"C504","9":"2","10":"1","11":"3","12":"3","13":"0","14":"3C","15":"2","16":"2","17":"2","18":"064","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"POSITIVE","27":"NaN","28":"2612","29":"0"},{"1":"2","2":"30805","3":"2007","4":"8254","5":"67","6":"2007","7":"32","8":"C509","9":"2","10":"3","11":"4B","12":"0","13":"0","14":"3B","15":"2","16":"2","17":"2","18":"170","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NEGATIVE","27":"1.5","28":"745","29":"0"},{"1":"3","2":"30812","3":"2007","4":"12997","5":"42","6":"2007","7":"21","8":"C509","9":"2","10":"3","11":"X","12":"X","13":"NA","14":"NA","15":"2","16":"2","17":"2","18":"011","19":"0","20":"0","21":"BRACAnalysisLR01","22":"0","23":"0","24":"0","25":"NO MUTATION DETECTED","26":"NEGATIVE","27":"NaN","28":"3130","29":"1"},{"1":"4","2":"30838","3":"2009","4":"10689","5":"41","6":"2009","7":"22","8":"C505","9":"2","10":"3","11":"2","12":"1A","13":"0","14":"2B","15":"2","16":"2","17":"2","18":"021","19":"0","20":"0","21":"BRACAnalysisLR01","22":"0","23":"0","24":"0","25":"NO MUTATION DETECTED","26":"POSITIVE","27":"3","28":"2523","29":"1"},{"1":"5","2":"30865","3":"2011","4":"13917","5":"64","6":"2011","7":"11","8":"C508","9":"1","10":"3","11":"1B","12":"0","13":"NA","14":"99","15":"2","16":"2","17":"2","18":"010","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NEGATIVE","27":"3","28":"1683","29":"1"},{"1":"6","2":"30847","3":"2009","4":"10798","5":"53","6":"2009","7":"10","8":"C508","9":"1","10":"3","11":"1C","12":"0I-","13":"0","14":"1","15":"2","16":"2","17":"2","18":"016","19":"NA","20":"NA","21":"NA","22":"NA","23":"NA","24":"NA","25":"NA","26":"NEGATIVE","27":"2.5","28":"2275","29":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Merging the meta data with other measures.</p>
+<pre class="r"><code># Generating Sample Meta Data
+immune.counts &lt;- meta %&gt;%
+  group_by(SampleID) %&gt;%
+  count(Group) %&gt;%
+  pivot_wider(names_from = Group, values_from = n,
+              names_prefix = &quot;Count.&quot;)
+
+total.counts &lt;- meta %&gt;%
+  count(SampleID) %&gt;%
+  rename(Count.Total = n)
+
+sample.meta &lt;- patient.info %&gt;%
+  filter(SampleID != 30) %&gt;%
+  inner_join(immune.counts, by = &quot;SampleID&quot;) %&gt;%
+  inner_join(total.counts, by = &quot;SampleID&quot;) %&gt;%
+  # see paper Figure 3, Panel C
+  mutate(Classification = 
+         case_when(Classification == 0 ~ &quot;mixed&quot;,
+                   Classification == 1 ~ &quot;compartimentalized&quot;,
+                   Classification == 2 ~ &quot;cold&quot;)) %&gt;% 
+  mutate(SampleID = as.character(SampleID)) %&gt;%
+  left_join(patient.info.paper, by = c(&quot;SampleID&quot; = &quot;InternalId&quot;))
+
+sample.meta %&gt;% slice_head(n=6)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["SampleID"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Classification"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Count.Endothelial"],"name":[3],"type":["int"],"align":["right"]},{"label":["Count.Immune"],"name":[4],"type":["int"],"align":["right"]},{"label":["Count.Keratin-positive tumor"],"name":[5],"type":["int"],"align":["right"]},{"label":["Count.Mesenchymal-like"],"name":[6],"type":["int"],"align":["right"]},{"label":["Count.Tumor"],"name":[7],"type":["int"],"align":["right"]},{"label":["Count.Unidentified"],"name":[8],"type":["int"],"align":["right"]},{"label":["Count.Total"],"name":[9],"type":["int"],"align":["right"]},{"label":["DONOR_NO"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["YEAR"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["ANON_ID_ONCOSHARE"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["AGE_AT_DX"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["YEARDX"],"name":[14],"type":["chr"],"align":["left"]},{"label":["STAGE"],"name":[15],"type":["chr"],"align":["left"]},{"label":["SITE_02"],"name":[16],"type":["chr"],"align":["left"]},{"label":["LATERAL"],"name":[17],"type":["chr"],"align":["left"]},{"label":["GRADE"],"name":[18],"type":["chr"],"align":["left"]},{"label":["TCODE_P"],"name":[19],"type":["chr"],"align":["left"]},{"label":["NCODE_P"],"name":[20],"type":["chr"],"align":["left"]},{"label":["MCODE_P"],"name":[21],"type":["chr"],"align":["left"]},{"label":["AJCC_P"],"name":[22],"type":["chr"],"align":["left"]},{"label":["ER"],"name":[23],"type":["chr"],"align":["left"]},{"label":["PR"],"name":[24],"type":["chr"],"align":["left"]},{"label":["HER2NEU"],"name":[25],"type":["chr"],"align":["left"]},{"label":["CS_TUM_SIZE"],"name":[26],"type":["chr"],"align":["left"]},{"label":["RESULT_GENE_1"],"name":[27],"type":["chr"],"align":["left"]},{"label":["RESULT_MUTATION_1"],"name":[28],"type":["chr"],"align":["left"]},{"label":["TEST_OFFERING_1"],"name":[29],"type":["chr"],"align":["left"]},{"label":["RESULT_GENE_2"],"name":[30],"type":["chr"],"align":["left"]},{"label":["RESULT_MUTATION_2"],"name":[31],"type":["chr"],"align":["left"]},{"label":["TEST_OFFERING_2"],"name":[32],"type":["chr"],"align":["left"]},{"label":["MYRIAD_TEST_RESULT"],"name":[33],"type":["chr"],"align":["left"]},{"label":["RECURRENCE_LABEL"],"name":[34],"type":["chr"],"align":["left"]},{"label":["TIL_score"],"name":[35],"type":["chr"],"align":["left"]},{"label":["Survival_days_capped*"],"name":[36],"type":["dbl"],"align":["right"]},{"label":["Censored"],"name":[37],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"mixed","3":"35","4":"2558","5":"2488","6":"43","7":"1","8":"42","9":"5167","10":"30824","11":"2008","12":"9837","13":"77","14":"2008","15":"33","16":"C504","17":"2","18":"1","19":"3","20":"3","21":"0","22":"3C","23":"2","24":"2","25":"2","26":"064","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"POSITIVE","35":"NaN","36":"2612","37":"0"},{"1":"2","2":"mixed","3":"100","4":"956","5":"1834","6":"130","7":"1","8":"7","9":"3028","10":"30805","11":"2007","12":"8254","13":"67","14":"2007","15":"32","16":"C509","17":"2","18":"3","19":"4B","20":"0","21":"0","22":"3B","23":"2","24":"2","25":"2","26":"170","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NEGATIVE","35":"1.5","36":"745","37":"0"},{"1":"3","2":"compartimentalized","3":"112","4":"3179","5":"2249","6":"735","7":"23","8":"17","9":"6315","10":"30812","11":"2007","12":"12997","13":"42","14":"2007","15":"21","16":"C509","17":"2","18":"3","19":"X","20":"X","21":"NA","22":"NA","23":"2","24":"2","25":"2","26":"011","27":"0","28":"0","29":"BRACAnalysisLR01","30":"0","31":"0","32":"0","33":"NO MUTATION DETECTED","34":"NEGATIVE","35":"NaN","36":"3130","37":"1"},{"1":"4","2":"compartimentalized","3":"132","4":"4161","5":"1680","6":"214","7":"429","8":"27","9":"6643","10":"30838","11":"2009","12":"10689","13":"41","14":"2009","15":"22","16":"C505","17":"2","18":"3","19":"2","20":"1A","21":"0","22":"2B","23":"2","24":"2","25":"2","26":"021","27":"0","28":"0","29":"BRACAnalysisLR01","30":"0","31":"0","32":"0","33":"NO MUTATION DETECTED","34":"POSITIVE","35":"3","36":"2523","37":"1"},{"1":"5","2":"compartimentalized","3":"196","4":"2790","5":"2125","6":"236","7":"15","8":"44","9":"5406","10":"30865","11":"2011","12":"13917","13":"64","14":"2011","15":"11","16":"C508","17":"1","18":"3","19":"1B","20":"0","21":"NA","22":"99","23":"2","24":"2","25":"2","26":"010","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NEGATIVE","35":"3","36":"1683","37":"1"},{"1":"6","2":"compartimentalized","3":"110","4":"2320","5":"3345","6":"130","7":"14","8":"79","9":"5998","10":"30847","11":"2009","12":"10798","13":"53","14":"2009","15":"10","16":"C508","17":"1","18":"3","19":"1C","20":"0I-","21":"0","22":"1","23":"2","24":"2","25":"2","26":"016","27":"NA","28":"NA","29":"NA","30":"NA","31":"NA","32":"NA","33":"NA","34":"NEGATIVE","35":"2.5","36":"2275","37":"1"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="running-misty" class="section level1">
+<h1>Running MISTy</h1>
+<div id="preparation" class="section level2">
+<h2>Preparation</h2>
+<p>Select only proteins from the expression matrix and check for NAs.</p>
+<p>Also we need to check the variance for each marker in each same and exclude the marker if the variance is 0. The same is true for markers whose number of unique values is lower than the desired number of cv folds (here 10).</p>
+<pre class="r"><code>raw.expr &lt;- unique(meta$SampleID) %&gt;%
+  set_names(paste0(&quot;s&quot;, .)) %&gt;%
+  map(function(id) {
+    ret.expr &lt;- expr %&gt;%
+      filter(meta$SampleID == id) %&gt;%
+      select(11:47) }) # Select only proteins
+
+expr.smp &lt;- mistyR.helpers::prepare_markers(raw.expr)
+B7H3 has zero variance in sample s1
+FoxP3 has zero variance in sample s1
+OX40 has zero variance in sample s1
+PD-L1 has zero variance in sample s1
+EGFR has zero variance in sample s1
+CD163 has zero variance in sample s1
+B7H3 has zero variance in sample s2
+FoxP3 has zero variance in sample s2
+B7H3 has zero variance in sample s3
+B7H3 has zero variance in sample s4
+B7H3 has zero variance in sample s6
+CD56 has zero variance in sample s6
+B7H3 has zero variance in sample s7
+FoxP3 has zero variance in sample s7
+Lag3 has zero variance in sample s7
+CD56 has zero variance in sample s7
+OX40 has zero variance in sample s7
+CD209 has zero variance in sample s7
+IDO has zero variance in sample s7
+CD20 has zero variance in sample s7
+B7H3 has zero variance in sample s8
+FoxP3 has zero variance in sample s8
+Lag3 has zero variance in sample s8
+CD56 has zero variance in sample s8
+OX40 has zero variance in sample s8
+CD209 has zero variance in sample s8
+CD163 has zero variance in sample s8
+p53 has zero variance in sample s8
+B7H3 has zero variance in sample s9
+B7H3 has zero variance in sample s11
+B7H3 has zero variance in sample s13
+B7H3 has zero variance in sample s14
+B7H3 has zero variance in sample s15
+Lag3 has zero variance in sample s15
+CD56 has zero variance in sample s15
+CD163 has zero variance in sample s15
+IDO has zero variance in sample s15
+FoxP3 has zero variance in sample s19
+Lag3 has zero variance in sample s19
+CD209 has zero variance in sample s19
+CD56 has zero variance in sample s20
+CD209 has zero variance in sample s20
+B7H3 has zero variance in sample s21
+B7H3 has zero variance in sample s22
+FoxP3 has zero variance in sample s22
+Lag3 has zero variance in sample s22
+CD56 has zero variance in sample s22
+OX40 has zero variance in sample s22
+IDO has zero variance in sample s22
+B7H3 has zero variance in sample s23
+CD56 has zero variance in sample s24
+CD163 has zero variance in sample s25
+IDO has zero variance in sample s25
+CD20 has zero variance in sample s25
+B7H3 has zero variance in sample s26
+FoxP3 has zero variance in sample s26
+Lag3 has zero variance in sample s26
+CD56 has zero variance in sample s26
+OX40 has zero variance in sample s26
+CD163 has zero variance in sample s26
+IDO has zero variance in sample s26
+CD20 has zero variance in sample s26
+FoxP3 has zero variance in sample s27
+B7H3 has zero variance in sample s29
+B7H3 has zero variance in sample s31
+FoxP3 has zero variance in sample s31
+CD209 has zero variance in sample s31
+CD20 has zero variance in sample s31
+B7H3 has zero variance in sample s33
+FoxP3 has zero variance in sample s33
+Lag3 has zero variance in sample s33
+OX40 has zero variance in sample s33
+B7H3 has zero variance in sample s34
+FoxP3 has zero variance in sample s34
+CD56 has zero variance in sample s34
+OX40 has zero variance in sample s34
+Ki67 has zero variance in sample s34
+CD163 has zero variance in sample s34
+B7H3 has zero variance in sample s35
+FoxP3 has zero variance in sample s35
+B7H3 has zero variance in sample s37
+B7H3 has zero variance in sample s38
+CD56 has zero variance in sample s38
+OX40 has zero variance in sample s38
+OX40 has zero variance in sample s39
+B7H3 has zero variance in sample s40
+B7H3 has zero variance in sample s41
+FoxP3 has zero variance in sample s41
+
+coord.smp &lt;- unique(meta$SampleID) %&gt;%
+  set_names(paste0(&quot;s&quot;, .)) %&gt;%
+  map(function(id) {
+    meta %&gt;%
+      filter(meta$SampleID == id) %&gt;% 
+      select(row, col)
+  })</code></pre>
+<p>First we will look at the distribution of the mean distances to the direct neighbors (as determined by the delauney triangulation) to get a feeling for which cutoff value should be used for the generation of the juxtaview. The corresponding distribution is shown below. (in blue the cutoff - 40 pixels (15.6 microns) - which was used in the end).</p>
+<pre class="r"><code>mean.dists.direct.neighbors &lt;- mistyR.helpers::distances_juxtaview(coord.smp)
+
+mistyR.helpers::plot_distances_juxtaview(mean.dists.direct.neighbors, 100) +
+  geom_vline(xintercept = 40, col = &quot;red&quot;, alpha = 0.5)</code></pre>
+<pre><code>Warning: Removed 1331 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>Warning: Removed 1331 rows containing non-finite values (stat_density).</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="figure/MIBI_Analysis_Helpers.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>However, a more detailed look across the sample (boxplot) shows that the cutoff may be too low for certain samples. It may be good to increase this threshold to 50.</p>
+<pre class="r"><code># boxplot without outliers
+mean.dists.direct.neighbors %&gt;%
+  mutate(sample = factor(sample, levels = unique(sample))) %&gt;%
+  ggplot() +
+  geom_boxplot(aes(x=sample, y=mean.distance), outlier.shape = NA) +
+  geom_hline(yintercept = 40, col=&quot;blue&quot;) +
+  lims(y = c(0, 100)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust = 0.5))</code></pre>
+<pre><code>Warning: Removed 1331 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="figure/MIBI_Analysis_Helpers.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Furthermore we will look at the distribution of the mean distances to the 10 -, 20 -, 40 -, and 80 closest cells to get a feeling for which cutoff will be used to generate the paraview (in blue the cutoff - 120 pixels (46.8 microns) - which was used in the end).</p>
+<pre class="r"><code>neighbor.dists &lt;- mistyR.helpers::distances_paraview(coord.smp)
+
+mistyR.helpers::plot_distances_paraview(neighbor.dists, 200) +
+  geom_vline(xintercept = 120, col = &quot;red&quot;, alpha = 0.5)</code></pre>
+<pre><code>Warning: Removed 649 rows containing non-finite values (stat_bin).</code></pre>
+<pre><code>Warning: Removed 649 rows containing non-finite values (stat_density).</code></pre>
+<pre><code>Warning: Removed 8 rows containing missing values (geom_bar).</code></pre>
+<p><img src="figure/MIBI_Analysis_Helpers.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="generating-the-misty-views" class="section level2">
+<h2>Generating the MISTy views</h2>
+<p>Based on the data above, the following parameters (thresholds) were used to run MISTy: * Juxtaview: threshold 40, * Paraview: theshold 120, zone of indifference: 40</p>
+<pre class="r"><code>misty.views.smp &lt;- map2(expr.smp, coord.smp, function(expr, coord) {
+    # Create views and run MISTy
+    create_initial_view(expr) %&gt;%
+      add_juxtaview(positions = coord, neighbor.thr = 40) %&gt;%
+      add_paraview(positions = coord, l = 120, zoi = 40)
+  })
+names(misty.views.smp) &lt;- names(expr.smp)</code></pre>
+</div>
+<div id="random-forest-implementation" class="section level2">
+<h2>Random Forest Implementation</h2>
+<p>Running with random forest as ML algorithm to build the view-specific models.</p>
+<pre class="r"><code>cv.folds = 10
+ranger.results.folders &lt;- map2(
+  misty.views.smp, names(misty.views.smp), function(smp, name) {
+    
+    smp %&gt;% run_misty(results.folder = paste0(&quot;analysis/results/ranger_&quot;, name),
+                      cv.folds = cv.folds)
+  })</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Beta.catenin</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin6</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target HLA.DR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD45</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target HLA.DR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Beta.catenin</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD45RO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target HLA.DR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD45</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Pan.Keratin</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD4</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD16</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD8</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD20</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target B7H3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11c</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Keratin17</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target FoxP3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Lag3</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD56</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target OX40</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD31</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target PD.L1</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target EGFR</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target Ki67</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD209</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD138</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD163</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CSF.1R</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target IDO</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD63</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target p53</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target CD11b</code></pre>
+<pre><code>Warning in ...furrr_fn(...): Negative performance detected and replaced with 0
+for target MPO</code></pre>
+<pre class="r"><code>ranger.results &lt;- collect_results(ranger.results.folders)</code></pre>
+</div>
+</div>
+<div id="misty-results" class="section level1">
+<h1>MISTy Results</h1>
+<pre class="r"><code>plot_improvement_stats(ranger.results, &quot;gain.R2&quot;)</code></pre>
+<p><img src="figure/MIBI_Analysis_Helpers.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_view_contributions(ranger.results)</code></pre>
+<p><img src="figure/MIBI_Analysis_Helpers.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot_interaction_heatmap(ranger.results, &quot;para.120&quot;, clean = TRUE)</code></pre>
+<p><img src="figure/MIBI_Analysis_Helpers.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.1.2 (2021-11-01)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.3 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] tiff_0.1-8       factoextra_1.0.7 forcats_0.5.1    stringr_1.4.0   
+ [5] dplyr_1.0.7      purrr_0.3.4      readr_2.0.2      tidyr_1.1.4     
+ [9] tibble_3.1.5     ggplot2_3.3.5    tidyverse_1.3.1  future_1.22.1   
+[13] mistyR_1.3.1     workflowr_1.6.2 
+
+loaded via a namespace (and not attached):
+ [1] fs_1.5.0             lubridate_1.8.0      bit64_4.0.5         
+ [4] RColorBrewer_1.1-2   filelock_1.0.2       httr_1.4.2          
+ [7] rprojroot_2.0.2      tools_4.1.2          backports_1.3.0     
+[10] bslib_0.3.1          utf8_1.2.2           R6_2.5.1            
+[13] DBI_1.1.1            colorspace_2.0-2     withr_2.4.2         
+[16] tidyselect_1.1.1     bit_4.0.4            compiler_4.1.2      
+[19] git2r_0.28.0         cli_3.0.1            rvest_1.0.1         
+[22] xml2_1.3.2           labeling_0.4.2       sass_0.4.0          
+[25] scales_1.1.1         distances_0.1.8      digest_0.6.28       
+[28] rmarkdown_2.11       R.utils_2.11.0       pkgconfig_2.0.3     
+[31] htmltools_0.5.2      parallelly_1.28.1    dbplyr_2.1.1        
+[34] fastmap_1.1.0        highr_0.9            rlang_0.4.12        
+[37] readxl_1.3.1         rstudioapi_0.13      jquerylib_0.1.4     
+[40] generics_0.1.0       farver_2.1.0         jsonlite_1.7.2      
+[43] vroom_1.5.5          R.oo_1.24.0          mistyR.helpers_0.1.0
+[46] rlist_0.4.6.2        magrittr_2.0.1       Rcpp_1.0.7          
+[49] munsell_0.5.0        fansi_0.5.0          R.methodsS3_1.8.1   
+[52] lifecycle_1.0.1      furrr_0.2.3          stringi_1.7.5       
+[55] whisker_0.4          yaml_2.2.1           grid_4.1.2          
+[58] parallel_4.1.2       listenv_0.8.0        promises_1.2.0.1    
+[61] ggrepel_0.9.1        crayon_1.4.1         deldir_1.0-5        
+[64] haven_2.4.3          hms_1.1.1            knitr_1.36          
+[67] pillar_1.6.3         codetools_0.2-18     reprex_2.0.1        
+[70] glue_1.4.2           evaluate_0.14        data.table_1.14.2   
+[73] modelr_0.1.8         vctrs_0.3.8          tzdb_0.1.2          
+[76] httpuv_1.6.3         cellranger_1.1.0     gtable_0.3.0        
+[79] RANN_2.6.1           assertthat_0.2.1     xfun_0.26           
+[82] broom_0.7.9          later_1.3.0          globals_0.14.0      
+[85] ellipsis_0.3.2      </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
