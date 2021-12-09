@@ -4,7 +4,7 @@ title: "Presentation"
 
 ```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, message = FALSE)
-knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+knitr::opts_knit$set(root.dir = "~/Saez/mibi_analysis/")
 
 suppressPackageStartupMessages(library(mistyR))
 suppressPackageStartupMessages(library(future))

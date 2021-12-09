@@ -6,7 +6,7 @@ title: "Model Comparison"
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+knitr::opts_knit$set(root.dir = "~/Saez/mibi_analysis/")
 ```
 
 Loaded packages.
@@ -46,8 +46,8 @@ The MISTy views were generated with the following parameters:
 ## Random Forest
 
 ```{r}
-if ("ranger.results.RDS" %in% list.files("data")) {
-  ranger.results <- readRDS("data/ranger.results.RDS")
+if ("rf.RDS" %in% list.files("data")) {
+  ranger.results <- readRDS("data/rf.RDS")
 } else {
   cv.folds = 10
   ranger.results.folders <- map2(
@@ -57,7 +57,7 @@ if ("ranger.results.RDS" %in% list.files("data")) {
                         cv.folds = cv.folds)
     })
   ranger.results <- collect_results(ranger.results.folders)
-  saveRDS(ranger.results, "data/ranger.results.RDS")
+  saveRDS(ranger.results, "data/rf.RDS")
 }
 ```
 
@@ -65,79 +65,138 @@ if ("ranger.results.RDS" %in% list.files("data")) {
 mistyR::plot_improvement_stats(ranger.results)
 ```
 
+## Bagged MARS (Multivariante Adaptive Regression Splines)
+
+```{r}
+if ("bgmars.RDS" %in% list.files("data")) {
+  bgmars.results <- readRDS("data/bgmars.RDS")
+} else {
+  cv.folds = 10
+  bgmars.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/bgmars_", name),
+                        model.function = mars_model)
+    })
+  bgmars.results <- collect_results(bgmars.results.folders)
+  saveRDS(bgmars.results, "data/bgmars.RDS")
+}
+```
+
+```{r}
+mistyR::plot_improvement_stats(bgmars.results)
+```
+
 ## MARS (Multivariante Adaptive Regression Splines)
 
-Running with MARS as ML algorithm to build the view-specific models.
-
 ```{r}
-if ("earth.results.RDS" %in% list.files("data")) {
-  earth.results <- readRDS("data/earth.results.RDS")
+if ("mars.RDS" %in% list.files("data")) {
+  mars.results <- readRDS("data/mars.RDS")
 } else {
   cv.folds = 10
-  earth.results.folders <- map2(
+  mars.results.folders <- map2(
     misty.views.smp, names(misty.views.smp), function(smp, name) {
       
-      smp %>% run_misty(results.folder = paste0("analysis/results/earth_", name),
-                        cv.folds = cv.folds, method = "bag", learner = "earth",
-                        n.learners = 100)
+      smp %>% run_misty(results.folder = paste0("analysis/results/mars_", name),
+                        model.function = mars_model)
     })
-  earth.results <- collect_results(earth.results.folders)
-  saveRDS(earth.results, "data/earth.results.RDS")
+  mars.results <- collect_results(mars.results.folders)
+  saveRDS(mars.results, "data/mars.RDS")
 }
 ```
 
 ```{r}
-mistyR::plot_improvement_stats(earth.results)
+mistyR::plot_improvement_stats(mars.results)
 ```
 
-## Linear Bagged Model
+## Gradient Boosting with Trees
 
 ```{r}
-plan("multisession", workers = 8)
-if ("lmbag.results.RDS" %in% list.files("data")) {
-  lmbag.results <- readRDS("data/lmbag.results.RDS")
+if ("tboost.RDS" %in% list.files("data")) {
+  tboost.results <- readRDS("data/tboost.RDS")
 } else {
   cv.folds = 10
-  lmbag.results.folders <- map2(
+  tboost.results.folders <- map2(
     misty.views.smp, names(misty.views.smp), function(smp, name) {
       
-      smp %>% run_misty(results.folder = paste0("analysis/results/lmbag_", name),
-                        cv.folds = cv.folds, method = "bag", learner = "lm",
-                        n.learners = 200)
+      smp %>% run_misty(results.folder = paste0("analysis/results/tboost_", name),
+                        model.function = gradient_boosting_model, booster = "gbtree")
     })
-  lmbag.results <- collect_results(lmbag.results.folders)
-  saveRDS(lmbag.results, "data/lmbag.results.RDS")
+  tboost.results <- collect_results(tboost.results.folders)
+  saveRDS(tboost.results, "data/tboost.RDS")
 }
 ```
 
 ```{r}
-mistyR::plot_improvement_stats(lmbag.results)
+mistyR::plot_improvement_stats(tboost.results)
+```
+
+## Gradient Boosting with Linear Models
+
+```{r}
+if ("lboost.RDS" %in% list.files("data")) {
+  lboost.results <- readRDS("data/lboost.RDS")
+} else {
+  cv.folds = 10
+  lboost.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/lboost_", name),
+                        model.function = gradient_boosting_model, booster = "gblinear")
+    })
+  lboost.results <- collect_results(lboost.results.folders)
+  saveRDS(tboost.results, "data/lboost.RDS")
+}
+```
+
+```{r}
+mistyR::plot_improvement_stats(lboost.results)
+```
+
+## Linear Model
+
+```{r}
+if ("lm.RDS" %in% list.files("data")) {
+  lm.results <- readRDS("data/lm.RDS")
+} else {
+  cv.folds = 10
+  lm.results.folders <- map2(
+    misty.views.smp, names(misty.views.smp), function(smp, name) {
+      
+      smp %>% run_misty(results.folder = paste0("analysis/results/lm_", name),
+                        model.function = linear_model)
+    })
+  lm.results <- collect_results(lm.results.folders)
+  saveRDS(lm.results, "data/lm.RDS")
+}
+```
+
+```{r}
+mistyR::plot_improvement_stats(lm.results)
 ```
 
 # Comparing the results
 
 ## Improvements
 
-```{r fig.width=12, fig.height=14}
-colors <- c("earth" = "forestgreen", "ranger" = "blue1", "lm" = "red4")
-
-all.improvements <- rbind(
-  ranger.results$improvements %>% mutate(method = "ranger"),
-  earth.results$improvements %>% mutate(method = "earth"),
-  lmbag.results$improvements %>% mutate(method = "lm")
-)
+```{r fig.width=6, fig.height=6}
+all.improvements <- map2_dfr(list(ranger.results, bgmars.results, mars.results,
+                             tboost.results, lboost.results, lm.results),
+                         list("rf", "bgmars", "mars", "tboost", "lboost", "lm"),
+                        ~ .x$improvements %>% mutate(algorithm = .y))
 
 all.improvements %>%
-  filter(measure %in% c("gain.R2", "multi.R2", "intra.R2")) %>%
-  mutate(measure = factor(measure, 
-                          levels = c("gain.R2", "multi.R2", "intra.R2"))) %>%
+  filter(measure == "multi.R2") %>%
+  mutate(algorithm = factor(algorithm, levels = c("rf", "tboost", "mars", 
+                                                  "bgmars", "lboost", "lm"))) %>%
+  group_by(algorithm, target) %>%
+  summarise(mean = mean(value), median = median(value), 
+            sd = sd(value), .groups = "drop_last") %>%
   ggplot() +
-  geom_boxplot(aes(x=target, y=value, col = method)) +
-  facet_wrap(~ measure, ncol = 1, scales = "free") +
-  theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1),
-        plot.title = element_text(hjust = 0.5),
-        axis.text.x.bottom = element_text(vjust = 0.4)) +
-  scale_colour_manual(values = colors)
+  geom_tile(aes(x = algorithm, y = target, fill = mean)) +
+  scale_fill_viridis_c(values = c(0, 0.1, 0.2, 0.4, 0.7, 1)) +
+  labs(x = "Algorithm", fill = "Mean Multi.R2") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ```
 
 ## View Contributions
@@ -148,73 +207,32 @@ Random Forest (ranger):
 mistyR::plot_view_contributions(ranger.results)
 ```
 
-Boxplot to look at the variability
+Tree Boosting (xgboost):
 
-```{r fig.width=6, fig.height=6}
-ranger.results$contributions %>%
-  filter(!str_starts(view, "p\\."), view != "intercept") %>%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ view, ncol = 1)
+```{r}
+mistyR::plot_view_contributions(tboost.results)
 ```
 
 Bagged MARS (earth):
 
 ```{r}
-mistyR::plot_view_contributions(earth.results)
+mistyR::plot_view_contributions(bgmars.results)
 ```
 
-Boxplot to look at the variability
-
-```{r fig.width=6, fig.height=6}
-earth.results$contributions %>%
-  filter(!str_starts(view, "p\\."), view != "intercept") %>%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ view, ncol = 1)
-```
-
-Bagged Linear Model
+MARS (earth):
 
 ```{r}
-mistyR::plot_view_contributions(lmbag.results)
+mistyR::plot_view_contributions(mars.results)
 ```
 
-Boxplot to look at the variability
+Linear Boosting (xgboost):
 
-```{r fig.width=6, fig.height=6}
-lmbag.results$contributions %>%
-  filter(!str_starts(view, "p\\."), view != "intercept") %>%
-  ggplot() +
-  geom_boxplot(aes(x = target, y = value)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  facet_wrap(~ view, ncol = 1)
+```{r}
+mistyR::plot_view_contributions(lboost.results)
 ```
 
-## Importances
+Linear Model (lm):
 
-Random Forest
-
-```{r fig.width=6, fig.height=6}
-mistyR::plot_interaction_heatmap(ranger.results, view = "intra", clean = TRUE)
-mistyR::plot_interaction_heatmap(ranger.results, view = "juxta.40", clean = TRUE)
-mistyR::plot_interaction_heatmap(ranger.results, view = "para.120", clean = TRUE)
-```
-
-Bagged MARS
-
-```{r fig.width=6, fig.height=6}
-mistyR::plot_interaction_heatmap(earth.results, view = "intra", clean = TRUE)
-mistyR::plot_interaction_heatmap(earth.results, view = "juxta.40", clean = TRUE)
-mistyR::plot_interaction_heatmap(earth.results, view = "para.120", clean = TRUE)
-```
-
-Bagged Linear Model
-
-```{r fig.width=6, fig.height=6}
-mistyR::plot_interaction_heatmap(lmbag.results, view = "intra", clean = TRUE)
-mistyR::plot_interaction_heatmap(lmbag.results, view = "juxta.40", clean = TRUE)
-mistyR::plot_interaction_heatmap(lmbag.results, view = "para.120", clean = TRUE)
+```{r}
+mistyR::plot_view_contributions(lm.results)
 ```

@@ -8,7 +8,7 @@ Messages will be hidden and the output collapsed to make the Rmd more clear.
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+knitr::opts_knit$set(root.dir = "~/Saez/mibi_analysis/")
 ```
 
 Loaded Packages.
@@ -61,7 +61,7 @@ if ("coord.RDS" %in% list.files("data")) {
   coord <- furrr::future_map_dfr(lbs, function(id) {
     print(id)
     # Read in raw matrix (in tiff format)
-    tiff <- readTIFF(paste0("/home/philipp/data/saez/p", id, "_labeledcellData.tiff"),
+    tiff <- readTIFF(paste0("/home/philipp/data/saez/mibi/p", id, "_labeledcellData.tiff"),
                      as.is = TRUE)
     seq.rows <- seq_len(nrow(tiff))
     seq.cols <- seq_len(ncol(tiff))
@@ -805,9 +805,42 @@ We can see that there is quite some gain in variance when taking the
 expression of neighboring cells into account. However, looking at the
 errorbars we can also see that there is a large variability between the samples.
 
-```{r}
-mistyR::plot_improvement_stats(ranger.results)
+```{r eval = FALSE, fig.height=6, fig.width=8}
+mod.ranger.results <- ranger.results
+subset <- c("CD138", "CD209", "phospho.S6", "IDO", "CD20",
+                       "EGFR", "Keratin17", "CD11c", "PD.L1")
+mod.ranger.results <- map(ranger.results, function(res) {
+  res %>% filter(target %in% subset)
+})
+
+mod.ranger.results$improvements %>%
+  filter(measure %in% c("intra.R2", "multi.R2")) %>%
+  mutate(measure = factor(measure, levels = c("multi.R2", "intra.R2"))) %>%
+  mutate(measure = ifelse(measure == "multi.R2", "Multiview", "Intraview")) %>%
+  mutate(target = factor(target, levels = subset)) %>%
+  ggplot() +
+  geom_boxplot(aes(x=target, y=value, col=measure),
+               width=.6, outlier.shape = NA) +
+  labs(y = "R2", x = "Target") +
+  scale_color_manual(values = c("Multiview" = "forestgreen", 
+                                "Intraview" = "brown")) +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .5))
+
+plot_improvement_stats(mod.ranger.results, "gain.R2")
+
+plot_view_contributions(mod.ranger.results)
+
+mod.ranger.results$importances.aggregated <- ranger.results$importances.aggregated %>% filter(Target %in% subset)
+plot_interaction_heatmap(mod.ranger.results, "para.120", clean=TRUE, cutoff=0.5)
+mod.ranger.results$contributions.stats
+
 ```
+
+```{r}
+plot_improvement_stats(ranger.results, "gain.R2")
+```
+
 
 Let's look at a heatmap first to see how the gain.R2 stat is distributed across
 the samples and targets. 

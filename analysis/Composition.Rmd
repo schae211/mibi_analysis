@@ -6,7 +6,7 @@ title: "Neighborhood Composition Analaysis"
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+knitr::opts_knit$set(root.dir = "~/Saez/mibi_analysis/")
 ```
 
 Loaded packages.
@@ -39,7 +39,7 @@ the 50 nearest-neigbors.
 Repair the class names and select the relevant columns. For the first 6
 rows we get:
 
-TODO: Should we exclude "Other Imunne" class from the analysis?
+TODO: Should we exclude "Other Immune" class from the analysis?
 
 ```{r}
 data <- meta %>%
@@ -222,7 +222,6 @@ Run MISTy bypassing the intraview and using 10 CV folds. Per default random
 forest is used.
 
 ```{r message=FALSE, warning=FALSE}
-misty.views.smp$`1`$intraview$data
 result.folders <- map2(misty.views.smp, 
                       names(misty.views.smp), 
                       function(misty.views, i) {
@@ -682,6 +681,33 @@ meta %>%
 ```
 
 And in fact one can see that CD4 T and B cells colocalize.
+
+# MISTy with other functions
+
+```{r message=FALSE, warning=FALSE}
+result.folders.bt <- map2(misty.views.smp, names(misty.views.smp), 
+                      function(misty.views, i) {
+  
+  misty.views %>%
+    run_misty(results.folder = paste0("analysis/composition.analysis/bt_smp.", i), 
+              bypass.intra = TRUE,
+              cv.folds = 10, 
+              model.function = svm_model)
+})
+misty.results.bt <- collect_results(result.folders.bt)
+```
+
+Investigation of the results.
+
+```{r}
+misty.results.bt %>%
+  plot_improvement_stats("gain.R2")
+```
+
+```{r}
+misty.results.bt %>%
+  plot_improvement_stats("gain.R2")
+```
 
 # Save Results
 

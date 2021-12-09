@@ -6,7 +6,7 @@ title: "Cell Type-specific Analysis"
 
 ```{r setup}
 knitr::opts_chunk$set(echo = TRUE, cache = FALSE)
-knitr::opts_knit$set(root.dir = "~/Saez/workflowr_projects/mibi_analysis/")
+knitr::opts_knit$set(root.dir = "~/Saez/mibi_analysis/")
 ```
 
 Loaded packages.
