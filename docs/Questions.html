@@ -11,7 +11,7 @@
 
 
 
-<title>Presentation</title>
+<title>Questions</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -351,6 +351,9 @@ div.tocify {
   <a href="Composition.html">Composition Analysis</a>
 </li>
 <li>
+  <a href="MISTY_Analysis_Helpers.html">MISTy Helpers</a>
+</li>
+<li>
   <a href="Questions.html">Questions</a>
 </li>
 <li>
@@ -382,7 +385,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Presentation</h1>
+<h1 class="title toc-ignore">Questions</h1>
 
 </div>
 
@@ -407,7 +410,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-10-27
+<strong>Last updated:</strong> 2021-12-09
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -438,16 +441,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeddd6715e940b9e8011ec34aef7ab3410df7b3179targetblankddd6715a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/ddd6715e940b9e8011ec34aef7ab3410df7b3179" target="_blank">ddd6715</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreebdb3ff781912b96d5a613680610976ef1bcc0e6ctargetblankbdb3ff7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/bdb3ff781912b96d5a613680610976ef1bcc0e6c" target="_blank">bdb3ff7</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeddd6715e940b9e8011ec34aef7ab3410df7b3179targetblankddd6715a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreebdb3ff781912b96d5a613680610976ef1bcc0e6ctargetblankbdb3ff7a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/ddd6715e940b9e8011ec34aef7ab3410df7b3179" target="_blank">ddd6715</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/bdb3ff781912b96d5a613680610976ef1bcc0e6c" target="_blank">bdb3ff7</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -499,6 +502,8 @@ Ignored files:
     Ignored:    analysis/red.composition.analysis/
     Ignored:    analysis/results/
     Ignored:    analysis/test/
+    Ignored:    data/bagged_mars.RDS
+    Ignored:    data/bgmars.RDS
     Ignored:    data/cancer.immune.RDS
     Ignored:    data/cancer.immune.results.RDS
     Ignored:    data/cancer.immune.views.RDS
@@ -512,16 +517,28 @@ Ignored files:
     Ignored:    data/immune.immune.RDS
     Ignored:    data/immune.immune.results.RDS
     Ignored:    data/immune.immune.views.RDS
+    Ignored:    data/lboost.RDS
+    Ignored:    data/lm.RDS
     Ignored:    data/lmbag.results.RDS
+    Ignored:    data/mars.RDS
     Ignored:    data/meta_data.RDS
+    Ignored:    data/mibi_coldata.RDS
+    Ignored:    data/mibi_coord.RDS
+    Ignored:    data/mibi_expression.RDS
+    Ignored:    data/mibi_rowdata.RDS
     Ignored:    data/misty_views_smp.RDS
     Ignored:    data/no.tumor.compositon.RDS
     Ignored:    data/patient_class.csv
     Ignored:    data/ranger.results.RDS
     Ignored:    data/raw_tiffs/
+    Ignored:    data/rf.RDS
     Ignored:    data/sample_meta.RDS
+    Ignored:    data/tboost.RDS
     Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
+
+Untracked files:
+    Untracked:  analysis/MIBI_Analysis_Helpers.Rmd
 
 </code></pre>
 <p>
@@ -560,6 +577,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/bdb3ff781912b96d5a613680610976ef1bcc0e6c/analysis/Questions.Rmd" target="_blank">bdb3ff7</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-12-09
+</td>
+<td>
+wflow_publish(all = TRUE, republish = TRUE)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/Questions.html" target="_blank">28ffc8b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-10-27
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
