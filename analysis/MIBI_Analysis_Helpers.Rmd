@@ -1,0 +1,253 @@
+---
+title: "Exploratory Data Analysis MIBI with Helper Function"
+---
+
+# Set up
+
+Messages will be hidden and the output collapsed to make the Rmd more clear.
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "~/Saez/mibi_analysis/")
+```
+
+Loaded Packages.
+
+```{r}
+suppressPackageStartupMessages(library(mistyR))
+suppressPackageStartupMessages(library(future))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(factoextra))
+suppressPackageStartupMessages(library(tiff))
+plan("multisession", workers=14)
+```
+
+# Loading and Processing Data
+
+The columns Group and ImmuneGroup in the cell metadata are translated from
+numbers to their actual meaning.
+
+```{r}
+input <- read_csv("data/cellData.csv", show_col_types=FALSE)
+
+# See description in Readme
+group.trans <- c("1" = "Unidentified", "2" = "Immune", "3" = "Endothelial", 
+                 "4" = "Mesenchymal-like", "5" = "Tumor", 
+                 "6" = "Keratin-positive tumor")
+
+immune.group.trans <- c("0" = "Non-Immune?", "1" = "Tregs", "2" = "CD4 T", 
+                        "3" = "CD8 T", "4" = "CD3 T", "5" = "NK", "6" = "B",
+                        "7" = "Neutrophils", "8" = "Macrophages", 
+                        "9" = "DC", "10" = "DC/Mono", "11" = "Mono/Neu", 
+                        "12" = "Other immune")
+
+raw_data <- input %>%
+  mutate(Group = group.trans[as.character(Group)]) %>%
+  mutate(immuneGroup = immune.group.trans[as.character(immuneGroup)])
+  
+raw_data %>% slice_head(n=6)
+```
+
+Next we add the coordinates of the cells.
+
+```{r}
+lbs <- c(1:29, 31:41) # actual samples
+coord <- furrr::future_map_dfr(lbs, function(id) {
+  # Read in raw matrix (in tiff format)
+  tiff <- readTIFF(paste0("/home/philipp/data/saez/mibi/p", id, "_labeledcellData.tiff"),
+                   as.is = TRUE)
+  seq.rows <- seq_len(nrow(tiff))
+  seq.cols <- seq_len(ncol(tiff))
+  # important: map over all unique values here! (but I removed 1 and 2)
+  cell.ids <- unique(as.vector(tiff))[-which(unique(as.vector(tiff)) %in% c(0,1))]
+  map_dfr(cell.ids, function(i) {
+    # Convert to binary matrix with TRUE and FALSE
+    binary <- (tiff == i)
+    s <- sum(binary)
+    # Calculate center of mass
+    c(id = id, 
+      i = i,
+      x.center = sum(seq.rows * rowSums(binary)) / s,
+      y.center = sum(seq.cols * colSums(binary)) / s
+    )
+  })
+})
+```
+
+Then, join the coordinates with the meta data.
+
+```{r}
+data <- raw_data %>%
+  inner_join(coord, by = c("SampleID" = "id", "cellLabelInImage" = "i")) %>%
+  rename(row = x.center, col = y.center)
+```
+
+Split the data into expression matrix and meta data.
+
+```{r}
+meta <- data %>%
+  select(c(1:3, 53:59))
+meta %>% slice_head(n=6)
+
+expr <- data %>%
+  select(4:52)
+expr %>% slice_head(n=6)
+```
+
+Patient data provided with the raw data.
+
+```{r}
+patient.info <- read_csv("data/patient_class.csv",
+                         col_names = c("SampleID", "Classification"),
+                         show_col_types=FALSE)
+patient.info %>% slice_head(n=6)
+
+patient.info.paper <- readxl::read_xlsx("data/mmc2.xlsx", 
+                                        skip = 1, col_names = TRUE)
+patient.info.paper %>% slice_head(n=6)
+```
+
+Merging the meta data with other measures.
+
+```{r}
+# Generating Sample Meta Data
+immune.counts <- meta %>%
+  group_by(SampleID) %>%
+  count(Group) %>%
+  pivot_wider(names_from = Group, values_from = n,
+              names_prefix = "Count.")
+
+total.counts <- meta %>%
+  count(SampleID) %>%
+  rename(Count.Total = n)
+
+sample.meta <- patient.info %>%
+  filter(SampleID != 30) %>%
+  inner_join(immune.counts, by = "SampleID") %>%
+  inner_join(total.counts, by = "SampleID") %>%
+  # see paper Figure 3, Panel C
+  mutate(Classification = 
+         case_when(Classification == 0 ~ "mixed",
+                   Classification == 1 ~ "compartimentalized",
+                   Classification == 2 ~ "cold")) %>% 
+  mutate(SampleID = as.character(SampleID)) %>%
+  left_join(patient.info.paper, by = c("SampleID" = "InternalId"))
+
+sample.meta %>% slice_head(n=6)
+```
+
+# Running MISTy
+
+## Preparation
+
+Select only proteins from the expression matrix and check for NAs.
+
+Also we need to check the variance for each marker in each same and
+exclude the marker if the variance is 0. The same is true for markers
+whose number of unique values is lower than the desired number of cv
+folds (here 10).
+
+```{r collapse=TRUE}
+raw.expr <- unique(meta$SampleID) %>%
+  set_names(paste0("s", .)) %>%
+  map(function(id) {
+    ret.expr <- expr %>%
+      filter(meta$SampleID == id) %>%
+      select(11:47) }) # Select only proteins
+
+expr.smp <- mistyR.helpers::prepare_markers(raw.expr)
+
+coord.smp <- unique(meta$SampleID) %>%
+  set_names(paste0("s", .)) %>%
+  map(function(id) {
+    meta %>%
+      filter(meta$SampleID == id) %>% 
+      select(row, col)
+  })
+```
+
+First we will look at the distribution of the  mean distances to the direct 
+neighbors (as determined by the delauney triangulation) to get a feeling for 
+which cutoff value should be used for the generation of the juxtaview. The
+corresponding distribution is shown below.
+(in blue the cutoff - 40 pixels (15.6 microns) - which was used in the end).
+
+```{r}
+mean.dists.direct.neighbors <- mistyR.helpers::distances_juxtaview(coord.smp)
+
+mistyR.helpers::plot_distances_juxtaview(mean.dists.direct.neighbors, 100) +
+  geom_vline(xintercept = 40, col = "red", alpha = 0.5)
+```
+
+However, a more detailed look across the sample (boxplot) shows that the
+cutoff may be too low for certain samples. It may be good to increase this
+threshold to 50.
+
+```{r}
+# boxplot without outliers
+mean.dists.direct.neighbors %>%
+  mutate(sample = factor(sample, levels = unique(sample))) %>%
+  ggplot() +
+  geom_boxplot(aes(x=sample, y=mean.distance), outlier.shape = NA) +
+  geom_hline(yintercept = 40, col="blue") +
+  lims(y = c(0, 100)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 0.5, vjust = 0.5))
+```
+
+Furthermore we will look at the distribution of the mean distances to the
+10 -, 20 -, 40 -, and 80 closest cells to get a feeling
+for which cutoff will be used to generate the paraview 
+(in blue the cutoff - 120 pixels (46.8 microns) - which was used in the end).
+
+```{r}
+neighbor.dists <- mistyR.helpers::distances_paraview(coord.smp)
+
+mistyR.helpers::plot_distances_paraview(neighbor.dists, 200) +
+  geom_vline(xintercept = 120, col = "red", alpha = 0.5)
+```
+
+## Generating the MISTy views
+
+Based on the data above, the following parameters (thresholds) were used 
+to run MISTy: 
+ * Juxtaview: threshold 40,
+ * Paraview: theshold 120, zone of indifference: 40
+
+```{r message=FALSE}
+misty.views.smp <- map2(expr.smp, coord.smp, function(expr, coord) {
+    # Create views and run MISTy
+    create_initial_view(expr) %>%
+      add_juxtaview(positions = coord, neighbor.thr = 40) %>%
+      add_paraview(positions = coord, l = 120, zoi = 40)
+  })
+names(misty.views.smp) <- names(expr.smp)
+```
+
+## Random Forest Implementation
+
+Running with random forest as ML algorithm to build the view-specific models. 
+
+```{r message=FALSE}
+cv.folds = 10
+ranger.results.folders <- map2(
+  misty.views.smp, names(misty.views.smp), function(smp, name) {
+    
+    smp %>% run_misty(results.folder = paste0("analysis/results/ranger_", name),
+                      cv.folds = cv.folds)
+  })
+ranger.results <- collect_results(ranger.results.folders)
+```
+
+# MISTy Results
+
+```{r}
+plot_improvement_stats(ranger.results, "gain.R2")
+```
+
+```{r}
+plot_view_contributions(ranger.results)
+```
+
+```{r}
+plot_interaction_heatmap(ranger.results, "para.120", clean = TRUE)
+```
