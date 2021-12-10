@@ -794,7 +794,7 @@ nnls_model <- function(view_data, target, seed, k = 10, ...) {
 
 Test our new lovely function
 
-```{r}
+```{r warning=FALSE}
 testing.folders <- map2(misty.views.smp, 
                       names(misty.views.smp), 
                       function(misty.views, i) {
