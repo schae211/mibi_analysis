@@ -58,11 +58,14 @@ data %>% slice_head(n=6)
 Next up, one-hot encoding of the cell types. Again the first six rows.
 
 ```{r}
-expr <- mltools::one_hot(data.table::as.data.table(data)) %>%
-  select(-c(row, col)) %>%
-  rename_all(make.names)
-colnames(expr) <- colnames(expr) %>% str_replace_all("_", ".")
-expr %>% slice_head(n=6)
+raw.data <- map(unique(data$SampleID), function(id) {
+  data %>% 
+    filter(SampleID == id) %>%
+    pull(Class)
+}) %>% set_names(unique(data$SampleID))
+
+expr.smp <- mistyR.helpers::prepare_celltypes(raw.data, 10)
+expr.smp$`1` %>% slice_head(n=6)
 ```
 
 ```{r include=FALSE, eval=FALSE}
@@ -182,23 +185,10 @@ left. See below which samples are left and how many unique cell types were
 retained.
 
 ```{r}
-expr.smp.raw <- unique(data$SampleID) %>%
-  set_names() %>%
-  map(function(smp) {
-    ret.expr <- expr %>%
-      filter(SampleID == smp) %>%
-      select(-SampleID)
-    
-    c.sums <- colSums(ret.expr)
-    remove.classes <- names(c.sums)[which(c.sums < 50)]
-    
-    return(ret.expr %>% select(-all_of(remove.classes)))
-  })
-
 # which sample to keep
-n.cells <- map_int(expr.smp.raw, ~ ncol(.x))
+n.cells <- map_int(expr.smp, ~ ncol(.x))
 samples.keep <- names(n.cells[which(n.cells > 3)])
-expr.smp <- expr.smp.raw[samples.keep]
+expr.smp <- expr.smp[samples.keep]
 pos.smp <- pos.smp[samples.keep]
 
 # last check
@@ -340,8 +330,8 @@ perf.sig <- extract_signature(misty.results = misty.results,
   select(c(SampleID, ends_with("gain.R2")))
 
 ggplot(perf.sig) +
-geom_point(aes(x=Class.Macrophages_gain.R2, 
-               y=Class.Tumor_gain.R2,
+geom_point(aes(x=Macrophages_gain.R2, 
+               y=Tumor_gain.R2,
                col=perf.sig %>% left_join(meta.smp, by="SampleID") %>%
                    pull(Classification))) +
   labs(col = "Class")
@@ -404,14 +394,15 @@ map(misty.views.smp, ~ colnames(.x$intraview$data)) %>%
 ```
 
 ```{r}
-to.remove <- c("Class.Tregs", "Class.DC", "Class.NK", "Class.Other.immune")
+to.remove <- c("Tregs", "DC", "NK", "Other.immune")
 misty.views.red <- map(misty.views.smp, function(misty.view) {
-  if ("Class.DC" %in% colnames(misty.view$intraview$data)) {
+  if ("DC" %in% colnames(misty.view$intraview$data) &
+      "DC.Mono" %in% colnames(misty.view$intraview$data)) {
     misty.view$intraview$data <- misty.view$intraview$data %>%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
     
     misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
   }
   
   misty.view$intraview$data <- misty.view$intraview$data %>%
@@ -502,15 +493,16 @@ red.misty.results$importances %>%
 Now we could actually run the same analyis excluding tumor cells.
 
 ```{r}
-to.remove <- c("Class.Tregs", "Class.DC", "Class.NK", "Class.Other.immune",
-               "Class.Tumor")
+to.remove <- c("Tregs", "DC", "NK", "Other.immune",
+               "Tumor")
 misty.views.notumor <- map(misty.views.smp, function(misty.view) {
-  if ("Class.DC" %in% colnames(misty.view$intraview$data)) {
+  if ("DC" %in% colnames(misty.view$intraview$data) &
+      "DC.Mono" %in% colnames(misty.view$intraview$data)) {
     misty.view$intraview$data <- misty.view$intraview$data %>%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
     
     misty.view$paraview.50$data <- misty.view$paraview.50$data %>%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
   }
   
   misty.view$intraview$data <- misty.view$intraview$data %>%
@@ -692,7 +684,7 @@ result.folders.bt <- map2(misty.views.smp, names(misty.views.smp),
     run_misty(results.folder = paste0("analysis/composition.analysis/bt_smp.", i), 
               bypass.intra = TRUE,
               cv.folds = 10, 
-              model.function = svm_model)
+              model.function = gradient_boosting_model, booster = "gbtree")
 })
 misty.results.bt <- collect_results(result.folders.bt)
 ```
