@@ -410,7 +410,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2021-12-09
+<strong>Last updated:</strong> 2021-12-10
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -525,16 +525,16 @@ relative
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreebdb3ff781912b96d5a613680610976ef1bcc0e6ctargetblankbdb3ff7a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/bdb3ff781912b96d5a613680610976ef1bcc0e6c" target="_blank">bdb3ff7</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeb32fc17ee41bdefd7c595df6ea51c4d3db23e6fctargetblankb32fc17a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/schae211/mibi_analysis/tree/b32fc17ee41bdefd7c595df6ea51c4d3db23e6fc" target="_blank">b32fc17</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreebdb3ff781912b96d5a613680610976ef1bcc0e6ctargetblankbdb3ff7a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomschae211mibianalysistreeb32fc17ee41bdefd7c595df6ea51c4d3db23e6fctargetblankb32fc17a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/bdb3ff781912b96d5a613680610976ef1bcc0e6c" target="_blank">bdb3ff7</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/schae211/mibi_analysis/tree/b32fc17ee41bdefd7c595df6ea51c4d3db23e6fc" target="_blank">b32fc17</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -582,6 +582,7 @@ Ignored files:
     Ignored:    analysis/cell.specific.results/immune.immune_s8/
     Ignored:    analysis/cell.specific.results/immune.immune_s9/
     Ignored:    analysis/composition.analysis/
+    Ignored:    analysis/figure/
     Ignored:    analysis/notumor.composition.analysis/
     Ignored:    analysis/red.composition.analysis/
     Ignored:    analysis/results/
@@ -621,9 +622,6 @@ Ignored files:
     Ignored:    data/tumor.immune.contacts.RDS
     Ignored:    old_files/
 
-Untracked files:
-    Untracked:  analysis/MIBI_Analysis_Helpers.Rmd
-
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -661,6 +659,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/b32fc17ee41bdefd7c595df6ea51c4d3db23e6fc/analysis/Composition.Rmd" target="_blank">b32fc17</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-12-10
+</td>
+<td>
+workflowr::wflow_publish(“analysis/Composition.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/schae211/mibi_analysis/4d24b7b6860574337d4ec653095ad53c6a664948/docs/Composition.html" target="_blank">4d24b7b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-12-09
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -963,14 +995,199 @@ data %&gt;% slice_head(n=6)</code></pre>
   </script>
 </div>
 <p>Next up, one-hot encoding of the cell types. Again the first six rows.</p>
-<pre class="r"><code>expr &lt;- mltools::one_hot(data.table::as.data.table(data)) %&gt;%
-  select(-c(row, col)) %&gt;%
-  rename_all(make.names)
-colnames(expr) &lt;- colnames(expr) %&gt;% str_replace_all(&quot;_&quot;, &quot;.&quot;)
-expr %&gt;% slice_head(n=6)</code></pre>
+<pre class="r"><code>raw.data &lt;- map(unique(data$SampleID), function(id) {
+  data %&gt;% 
+    filter(SampleID == id) %&gt;%
+    pull(Class)
+}) %&gt;% set_names(unique(data$SampleID))
+
+expr.smp &lt;- mistyR.helpers::prepare_celltypes(raw.data, 10)</code></pre>
+<pre><code>Sample 1, Class DC contains fewer than 10 cells.
+Sample 1, Class Mono.Neu contains fewer than 10 cells.
+Sample 1, Class NK contains fewer than 10 cells.
+Sample 1, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 2, Class B contains fewer than 10 cells.
+Sample 2, Class DC.Mono contains fewer than 10 cells.
+Sample 2, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 3, Class  contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 4, Class DC contains fewer than 10 cells.
+Sample 4, Class NK contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 5, Class B contains fewer than 10 cells.
+Sample 5, Class DC contains fewer than 10 cells.
+Sample 5, Class NK contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 6, Class DC contains fewer than 10 cells.
+Sample 6, Class NK contains fewer than 10 cells.
+Sample 6, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 7, Class B contains fewer than 10 cells.
+Sample 7, Class CD3.T contains fewer than 10 cells.
+Sample 7, Class CD4.T contains fewer than 10 cells.
+Sample 7, Class CD8.T contains fewer than 10 cells.
+Sample 7, Class DC contains fewer than 10 cells.
+Sample 7, Class DC.Mono contains fewer than 10 cells.
+Sample 7, Class Endothelial contains fewer than 10 cells.
+Sample 7, Class Mono.Neu contains fewer than 10 cells.
+Sample 7, Class NK contains fewer than 10 cells.
+Sample 7, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 8, Class B contains fewer than 10 cells.
+Sample 8, Class CD4.T contains fewer than 10 cells.
+Sample 8, Class DC contains fewer than 10 cells.
+Sample 8, Class Endothelial contains fewer than 10 cells.
+Sample 8, Class Neutrophils contains fewer than 10 cells.
+Sample 8, Class NK contains fewer than 10 cells.
+Sample 8, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 9, Class NK contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 10, Class DC contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 11, Class B contains fewer than 10 cells.
+Sample 11, Class DC contains fewer than 10 cells.
+Sample 11, Class NK contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 12, Class DC contains fewer than 10 cells.
+Sample 12, Class Endothelial contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 13, Class  contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 14, Class B contains fewer than 10 cells.
+Sample 14, Class DC contains fewer than 10 cells.
+Sample 14, Class NK contains fewer than 10 cells.
+Sample 14, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 15, Class B contains fewer than 10 cells.
+Sample 15, Class CD3.T contains fewer than 10 cells.
+Sample 15, Class CD4.T contains fewer than 10 cells.
+Sample 15, Class CD8.T contains fewer than 10 cells.
+Sample 15, Class DC contains fewer than 10 cells.
+Sample 15, Class DC.Mono contains fewer than 10 cells.
+Sample 15, Class Mono.Neu contains fewer than 10 cells.
+Sample 15, Class Neutrophils contains fewer than 10 cells.
+Sample 15, Class NK contains fewer than 10 cells.
+Sample 15, Class Other.immune contains fewer than 10 cells.
+Sample 15, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 16, Class Mesenchymal contains fewer than 10 cells.
+Sample 16, Class Mono.Neu contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 17, Class DC contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 18, Class B contains fewer than 10 cells.
+Sample 18, Class DC contains fewer than 10 cells.
+Sample 18, Class DC.Mono contains fewer than 10 cells.
+Sample 18, Class Endothelial contains fewer than 10 cells.
+Sample 18, Class Mesenchymal contains fewer than 10 cells.
+Sample 18, Class NK contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 19, Class B contains fewer than 10 cells.
+Sample 19, Class CD3.T contains fewer than 10 cells.
+Sample 19, Class CD4.T contains fewer than 10 cells.
+Sample 19, Class CD8.T contains fewer than 10 cells.
+Sample 19, Class DC contains fewer than 10 cells.
+Sample 19, Class Mono.Neu contains fewer than 10 cells.
+Sample 19, Class Neutrophils contains fewer than 10 cells.
+Sample 19, Class NK contains fewer than 10 cells.
+Sample 19, Class Other.immune contains fewer than 10 cells.
+Sample 19, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 20, Class DC contains fewer than 10 cells.
+Sample 20, Class Endothelial contains fewer than 10 cells.
+Sample 20, Class NK contains fewer than 10 cells.
+Sample 20, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 21, Class B contains fewer than 10 cells.
+Sample 21, Class CD3.T contains fewer than 10 cells.
+Sample 21, Class CD8.T contains fewer than 10 cells.
+Sample 21, Class DC contains fewer than 10 cells.
+Sample 21, Class DC.Mono contains fewer than 10 cells.
+Sample 21, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 22, Class B contains fewer than 10 cells.
+Sample 22, Class CD3.T contains fewer than 10 cells.
+Sample 22, Class CD4.T contains fewer than 10 cells.
+Sample 22, Class CD8.T contains fewer than 10 cells.
+Sample 22, Class DC contains fewer than 10 cells.
+Sample 22, Class DC.Mono contains fewer than 10 cells.
+Sample 22, Class Mono.Neu contains fewer than 10 cells.
+Sample 22, Class Neutrophils contains fewer than 10 cells.
+Sample 22, Class NK contains fewer than 10 cells.
+Sample 22, Class Other.immune contains fewer than 10 cells.
+Sample 22, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 23, Class B contains fewer than 10 cells.
+Sample 23, Class DC contains fewer than 10 cells.
+Sample 23, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 24, Class B contains fewer than 10 cells.
+Sample 24, Class CD3.T contains fewer than 10 cells.
+Sample 24, Class CD4.T contains fewer than 10 cells.
+Sample 24, Class CD8.T contains fewer than 10 cells.
+Sample 24, Class DC contains fewer than 10 cells.
+Sample 24, Class DC.Mono contains fewer than 10 cells.
+Sample 24, Class Endothelial contains fewer than 10 cells.
+Sample 24, Class Mono.Neu contains fewer than 10 cells.
+Sample 24, Class NK contains fewer than 10 cells.
+Sample 24, Class Other.immune contains fewer than 10 cells.
+Sample 24, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 25, Class B contains fewer than 10 cells.
+Sample 25, Class CD3.T contains fewer than 10 cells.
+Sample 25, Class CD8.T contains fewer than 10 cells.
+Sample 25, Class DC contains fewer than 10 cells.
+Sample 25, Class NK contains fewer than 10 cells.
+Sample 25, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 26, Class B contains fewer than 10 cells.
+Sample 26, Class CD3.T contains fewer than 10 cells.
+Sample 26, Class CD4.T contains fewer than 10 cells.
+Sample 26, Class CD8.T contains fewer than 10 cells.
+Sample 26, Class DC contains fewer than 10 cells.
+Sample 26, Class DC.Mono contains fewer than 10 cells.
+Sample 26, Class Mono.Neu contains fewer than 10 cells.
+Sample 26, Class NK contains fewer than 10 cells.
+Sample 26, Class Other.immune contains fewer than 10 cells.
+Sample 26, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 27, Class B contains fewer than 10 cells.
+Sample 27, Class DC contains fewer than 10 cells.
+Sample 27, Class NK contains fewer than 10 cells.
+Sample 27, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 28, Class  contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 29, Class B contains fewer than 10 cells.
+Sample 29, Class DC contains fewer than 10 cells.
+Sample 29, Class Neutrophils contains fewer than 10 cells.
+Sample 29, Class NK contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 31, Class B contains fewer than 10 cells.
+Sample 31, Class CD3.T contains fewer than 10 cells.
+Sample 31, Class CD4.T contains fewer than 10 cells.
+Sample 31, Class CD8.T contains fewer than 10 cells.
+Sample 31, Class DC contains fewer than 10 cells.
+Sample 31, Class DC.Mono contains fewer than 10 cells.
+Sample 31, Class Mono.Neu contains fewer than 10 cells.
+Sample 31, Class NK contains fewer than 10 cells.
+Sample 31, Class Other.immune contains fewer than 10 cells.
+Sample 31, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 32, Class DC contains fewer than 10 cells.
+Sample 32, Class Mesenchymal contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 33, Class B contains fewer than 10 cells.
+Sample 33, Class DC contains fewer than 10 cells.
+Sample 33, Class Endothelial contains fewer than 10 cells.
+Sample 33, Class Mono.Neu contains fewer than 10 cells.
+Sample 33, Class Neutrophils contains fewer than 10 cells.
+Sample 33, Class NK contains fewer than 10 cells.
+Sample 33, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 34, Class B contains fewer than 10 cells.
+Sample 34, Class CD3.T contains fewer than 10 cells.
+Sample 34, Class CD4.T contains fewer than 10 cells.
+Sample 34, Class DC contains fewer than 10 cells.
+Sample 34, Class NK contains fewer than 10 cells.
+Sample 34, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 35, Class DC contains fewer than 10 cells.
+Sample 35, Class Mono.Neu contains fewer than 10 cells.
+Sample 35, Class Neutrophils contains fewer than 10 cells.
+Sample 35, Class NK contains fewer than 10 cells.
+Sample 35, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 36, Class B contains fewer than 10 cells.
+Sample 36, Class DC contains fewer than 10 cells.
+Sample 36, Class Mono.Neu contains fewer than 10 cells.
+Sample 36, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 37, Class DC contains fewer than 10 cells.
+Sample 37, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 38, Class B contains fewer than 10 cells.
+Sample 38, Class DC contains fewer than 10 cells.
+Sample 38, Class Neutrophils contains fewer than 10 cells.
+Sample 38, Class NK contains fewer than 10 cells.
+Sample 38, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 39, Class DC contains fewer than 10 cells.
+Sample 39, Class Mesenchymal contains fewer than 10 cells.
+Sample 39, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 40, Class  contains fewer than 10 cells.</code></pre>
+<pre><code>Sample 41, Class DC contains fewer than 10 cells.
+Sample 41, Class Tregs contains fewer than 10 cells.</code></pre>
+<pre class="r"><code>expr.smp$`1` %&gt;% slice_head(n=6)</code></pre>
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["SampleID"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["Class.B"],"name":[2],"type":["int"],"align":["right"]},{"label":["Class.CD3.T"],"name":[3],"type":["int"],"align":["right"]},{"label":["Class.CD4.T"],"name":[4],"type":["int"],"align":["right"]},{"label":["Class.CD8.T"],"name":[5],"type":["int"],"align":["right"]},{"label":["Class.DC"],"name":[6],"type":["int"],"align":["right"]},{"label":["Class.DC.Mono"],"name":[7],"type":["int"],"align":["right"]},{"label":["Class.Endothelial"],"name":[8],"type":["int"],"align":["right"]},{"label":["Class.Macrophages"],"name":[9],"type":["int"],"align":["right"]},{"label":["Class.Mesenchymal"],"name":[10],"type":["int"],"align":["right"]},{"label":["Class.Mono.Neu"],"name":[11],"type":["int"],"align":["right"]},{"label":["Class.Neutrophils"],"name":[12],"type":["int"],"align":["right"]},{"label":["Class.NK"],"name":[13],"type":["int"],"align":["right"]},{"label":["Class.Other.immune"],"name":[14],"type":["int"],"align":["right"]},{"label":["Class.Tregs"],"name":[15],"type":["int"],"align":["right"]},{"label":["Class.Tumor"],"name":[16],"type":["int"],"align":["right"]}],"data":[{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"1"},{"1":"1","2":"0","3":"1","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0"},{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"1"},{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"1"},{"1":"1","2":"1","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0"},{"1":"1","2":"0","3":"1","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"0","13":"0","14":"0","15":"0","16":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["B"],"name":[1],"type":["int"],"align":["right"]},{"label":["CD3.T"],"name":[2],"type":["int"],"align":["right"]},{"label":["CD4.T"],"name":[3],"type":["int"],"align":["right"]},{"label":["CD8.T"],"name":[4],"type":["int"],"align":["right"]},{"label":["DC.Mono"],"name":[5],"type":["int"],"align":["right"]},{"label":["Endothelial"],"name":[6],"type":["int"],"align":["right"]},{"label":["Macrophages"],"name":[7],"type":["int"],"align":["right"]},{"label":["Mesenchymal"],"name":[8],"type":["int"],"align":["right"]},{"label":["Neutrophils"],"name":[9],"type":["int"],"align":["right"]},{"label":["Other.immune"],"name":[10],"type":["int"],"align":["right"]},{"label":["Tumor"],"name":[11],"type":["int"],"align":["right"]}],"data":[{"1":"0","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"1"},{"1":"0","2":"1","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0"},{"1":"0","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"1"},{"1":"0","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"1"},{"1":"1","2":"0","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0"},{"1":"0","2":"1","3":"0","4":"0","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 <p>Select positions.</p>
@@ -989,31 +1206,18 @@ pos.smp$`1` %&gt;%
   </script>
 </div>
 <p>Removing all cell types in a given sample if there are fewer than 50 cells of this type. After that removing all samples that have fewer than 4 cell types left. See below which samples are left and how many unique cell types were retained.</p>
-<pre class="r"><code>expr.smp.raw &lt;- unique(data$SampleID) %&gt;%
-  set_names() %&gt;%
-  map(function(smp) {
-    ret.expr &lt;- expr %&gt;%
-      filter(SampleID == smp) %&gt;%
-      select(-SampleID)
-    
-    c.sums &lt;- colSums(ret.expr)
-    remove.classes &lt;- names(c.sums)[which(c.sums &lt; 50)]
-    
-    return(ret.expr %&gt;% select(-all_of(remove.classes)))
-  })
-
-# which sample to keep
-n.cells &lt;- map_int(expr.smp.raw, ~ ncol(.x))
+<pre class="r"><code># which sample to keep
+n.cells &lt;- map_int(expr.smp, ~ ncol(.x))
 samples.keep &lt;- names(n.cells[which(n.cells &gt; 3)])
-expr.smp &lt;- expr.smp.raw[samples.keep]
+expr.smp &lt;- expr.smp[samples.keep]
 pos.smp &lt;- pos.smp[samples.keep]
 
 # last check
 map_int(expr.smp, ~ ncol(.x))</code></pre>
-<pre><code> 1  2  3  4  5  6  7  8  9 10 11 12 13 14 16 17 20 21 23 27 28 29 31 32 34 35 
- 8  6 10 13 11 10  4  6 14 10  7 10 12  6 10 12  7  6  5  5 11  9  4  8  6 10 
-36 37 38 39 40 41 
-10 11  5  9 11 11 </code></pre>
+<pre><code> 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 
+11 12 15 13 12 12  5  8 14 14 12 13 15 11  4 13 14  9  5 11  9  4 12  4  9  5 
+27 28 29 31 32 33 34 35 36 37 38 39 40 41 
+11 15 11  5 13  8  9 10 11 13 10 12 15 13 </code></pre>
 <p>Computing the MISTy views. In particulat a paraview consisting of the 50 nearest neigbors (<code>family = "constant"</code> and <code>l = 50</code>)</p>
 <pre class="r"><code>misty.views.smp &lt;- map2(expr.smp, pos.smp, function(expr, pos) {
   expr %&gt;%
@@ -1333,6 +1537,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4d24b7b6860574337d4ec653095ad53c6a664948/docs/figure/Composition.Rmd/unnamed-chunk-15-1.png" target="_blank">4d24b7b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-12-09
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/schae211/mibi_analysis/blob/28ffc8b09a6f38b2758a1f1b905105cb3efdccf8/docs/figure/Composition.Rmd/unnamed-chunk-15-1.png" target="_blank">28ffc8b</a>
 </td>
 <td>
@@ -1501,8 +1716,8 @@ schae211
   select(c(SampleID, ends_with(&quot;gain.R2&quot;)))
 
 ggplot(perf.sig) +
-geom_point(aes(x=Class.Macrophages_gain.R2, 
-               y=Class.Tumor_gain.R2,
+geom_point(aes(x=Macrophages_gain.R2, 
+               y=Tumor_gain.R2,
                col=perf.sig %&gt;% left_join(meta.smp, by=&quot;SampleID&quot;) %&gt;%
                    pull(Classification))) +
   labs(col = &quot;Class&quot;)</code></pre>
@@ -1778,14 +1993,15 @@ schae211
 </table>
 </div>
 </div>
-<pre class="r"><code>to.remove &lt;- c(&quot;Class.Tregs&quot;, &quot;Class.DC&quot;, &quot;Class.NK&quot;, &quot;Class.Other.immune&quot;)
+<pre class="r"><code>to.remove &lt;- c(&quot;Tregs&quot;, &quot;DC&quot;, &quot;NK&quot;, &quot;Other.immune&quot;)
 misty.views.red &lt;- map(misty.views.smp, function(misty.view) {
-  if (&quot;Class.DC&quot; %in% colnames(misty.view$intraview$data)) {
+  if (&quot;DC&quot; %in% colnames(misty.view$intraview$data) &amp;
+      &quot;DC.Mono&quot; %in% colnames(misty.view$intraview$data)) {
     misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
     
     misty.view$paraview.50$data &lt;- misty.view$paraview.50$data %&gt;%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
   }
   
   misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
@@ -2075,15 +2291,16 @@ schae211
 <div id="misty-without-tumor" class="section level1">
 <h1>MISTy Without Tumor</h1>
 <p>Now we could actually run the same analyis excluding tumor cells.</p>
-<pre class="r"><code>to.remove &lt;- c(&quot;Class.Tregs&quot;, &quot;Class.DC&quot;, &quot;Class.NK&quot;, &quot;Class.Other.immune&quot;,
-               &quot;Class.Tumor&quot;)
+<pre class="r"><code>to.remove &lt;- c(&quot;Tregs&quot;, &quot;DC&quot;, &quot;NK&quot;, &quot;Other.immune&quot;,
+               &quot;Tumor&quot;)
 misty.views.notumor &lt;- map(misty.views.smp, function(misty.view) {
-  if (&quot;Class.DC&quot; %in% colnames(misty.view$intraview$data)) {
+  if (&quot;DC&quot; %in% colnames(misty.view$intraview$data) &amp;
+      &quot;DC.Mono&quot; %in% colnames(misty.view$intraview$data)) {
     misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
     
     misty.view$paraview.50$data &lt;- misty.view$paraview.50$data %&gt;%
-      mutate(Class.DC.Mono = Class.DC.Mono + Class.DC)
+      mutate(DC.Mono = DC.Mono + DC)
   }
   
   misty.view$intraview$data &lt;- misty.view$intraview$data %&gt;%
@@ -2709,16 +2926,90 @@ schae211
     run_misty(results.folder = paste0(&quot;analysis/composition.analysis/bt_smp.&quot;, i), 
               bypass.intra = TRUE,
               cv.folds = 10, 
-              model.function = svm_model)
+              model.function = gradient_boosting_model, booster = &quot;gbtree&quot;)
 })
 misty.results.bt &lt;- collect_results(result.folders.bt)</code></pre>
 <p>Investigation of the results.</p>
 <pre class="r"><code>misty.results.bt %&gt;%
   plot_improvement_stats(&quot;gain.R2&quot;)</code></pre>
 <p><img src="figure/Composition.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-45-1">
+Past versions of unnamed-chunk-45-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-45-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4d24b7b6860574337d4ec653095ad53c6a664948/docs/figure/Composition.Rmd/unnamed-chunk-45-1.png" target="_blank">4d24b7b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-12-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>misty.results.bt %&gt;%
   plot_improvement_stats(&quot;gain.R2&quot;)</code></pre>
 <p><img src="figure/Composition.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-1">
+Past versions of unnamed-chunk-46-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-46-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/schae211/mibi_analysis/blob/4d24b7b6860574337d4ec653095ad53c6a664948/docs/figure/Composition.Rmd/unnamed-chunk-46-1.png" target="_blank">4d24b7b</a>
+</td>
+<td>
+schae211
+</td>
+<td>
+2021-12-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="save-results" class="section level1">
 <h1>Save Results</h1>
@@ -2757,27 +3048,48 @@ other attached packages:
 [13] workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
- [1] fs_1.5.0           lubridate_1.8.0    RColorBrewer_1.1-2 filelock_1.0.2    
- [5] httr_1.4.2         rprojroot_2.0.2    tools_4.1.2        backports_1.3.0   
- [9] bslib_0.3.1        utf8_1.2.2         R6_2.5.1           DBI_1.1.1         
-[13] colorspace_2.0-2   withr_2.4.2        tidyselect_1.1.1   compiler_4.1.2    
-[17] git2r_0.28.0       cli_3.0.1          rvest_1.0.1        xml2_1.3.2        
-[21] labeling_0.4.2     sass_0.4.0         scales_1.1.1       distances_0.1.8   
-[25] digest_0.6.28      rmarkdown_2.11     R.utils_2.11.0     pkgconfig_2.0.3   
-[29] htmltools_0.5.2    parallelly_1.28.1  dbplyr_2.1.1       fastmap_1.1.0     
-[33] highr_0.9          rlang_0.4.12       readxl_1.3.1       rstudioapi_0.13   
-[37] farver_2.1.0       jquerylib_0.1.4    generics_0.1.0     jsonlite_1.7.2    
-[41] R.oo_1.24.0        magrittr_2.0.1     rlist_0.4.6.2      Matrix_1.3-4      
-[45] Rcpp_1.0.7         munsell_0.5.0      fansi_0.5.0        lifecycle_1.0.1   
-[49] R.methodsS3_1.8.1  furrr_0.2.3        stringi_1.7.5      whisker_0.4       
-[53] yaml_2.2.1         grid_4.1.2         parallel_4.1.2     listenv_0.8.0     
-[57] promises_1.2.0.1   ggrepel_0.9.1      crayon_1.4.1       lattice_0.20-45   
-[61] haven_2.4.3        hms_1.1.1          knitr_1.36         pillar_1.6.3      
-[65] codetools_0.2-18   reprex_2.0.1       glue_1.4.2         evaluate_0.14     
-[69] data.table_1.14.2  modelr_0.1.8       vctrs_0.3.8        tzdb_0.1.2        
-[73] httpuv_1.6.3       cellranger_1.1.0   gtable_0.3.0       assertthat_0.2.1  
-[77] xfun_0.26          broom_0.7.9        later_1.3.0        pheatmap_1.0.12   
-[81] mltools_0.3.5      globals_0.14.0     ellipsis_0.3.2    </code></pre>
+ [1] fs_1.5.0                  lubridate_1.8.0          
+ [3] RColorBrewer_1.1-2        filelock_1.0.2           
+ [5] httr_1.4.2                rprojroot_2.0.2          
+ [7] tools_4.1.2               backports_1.3.0          
+ [9] bslib_0.3.1               utf8_1.2.2               
+[11] R6_2.5.1                  DBI_1.1.1                
+[13] colorspace_2.0-2          withr_2.4.2              
+[15] tidyselect_1.1.1          compiler_4.1.2           
+[17] git2r_0.28.0              cli_3.0.1                
+[19] rvest_1.0.1               xml2_1.3.2               
+[21] labeling_0.4.2            sass_0.4.0               
+[23] scales_1.1.1              distances_0.1.8          
+[25] digest_0.6.28             rmarkdown_2.11           
+[27] R.utils_2.11.0            pkgconfig_2.0.3          
+[29] htmltools_0.5.2           parallelly_1.28.1        
+[31] dbplyr_2.1.1              fastmap_1.1.0            
+[33] highr_0.9                 rlang_0.4.12             
+[35] readxl_1.3.1              rstudioapi_0.13          
+[37] farver_2.1.0              jquerylib_0.1.4          
+[39] generics_0.1.0            jsonlite_1.7.2           
+[41] mistyR.helpers_0.0.0.9000 R.oo_1.24.0              
+[43] rlist_0.4.6.2             magrittr_2.0.1           
+[45] Matrix_1.3-4              Rcpp_1.0.7               
+[47] munsell_0.5.0             fansi_0.5.0              
+[49] lifecycle_1.0.1           R.methodsS3_1.8.1        
+[51] furrr_0.2.3               stringi_1.7.5            
+[53] whisker_0.4               yaml_2.2.1               
+[55] grid_4.1.2                parallel_4.1.2           
+[57] listenv_0.8.0             promises_1.2.0.1         
+[59] ggrepel_0.9.1             crayon_1.4.1             
+[61] lattice_0.20-45           haven_2.4.3              
+[63] hms_1.1.1                 knitr_1.36               
+[65] pillar_1.6.3              codetools_0.2-18         
+[67] reprex_2.0.1              glue_1.4.2               
+[69] evaluate_0.14             data.table_1.14.2        
+[71] modelr_0.1.8              vctrs_0.3.8              
+[73] tzdb_0.1.2                httpuv_1.6.3             
+[75] cellranger_1.1.0          gtable_0.3.0             
+[77] assertthat_0.2.1          xfun_0.26                
+[79] broom_0.7.9               later_1.3.0              
+[81] pheatmap_1.0.12           mltools_0.3.5            
+[83] globals_0.14.0            ellipsis_0.3.2           </code></pre>
 </div>
 </div>
 
