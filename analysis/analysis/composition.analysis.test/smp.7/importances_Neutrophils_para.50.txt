@@ -1,0 +1,5 @@
+target,imp
+Macrophages,0.0065084860112514095
+Mesenchymal,0.006784628165528601
+Other.immune,0.04988906527754608
+Tumor,0

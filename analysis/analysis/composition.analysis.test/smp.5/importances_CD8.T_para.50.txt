@@ -1,0 +1,12 @@
+target,imp
+CD3.T,0.020265320947135266
+CD4.T,0.010361403566999505
+DC.Mono,0
+Endothelial,0
+Macrophages,0
+Mesenchymal,0
+Mono.Neu,0.003796351289588816
+Neutrophils,0.0010132933323691896
+Other.immune,0
+Tregs,0.040080194983604864
+Tumor,0

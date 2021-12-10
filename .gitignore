@@ -24,3 +24,4 @@ code/.ipynb*
 data/_old
 analysis/notumor.composition.analysis
 analysis/red.composition.analysis
+analysis/composition.analysis.test

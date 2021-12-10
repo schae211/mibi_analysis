@@ -1,0 +1,11 @@
+target,imp
+CD3.T,0.0056218780580122385
+CD4.T,0
+CD8.T,0
+DC.Mono,0
+Endothelial,0.016932856018810085
+Macrophages,2.7320204476478325e-4
+Mesenchymal,0
+Mono.Neu,0
+Other.immune,0
+Tumor,0

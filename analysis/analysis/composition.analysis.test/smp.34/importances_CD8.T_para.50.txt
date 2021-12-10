@@ -1,0 +1,9 @@
+target,imp
+DC.Mono,0
+Endothelial,0
+Macrophages,0.0010124622947161675
+Mesenchymal,3.515613848367938e-4
+Mono.Neu,0.01050841297674527
+Neutrophils,0
+Other.immune,0.006102628142286107
+Tumor,0

@@ -1,0 +1,5 @@
+target,imp
+Endothelial,6.099978857562961e-4
+Macrophages,0
+Mesenchymal,1.7958881062928505e-4
+Tumor,3.6266663198171315e-5

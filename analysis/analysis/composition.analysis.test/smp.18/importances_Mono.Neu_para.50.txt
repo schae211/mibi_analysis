@@ -1,0 +1,9 @@
+target,imp
+CD3.T,0
+CD4.T,7.110199813953497e-4
+CD8.T,0
+Macrophages,0.0011109262231326375
+Neutrophils,0
+Other.immune,0
+Tregs,0
+Tumor,3.110119812407873e-4

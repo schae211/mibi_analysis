@@ -701,6 +701,134 @@ misty.results.bt %>%
   plot_improvement_stats("gain.R2")
 ```
 
+# New: Composition Analysis with non-negative least squares
+
+```{r}
+# tmp
+seed <- 42
+k <- 10
+view_data <- misty.views.smp$`1`$paraview.50$data
+target <- "B"
+target_vec <- misty.views.smp$`1`$intra$data %>% pull(target)
+view_data <- view_data %>%
+  mutate(!!target := target_vec)
+view_data %>% slice_head(n = 6)
+```
+
+
+```{r}
+nnls_model <- function(view_data, target, seed, k = 10, ...) {
+  
+  folds <- withr::with_seed(
+    seed,
+    caret::createFolds(seq.int(1, nrow(view_data)), k = k)
+  )
+  
+  if (ncol(view_data) <= 3) {
+    holdout.predictions <- tibble(index = seq(1, nrow(view_data)),
+                                  prediction = view_data %>%
+                                    dplyr::pull(tidyselect::all_of(target)) %>%
+                                    mean)
+    importances <- rep(0, ncol(view_data)-1)
+    names(importances) <- colnames(view_data)[colnames(view_data) != target]
+  } else {
+      holdout.predictions <- purrr::map_dfr(folds, function(holdout) {
+    
+      in.fold <- seq.int(1, nrow(view_data))[!(seq.int(1, nrow(view_data)) %in%
+                                                 holdout)]
+      
+      train <- view_data[in.fold, ]
+      test <- view_data[holdout, ]
+      
+      pred.train <- train %>% dplyr::select(-tidyselect::all_of(target)) %>%
+        as.matrix
+      label.train <- train %>% dplyr::pull(tidyselect::all_of(target))
+      
+      # start changing things here:
+      algo.arguments <- list(
+        x = pred.train,
+        y = label.train,
+        alpha = 1,
+        lambda = 0,
+        lower.limits = 0,
+        family = "gaussian"
+      )
+      
+      model <- do.call(glmnet::glmnet, algo.arguments)
+      
+      pred.test <- test %>% dplyr::select(-tidyselect::all_of(target)) %>% 
+        as.matrix
+      
+      pred <- predict(model, pred.test)
+      
+      tibble::tibble(index = holdout, prediction = as.vector(pred))
+    }) %>% dplyr::arrange(index)
+  
+    predictors <- view_data %>% 
+      dplyr::select(-tidyselect::all_of(target)) %>% as.matrix
+    labels <- view_data %>% dplyr::pull(tidyselect::all_of(target))
+    
+       # start changing things here:
+      algo.arguments.wm <- list(
+        x = predictors,
+        y = labels,
+        alpha = 1,
+        lambda = 0,
+        lower.limits = 0,
+        family = "gaussian"
+      )
+    
+    whole.model <- do.call(glmnet::glmnet, algo.arguments.wm)
+    
+    whole.model$beta
+    
+    importances <- whole.model$beta[,1]
+    # fix for bypass intra (replace NA with 0 for consistent behavior)
+    importances <- ifelse(is.na(importances), 0, importances)
+  }
+  
+  list(unbiased.predictions = holdout.predictions, 
+       importances = importances)
+}
+```
+
+Test our new lovely function
+
+```{r}
+testing.folders <- map2(misty.views.smp, 
+                      names(misty.views.smp), 
+                      function(misty.views, i) {
+  
+  misty.views %>%
+    run_misty(results.folder = paste0("analysis/composition.analysis.test/smp.",
+                                      i), 
+              bypass.intra = TRUE,
+              cv.folds = 10,
+              model.function = nnls_model)
+})
+```
+
+```{r}
+test.results <- collect_results(testing.folders)
+```
+
+```{r}
+plot_improvement_stats(test.results, "gain.R2")
+plot_view_contributions(test.results)
+plot_interaction_heatmap(test.results, "para.50", clean = TRUE, cutoff = 0.5)
+```
+
+```{r}
+perf.sig <- mistyR::extract_signature(test.results, type = "performance")
+perf.sig %>% mutate(SampleID = str_extract(sample, "(?<=/home/philipp/Saez/mibi_analysis/analysis/analysis/composition.analysis.test/smp.).+")) %>%
+  right_join(meta.smp) %>%
+ggplot() +
+  geom_point(aes(x = Tumor_gain.R2, 
+                 y = Macrophages_gain.R2, 
+                 col = Classification))
+```
+
+
 # Save Results
 
 ```{r}
