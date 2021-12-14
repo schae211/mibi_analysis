@@ -14,7 +14,7 @@ navbar:
   - text: Composition Analysis
     href: Composition.html
   - text: MISTy Helpers
-    href: MISTY_Analysis_Helpers.html
+    href: MIBI_Analysis_Helpers.html
   - text: Questions
     href: Questions.html
   - text: Presentation

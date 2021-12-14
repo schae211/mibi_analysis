@@ -820,12 +820,113 @@ plot_interaction_heatmap(test.results, "para.50", clean = TRUE, cutoff = 0.5)
 
 ```{r}
 perf.sig <- mistyR::extract_signature(test.results, type = "performance")
-perf.sig %>% mutate(SampleID = str_extract(sample, "(?<=/home/philipp/Saez/mibi_analysis/analysis/analysis/composition.analysis.test/smp.).+")) %>%
+perf.sig %>% mutate(SampleID = str_extract(sample, "(?<=/home/philipp/Saez/mibi_analysis/analysis/composition.analysis.test/smp.).+")) %>%
   right_join(meta.smp) %>%
 ggplot() +
   geom_point(aes(x = Tumor_gain.R2, 
                  y = Macrophages_gain.R2, 
                  col = Classification))
+```
+
+# Composition Analysis with Classification RF
+
+```{r}
+random_forest_class <- function(view_data, target, seed, ...) {
+  ellipsis.args <- list(...)
+
+  if (ncol(view_data) <= 2) {
+    predictions <- tibble(index = seq(1, nrow(view_data)),
+                          prediction = view_data %>%
+                            dplyr::pull(tidyselect::all_of(target)) %>%
+                                    mean)
+    importances <- rep(0, ncol(view_data)-1)
+    names(importances) <- colnames(view_data)[colnames(view_data) != target]
+  } else {
+  
+    target.vector <- view_data %>% dplyr::pull(target) %>% as.factor
+  
+    transformed_view_data <- view_data %>%
+      mutate(!!target := target.vector)
+    
+    # default ranger arguments
+    algo.arguments <- list(
+      formula = stats::as.formula(paste0(target, " ~ .")),
+      data = transformed_view_data,
+      num.trees = 100,
+      importance = "impurity",
+      mtry = NULL,
+      verbose = FALSE,
+      num.threads = 1,
+      seed = seed
+    )
+  
+    if (!(length(ellipsis.args) == 0)) {
+      algo.arguments <- merge_two(algo.arguments, ellipsis.args)
+    }
+  
+    model <- do.call(ranger::ranger, algo.arguments)
+  
+    predictions <- tibble::tibble(
+      index = seq_len(nrow(view_data)),
+      prediction = model$predictions %>% as.double
+    )
+    importances = model$variable.importance
+  }
+  list(
+    unbiased.predictions = predictions,
+    importances = importances
+  )
+}
+```
+
+```{r}
+misty.views <- misty.views.smp$`1`
+expr <- misty.views$intraview$data
+target = "B"
+target.vector <- expr %>% dplyr::pull(target)
+transformed.view.data1 <-
+            tibble::tibble(!!target := target.vector, ".novar" := 0)
+
+transformed.view.data2 <- misty.views$paraview.50$data %>%
+  mutate(!!target := target.vector)
+```
+
+```{r}
+test1 <- random_forest_class(transformed.view.data1, "B", seed = 42)
+test2 <- random_forest_class(transformed.view.data2, "B", seed = 42)
+mean(test1$unbiased.predictions$prediction == target.vector)
+mean(test2$unbiased.predictions$prediction == target.vector)
+```
+
+```{r}
+views <- misty.views
+target <- "Neutrophils"
+model.function <- random_forest_class
+model.name <- "rf_class"
+cv.folds <- 10
+bypass.intra <- TRUE
+seed <- 42
+cached <- FALSE
+view <- views$intraview
+```
+
+
+```{r warning=FALSE}
+testing.folders2 <- map2(misty.views.smp, 
+                      names(misty.views.smp), 
+                      function(misty.views, i) {
+  print(i)
+  misty.views %>%
+    run_misty(results.folder = paste0("analysis/composition.analysis.test/smp.",
+                                      i), 
+              bypass.intra = TRUE,
+              cv.folds = 10,
+              model.function = random_forest_class)
+})
+```
+
+```{r}
+test.results <- collect_results(testing.folders2)
 ```
 
 
